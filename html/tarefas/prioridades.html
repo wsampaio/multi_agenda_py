@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>prioridades</title>
+
+        <style>
+            table, td, th {
+                border:solid;
+            }
+
+            .colx {
+                display: none;
+            }
+        </style>
+
+
+        <script src="/html/btp/jquery.js"></script>
+
+
+
+        <script>
+
+
+            function preencheTabela (){
+
+                $.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
+
+                    console.log(data);
+                    var prioridades = data.prioridades;
+
+                    var saida = "";
+
+                    for (i = 0; i < prioridades.length; i++) {
+
+                        saida += "<tr>"
+                            saida += "<td class='col0'>"
+                                saida += "<a class='historico btn' onclick='abreForm(" + prioridades[i].codPrioridade + ");'>"
+                                    saida += prioridades[i].codPrioridade
+                                saida += "</a>"
+                            saida += "</td>"
+                            saida += "<td class='col1'>" + prioridades[i].ordem + "</td>"
+                            saida += "<td class='col2'>" + prioridades[i].prioridade.replace(/%r%n/g, "<br>", -1) + "</td>"
+                            saida += "<td class='col3'>" + prioridades[i].descricao.replace(/%r%n/g, "<br>", -1) + "</td>"
+                        saida += "</tr>"
+
+                    }
+
+
+                    saida = saida.replace("%r", "<br>");
+                    saida = saida.replace("%n", "<br>");
+
+                    $("tbody").append(saida);
+                });
+            }
+
+            function abreForm(cod){
+                urlForm = "/html/tarefas/prioridade.html"
+                abreNoPrincipal(urlForm, cod);
+            }
+
+            $(document).ready(function() {
+
+                preencheTabela();
+
+            });
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="row-fluid">
+                <a href="/html/tarefas/prioridades.html" target="_blank">
+                    <h1>prioridades</h1>
+                </a>
+                <a href="/cgi-bin/tarefas/prioridades.py" target="_blank">
+                    <h1>prioridades.py</h1>
+                </a>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col0">codPrioridade</th>
+                            <th class="col1">ordem</th>
+                            <th class="col2">prioridade</th>
+                            <th class="col3">descricao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>tarefaCmb</title>
+        <script src="/html/btp/jquery.js"></script>
+
+        <script>
+
+            function preencheCombo(cod){
+                var saida = "";
+
+                $.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
+
+                    console.log(data);
+                    var tarefas = data.tarefas;
+
+                    for (i = 0; i < tarefas.length; i++) {
+
+                        saida += "<option value='" + tarefas[i].codTarefa + "'";
+                    
+                        if (tarefas[i].codTarefa == cod){
+                            saida += " selected";
+                        }
+                        
+                        saida += ">";
+                        saida += 
+                            tarefas[i].tarefa.substring(0, 30) + 
+                            "</option>";
+
+                        //saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+
+                    }
+                    
+                    $("#tarefaCmb").append(saida);
+                    $("#loadTarefaCmb").css("display", "none");
+                });
+            }
+            
+            $(document).ready(function () {
+                
+                var variavel = 0;
+                
+                let params = decodeURI($("#tarefaCmb").parent().parent().attr('param'));
+                let searchParams = new URLSearchParams(params);
+                
+                if (searchParams.has("cod")){
+                    variavel = searchParams.get("cod");
+                }
+                
+                if (searchParams.has("lbl")){
+                    $("#tarefaLbl").html(searchParams.get("lbl"));
+                }
+                
+                if (searchParams.has("cmp")){
+                    $("#tarefaCmb").attr("name", searchParams.get("cmp"));
+                }
+                
+                preencheCombo(variavel);
+                
+            });
+        
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <label for="codTarefa">
+                <span id="tarefaLbl">
+                    Tarefa
+                </span>
+            </label>
+            <select id="tarefaCmb" name="codTarefa">
+                <option value='0'>Selecione:</option>
+            </select>
+            <div id='loadTarefaCmb'>
+                <img src="/html/img/load21.gif" height="10">
+            </div>
+        </div>
+    </body>
+</html>
+
+
+

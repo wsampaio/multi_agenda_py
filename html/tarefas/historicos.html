@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>historicos</title>
+
+        <style>
+            table, td, th {
+                border:solid;
+            }
+
+            .colx {
+                display: none;
+            }
+        </style>
+
+
+        <script src="/html/btp/jquery.js"></script>
+
+
+
+        <script>
+
+
+
+            function preencheTabela (){
+
+                $.getJSON("/cgi-bin/tarefas/historicos.py", function(data) {
+
+                    console.log(data);
+                    var historicos = data.historicos;
+
+                    var saida = "";
+
+                    for (i = 0; i < historicos.length; i++) {
+
+                        saida += "<tr>"
+                            saida += "<td class='col0'>"
+                                saida += "<a class='historico btn' onclick='abreForm(" + historicos[i].codHistorico + ");'>"
+                                    saida += historicos[i].codHistorico 
+                                saida += "</a>"
+                            saida += "</td>"
+                            saida += "<td class='col1'>" + historicos[i].codTarefa + "</td>"
+                            saida += "<td class='col2'>" + historicos[i].data + "</td>"
+                            saida += "<td class='col3'>" + historicos[i].obs.replace(/%r%n/g, "<br>", -1) + "</td>"
+                        saida += "</tr>"
+
+                    }
+
+
+                    saida = saida.replace("%r", "<br>");
+                    saida = saida.replace("%n", "<br>");
+
+                    $("tbody").append(saida);
+                });
+            }
+
+            function abreForm(cod){
+                var urlForm = "/html/tarefas/historico.html";
+                var param = 'cod=' + cod;
+                abreNoPrincipal(urlForm, cod, param);
+            }
+                
+            $(document).ready(function() {
+
+                preencheTabela();
+
+                $(".historico").on("click", function(event){
+                    event.preventDefault();
+                });
+
+            });
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="row-fluid">
+                <a href="/html/tarefas/historicos.html" target="_blank">
+                    <h1>Historicos</h1>
+                </a>
+                <a href="/cgi-bin/tarefas/historicos.py" target="_blank">
+                    <h1>historicos.py</h1>
+                </a>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col0">codHistorico</th>
+                            <th class="col1">codTarefa</th>
+                            <th class="col2">data</th>
+                            <th class="col3">obs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+        </div>
+
+    </body>
+</html>

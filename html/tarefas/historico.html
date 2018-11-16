@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>historico</title>
+        <style>
+            table, td, th {
+                border:solid;
+            }
+
+            .colx {
+                display: none;
+            }
+        </style>
+        <script src="/html/btp/jquery.js"></script>
+
+        <script>
+            
+            var variavel = 0;
+            //formNull();
+            //$("#codHistoricoDiv").css("display", "none");
+            
+            
+            function preencheForm() {
+
+                var url = "/cgi-bin/tarefas/historico.py";
+
+                if (variavel > 0) {
+                    url += "?cod=" + variavel;
+                }
+
+
+                $.getJSON(url, function (data) {
+
+                    console.log(data);
+                    var historico = data.historico;
+
+                    $("#codHistorico").val(historico[0].codHistorico);
+                    $("#codTarefa").val(historico[0].codTarefa);
+                    $("#data").val(formatDate(historico[0].data));
+                    $("#obs").val(historico[0].obs.replace(/%r%n/g, "\n", -1));
+                    
+                    carregaCombos(historico[0].codTarefa);
+
+                });
+            }
+
+            function formNull() {
+                $("#codHistorico").val(0);
+                $("#codTarefa").val(0);
+                $("#data").val("0001-01-01T00:00");
+                $("#obs").val("");
+            }
+            
+            function carregaCombos(codTarefa) {
+                
+                let param = encodeURI("cod=" + codTarefa);
+        
+                $("#codTarefaDiv").attr('param', param);
+                $("#codTarefaDiv").load("/html/tarefas/tarefaCmb.html");
+            }
+            
+            $("form").submit(function (event) {
+                event.preventDefault();
+            });
+            
+            $(document).ready(function () {
+                
+                $("button").on("click", function(){
+                    var txt = $(this).html();
+                    var action = "/cgi-bin/tarefas/salvaHistorico.py";
+                    
+                    if (txt === "Salvar") {
+                        //alert(1);
+                        
+                        $.post(
+                            action, 
+                            $("form").serialize()
+                        )
+                            .done(function(msg){
+                                alert("Dados salvos!");
+                            })
+                            .fail(function(xhr, status, error) {
+                                alert("ERRO");
+                        });
+                        
+                    } else if (txt === "Excuir") {
+                        
+                        console.log($("form").html());
+                        
+                        $("form").append("<input style='display:solid;' name='delete' value='true'>");
+                        
+                        $.post(
+                            action, 
+                            $("form").serialize()
+                        )
+                            .done(function(msg){
+                                alert("Dados salvos!");
+                            })
+                            .fail(function(xhr, status, error) {
+                                alert("ERRO");
+                        });
+                    }
+                });
+                
+                let params = decodeURI(
+                    $("#codTarefaDiv")
+                    .parent()
+                    .parent()
+                    .parent()
+                    .parent()
+                    .attr('param')
+                );
+        
+                let searchParams = new URLSearchParams(params);
+                
+                if (searchParams.has("cod")){
+                    variavel = searchParams.get("cod");
+                    preencheForm();
+                }
+                
+            });
+            
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="row-fluid"> 
+                <a href="/html/tarefas/historico.html" target="_blank">
+                    <h1>Historico</h1>
+                </a> <a href="/cgi-bin/tarefas/historico.py" target="_blank">
+                    <h1>historico.py</h1>
+                </a>
+                <h2>Vertical (basic) form</h2>
+                <form>
+                    <div class="form-group" id="codHistoricoDiv"> 
+                        <label for="codHistorico">codHistorico</label>
+                        <input 
+                            class="form-control" id="codHistorico" name="codHistorico" 
+                            aria-describedby="codHistoricoHelp"
+                            placeholder="codHistorico" type="number"> 
+                        <br>
+                        <small id="codHistoricoHelp"
+                               class="form-text text-muted">codHistorico</small>
+                    </div>
+                    <div class="form-group" id="codTarefaDiv"> 
+                        <label for="codTarefa">codTarefa</label>
+                        <input class="form-control" id="codTarefa" name="codTarefa" 
+                               placeholder="codTarefa" type="number">
+                    </div>
+                    <div class="form-group" id="dataDiv"> 
+                        <label for="data">data</label>
+                        <input class="form-control" id="data" name="data" 
+                               placeholder="data" type="datetime-local">
+                    </div>
+                    <div class="form-group" id="obsDiv"> 
+                        <label for="obs">obs</label> 
+                        <textarea
+                            class="form-control" rows="5" id="obs" name="obs" 
+                            placeholder="obs"></textarea> 
+                    </div>
+                </form>
+            </div>
+            <div class="row-fluid">
+                <button class="btn btn-primary">Salvar</button> 
+                <button class="btn btn-danger">Excuir</button> 
+            </div>
+        </div>
+    </body>
+</html>
+
+
+

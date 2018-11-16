@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+
+import sys
+import cgi
+from os.path import dirname, realpath, sep, pardir
+
+sys.path.append((dirname(realpath(__file__)) + sep + pardir))
+
+import cgitb
+cgitb.enable()
+
+from objetos.tarefas.Prioridade import Prioridade
+from objetos.tarefas.PrioridadeDAO import PrioridadeDAO
+
+
+codPrioridade = 0
+
+form = cgi.FieldStorage()
+
+
+
+if form:
+    codPrioridade = int(form.getvalue("cod"))
+
+
+
+prioridade = Prioridade()
+prioridadeDAO = PrioridadeDAO()
+
+print("Content-type: application/json\n")
+
+print(
+"""
+{
+    "prioridade": [""")
+
+prioridade = prioridadeDAO.select(codPrioridade)
+
+
+
+print(
+"""
+        {}
+            "codPrioridade": "{}",
+            "ordem": "{}",
+            "prioridade": "{}",
+            "descricao": "{}"
+        {}""".
+        format(
+            "{",
+            prioridade.getCodPrioridade(),
+            prioridade.getOrdem(),
+            prioridade.getPrioridade()
+                .replace("\r", "%r")
+                .replace("\n", "%n")
+                .replace("\t", "$t")
+                .replace("\\", "$b")
+                .replace("\"", "\\\""),
+            prioridade.getDescricao()
+                .replace("\r", "%r")
+                .replace("\n", "%n")
+                .replace("\t", "$t")
+                .replace("\\", "$b")
+                .replace("\"", "\\\""),
+            "}"
+        )
+    )
+
+
+print(
+"""
+    ]
+}
+""")

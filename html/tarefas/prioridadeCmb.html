@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>tarefaCmb</title>
+        <script src="/html/btp/jquery.js"></script>
+
+        <script>
+
+            function preencheCombo(cod){
+                var saida = "";
+
+                $.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
+
+                    console.log(data);
+                    var prioridades = data.prioridades;
+
+                    for (i = 0; i < prioridades.length; i++) {
+
+                        saida += "<option value='" + prioridades[i].codPrioridade + "'";
+                    
+                        if (prioridades[i].prioridade == cod){
+                            saida += " selected";
+                        }
+                        
+                        saida += ">";
+                        saida += 
+                            prioridades[i].prioridade.substring(0, 30) + 
+                            "</option>";
+
+                        //saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+
+                    }
+                    
+                    $("#prioridadeCmb").append(saida);
+                    $("#loadPrioridadeCmb").css("display", "none");
+                });
+            }
+            
+            $(document).ready(function () {
+                
+                var variavel = 0;
+                
+                
+                
+                let params = decodeURI($("#prioridadeCmb").parent().parent().attr('param'));
+                let searchParams = new URLSearchParams(params);
+                
+                if (searchParams.has("cod")){
+                    variavel = searchParams.get("cod");
+                }
+                
+                if (searchParams.has("lbl")){
+                    $("#prioridadeLbl").html(searchParams.get("lbl"));
+                }
+                
+                if (searchParams.has("cmp")){
+                    $("#prioridadeCmb").attr("name", searchParams.get("cmp"));
+                }
+                
+                preencheCombo(variavel);
+                
+            });
+        
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <label for="codTarefa">
+                <span id="prioridadeLbl">
+                    Prioridade
+                </span>
+            </label>
+            <select id="prioridadeCmb" name="codPrioridade">
+                <option value='0'>Selecione:</option>
+            </select>
+            <div id='loadPrioridadeCmb'>
+                <img src="/html/img/load21.gif" height="10">
+            </div>
+        </div>
+    </body>
+</html>
+
+
+
