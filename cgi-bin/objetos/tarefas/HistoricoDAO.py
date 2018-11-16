@@ -1,6 +1,18 @@
-# To change this license header, choose License Headers in Project Properties.
-# To change this template file, choose Tools | Templates
-# and open the template in the editor.
+#
+# Este arquivo é parte do programa multi_agenda
+#
+# Esta obra está licenciada com uma 
+# Licença Creative Commons Atribuição 4.0 Internacional.
+# (CC BY 4.0 Internacional)
+#  
+# Para ver uma cópia da licença, visite
+# https://creativecommons.org/licenses/by/4.0/legalcode
+# 
+# WELLINGTON SAMPAIO - wsampaio@yahoo.com
+# https://www.linkedin.com/in/wellsampaio/
+#
+
+
 import objetos.tarefas.Historico as Historico
 import objetos.dbConn.CRUD as CRUD
 
