@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>tarefas</title>
+
+        <style>
+            table, td, th {
+                border:solid;
+            }
+
+            .col {
+                display: none;
+            }
+        </style>
+
+
+        <script src="/html/btp/jquery.js"></script>
+
+
+
+        <script>
+
+
+            function preencheTabela (){
+                $.getJSON("/cgi-bin/passmots/origemRegistroLista.py", function(data) {
+
+                    console.log(data);
+                    var origemRegistros = data.origemRegistros;
+
+                    var saida = "";
+
+                    for (i = 0; i < origemRegistros.length; i++) {
+
+                        saida += "<tr>"
+                            saida += "<td class='col0'>"
+                                saida += "<a class='origemRegistro btn' onclick='abreForm(" + origemRegistros[i].codOrigemRegistro + ");'>"
+                                    saida += origemRegistros[i].codOrigemRegistro
+                                saida += "</a>"
+                            saida += "</td>"
+                            saida += "<td class='col1'>" + origemRegistros[i].origemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>"
+                        saida += "</tr>"
+
+                    }
+
+
+                    saida = saida.replace("%r", "<br>");
+                    saida = saida.replace("%n", "<br>");
+
+                    $("tbody").append(saida);
+                });
+            }
+
+            function abreForm(cod){
+                var urlForm = "/html/pasmots/origemRegistro.html";
+                var param = 'cod=' + cod;
+                abreNoPrincipal(urlForm, cod, param);
+                
+            }
+
+            $(document).ready(function() {
+
+                preencheTabela();
+
+            });
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="row-fluid">
+                <a href="/html/tarefas/tarefas.html" target="_blank">
+                    <h1>Origem Registro - Lista</h1>
+                </a>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col0">codOrigemRegistro</th>
+                            <th class="col1">origemRegistro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+        </div>
+
+    </body>
+</html>
