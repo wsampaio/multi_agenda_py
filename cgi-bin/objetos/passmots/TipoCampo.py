@@ -46,7 +46,7 @@ class TipoCampo:
 	def getTipoCampo(self):
 		return self.__tipoCampo
 
-	def setObs(self, tipoCampo):
+	def setTipoCampo(self, tipoCampo):
 		self.__tipoCampo = str(tipoCampo)
 
 

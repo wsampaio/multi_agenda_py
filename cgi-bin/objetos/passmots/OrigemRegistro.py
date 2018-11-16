@@ -48,6 +48,6 @@ class OrigemRegistro:
 	def getOrigemRegistro(self):
 		return self.__origemRegistro
 
-	def setObs(self, origemRegistro):
+	def setOrigemRegistro(self, origemRegistro):
 		self.__origemRegistro = str(origemRegistro)
 

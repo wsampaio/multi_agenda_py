@@ -13,7 +13,7 @@
 #
 
 
-import objetos.Passmots.OrigemRegistro as OrigemRegistro
+import objetos.passmots.OrigemRegistro as OrigemRegistro
 import objetos.dbConn.CRUD as CRUD
 
 class OrigemRegistroDAO(CRUD.CRUD):
