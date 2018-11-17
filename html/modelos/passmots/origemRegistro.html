@@ -3,7 +3,7 @@
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>tarefa</title>
+        <title>origemRegistro</title>
         <style>
             table, td, th {
                 border:solid;
@@ -24,7 +24,7 @@
             
             function preencheForm() {
 
-                var url = "/cgi-bin/tarefas/tarefa.py";
+                var url = "/cgi-bin/passmots/origemRegistro.py";
 
                 if (variavel > 0) {
                     url += "?cod=" + variavel;
@@ -33,59 +33,21 @@
                 $.getJSON(url, function (data) {
 
                     console.log(data);
-                    var tarefa = data.tarefa;
+                    var origemRegistro = data.origemRegistro;
 
-                    $("#codTarefa").val(tarefa[0].codTarefa);
-                    $("#codTarefaPai").val(tarefa[0].codTarefaPai);
-                    $("#tarefa").val(tarefa[0].tarefa.replace(/%r%n/g, "\n", -1));
-                    $("#inicio").val(formatDate(tarefa[0].inicio));
-                    $("#fim").val(formatDate(tarefa[0].fim));
-                    $("#prazo").val(formatDate(tarefa[0].prazo));
-                    $("#ordem").val(tarefa[0].ordem);
-                    $("#codPrioridade").val(tarefa[0].codPrioridade);
-
-                    if (tarefa[0].terminado) {
-                        $("#terminado").prop("checked", true);
-                    }
-                    
-                    carregaCombos(tarefa[0].codTarefaPai);
+                    $("#codOrigemRegistro").val(origemRegistro[0].codOrigemRegistro);
+                    $("#origemRegistro").val(origemRegistro[0].origemRegistro.replace(/%r%n/g, "\n", -1));
 
                 });
             }
 
             function formNull() {
                 
-                $("#codTarefa").val(0);
-                $("#codTarefaPai").val(0);
-                $("#tarefa").val("");
-                $("#inicio").val("0001-01-01T00:00");
-                $("#fim").val("0001-01-01T00:00");
-                $("#prazo").val("0001-01-01T00:00");
-                //$("#terminado").val(tarefa[0].terminado);
-                $("#ordem").val(0);
-                $("#codPrioridade").val(0);
-                
-                carregaCombos(0);
+                $("#codOrigemRegistro").val(0);
+                $("#origemRegistro").val("");
 
             }
 
-            function carregaCombos(codTarefaPai, codPrioridade) {
-                
-                let param = "";
-                
-                param = encodeURI(
-                        "cod=" + codTarefaPai +
-                        "&lbl=Tarefa pai&cmp=codTarefaPai");
-        
-                $("#codTarefaPaiDiv").attr('param', param);
-                $("#codTarefaPaiDiv").load("/html/tarefas/tarefaCmb.html");
-                
-                param = encodeURI("cod=" + codPrioridade);
-        
-                $("#codPrioridadeDiv").attr('param', param);
-                $("#codPrioridadeDiv").load("/html/tarefas/prioridadeCmb.html");
-            }
-            
             $("form").submit(function (event) {
                 event.preventDefault();
             });
@@ -94,7 +56,7 @@
 
                 $("button").on("click", function(){
                     var txt = $(this).html();
-                    var action = "/cgi-bin/tarefas/salvaTarefa.py";
+                    var action = "/cgi-bin/passmots/salvaOrigemRegistro.py";
                     
                     if (txt === "Salvar") {
                         alert(1);
@@ -114,7 +76,7 @@
                 });
                 
                 let params = decodeURI(
-                    $("#codTarefaDiv")
+                    $("#codOrigemRegistroDiv")
                     .parent()
                     .parent()
                     .parent()
@@ -137,66 +99,25 @@
     <body>
         <div class="container">
             <div class="row-fluid"> 
-                <a href="/html/tarefas/tarefa.html" target="_blank">
-                    <h1>Tarefa</h1>
-                </a> <a href="/cgi-bin/tarefas/tarefa.py" target="_blank">
-                    <h1>tarefa.py</h1>
+                <a href="/html/modelos/passmots/origemRegistro.html" target="_blank">
+                    <h1>Origem do Registro</h1>
                 </a>
                 <h2>Vertical (basic) form</h2>
                 <form>
-                    <div class="form-group" id="codTarefaDiv"> 
-                        <label for="codTarefa">codTarefa</label>
+                    <div class="form-group" id="codOrigemRegistroDiv"> 
+                        <label for="codOrigemRegistro">codOrigemRegistro</label>
                         <input 
-                            class="form-control" id="codTarefa" name="codTarefa" 
-                            aria-describedby="codHistoricoHelp"
-                            placeholder="codTarefa" type="number"> 
+                            class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
+                            aria-describedby="codOrigemRegistroHelp"
+                            placeholder="codOrigemRegistro" type="number"> 
                         <br>
-                        <small id="codTarefaHelp"
-                               class="form-text text-muted">codTarefa</small>
+                        <small id="codOrigemRegistroHelp"
+                               class="form-text text-muted">codOrigemRegistro</small>
                     </div>
-                    <div class="form-group" id="codTarefaPaiDiv"> 
-                        <label for="codTarefaPai">codTarefaPai</label>
-                        <input class="form-control" id="codTarefaPai" name="codTarefaPai" 
-                               placeholder="codTarefaPai" type="number">
-                    </div>
-                    <div class="form-group" id="tarefaDiv"> 
-                        <label for="tarefa">tarefa</label> 
-                        <textarea
-                            class="form-control" rows="5" id="tarefa" name="tarefa" 
-                            placeholder="tarefa"></textarea> 
-                    </div>
-                    <div class="form-group" id="inicioDiv"> 
-                        <label for="inicio">inicio</label>
-                        <input class="form-control" id="inicio" name="inicio" 
-                               placeholder="inicio" type="datetime-local">
-                    </div>
-                    <div class="form-group" id="fimDiv"> 
-                        <label for="fim">fim</label>
-                        <input class="form-control" id="fim" name="fim" 
-                               placeholder="fim" type="datetime-local">
-                    </div>
-                    <div class="form-group" id="prazoDiv"> 
-                        <label for="prazo">prazo</label>
-                        <input class="form-control" id="prazo" name="prazo" 
-                               placeholder="prazo" type="datetime-local">
-                    </div>
-                    <div class="form-check" id="terminadoDiv">
-                        <input 
-                            class="form-check-input" type="checkbox" value="true" 
-                            id="terminado" name="terminado">
-                        <label class="form-check-label" for="terminado">
-                            terminado
-                        </label>
-                    </div>
-                    <div class="form-group" id="ordemDiv"> 
-                        <label for="ordem">ordem</label>
-                        <input class="form-control" id="ordem" name="ordem" 
-                               placeholder="ordem" type="number">
-                    </div>
-                    <div class="form-group" id="codPrioridadeDiv"> 
-                        <label for="codPrioridade">codPrioridade</label>
-                        <input class="form-control" id="codPrioridade" name="codPrioridade" 
-                               placeholder="codPrioridade" type="number">
+                    <div class="form-group" id="origemRegistroDiv"> 
+                        <label for="origemRegistro">origemRegistro</label>
+                        <input class="form-control" id="origemRegistro" name="origemRegistro" 
+                               placeholder="origemRegistro" type="text">
                     </div>
                 </form>
             </div>
