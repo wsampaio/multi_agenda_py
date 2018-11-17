@@ -48,7 +48,7 @@
                         $("#terminado").prop("checked", true);
                     }
                     
-                    carregaCombos(tarefa[0].codTarefaPai);
+                    carregaCombos(tarefa[0].codTarefaPai, tarefa[0].codPrioridade);
 
                 });
             }
@@ -65,25 +65,27 @@
                 $("#ordem").val(0);
                 $("#codPrioridade").val(0);
                 
-                carregaCombos(0);
+                carregaCombos(0, 0);
 
             }
 
             function carregaCombos(codTarefaPai, codPrioridade) {
                 
-                let param = "";
+                var param = "";
                 
                 param = encodeURI(
                         "cod=" + codTarefaPai +
-                        "&lbl=Tarefa pai&cmp=codTarefaPai");
+                        "&lbl=Tarefa pai&cmp=codTarefaPai" +
+			""
+		);
         
                 $("#codTarefaPaiDiv").attr('param', param);
-                $("#codTarefaPaiDiv").load("/html/tarefas/tarefaCmb.html");
+                $("#codTarefaPaiDiv").load("/html/modelos/tarefas/tarefaCmb.html");
                 
                 param = encodeURI("cod=" + codPrioridade);
         
                 $("#codPrioridadeDiv").attr('param', param);
-                $("#codPrioridadeDiv").load("/html/tarefas/prioridadeCmb.html");
+                $("#codPrioridadeDiv").load("/html/modelos/tarefas/prioridadeCmb.html");
             }
             
             $("form").submit(function (event) {
@@ -137,11 +139,9 @@
     <body>
         <div class="container">
             <div class="row-fluid"> 
-                <a href="/html/tarefas/tarefa.html" target="_blank">
+                <a href="/html/modelos/tarefas/tarefa.html" target="_blank">
                     <h1>Tarefa</h1>
-                </a> <a href="/cgi-bin/tarefas/tarefa.py" target="_blank">
-                    <h1>tarefa.py</h1>
-                </a>
+                </a> 
                 <h2>Vertical (basic) form</h2>
                 <form>
                     <div class="form-group" id="codTarefaDiv"> 

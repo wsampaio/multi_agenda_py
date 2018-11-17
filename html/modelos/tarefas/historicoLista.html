@@ -35,9 +35,13 @@
 
                     for (i = 0; i < historicos.length; i++) {
 
-                        saida += "<tr>"
-                            saida += "<td class='col0'>"
-                                saida += "<a class='historico btn' onclick='abreForm(" + historicos[i].codHistorico + ");'>"
+                        saida += "<tr>";
+                            saida += "<td class='col0'>";
+                                saida += "<a class='historico btn' href='/html/modelos/tarefas/historico.html?cod=" + 
+					historicos[i].codHistorico + 
+					"' onclick='abreForm(" + 
+					historicos[i].codHistorico + 
+					");'>";
                                     saida += historicos[i].codHistorico 
                                 saida += "</a>"
                             saida += "</td>"
@@ -57,6 +61,8 @@
             }
 
             function abreForm(cod){
+                event.preventDefault();
+
                 var urlForm = "/html/modelos/tarefas/historico.html";
                 var param = 'cod=' + cod;
                 abreNoPrincipal(urlForm, cod, param);

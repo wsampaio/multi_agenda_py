@@ -58,7 +58,7 @@
                 let param = encodeURI("cod=" + codTarefa);
         
                 $("#codTarefaDiv").attr('param', param);
-                $("#codTarefaDiv").load("/html/tarefas/tarefaCmb.html");
+                $("#codTarefaDiv").load("/html/modelos/tarefas/tarefaCmb.html");
             }
             
             $("form").submit(function (event) {
@@ -128,10 +128,8 @@
     <body>
         <div class="container">
             <div class="row-fluid"> 
-                <a href="/html/tarefas/historico.html" target="_blank">
+                <a href="/html/modelos/tarefas/historico.html" target="_blank">
                     <h1>Historico</h1>
-                </a> <a href="/cgi-bin/tarefas/historico.py" target="_blank">
-                    <h1>historico.py</h1>
                 </a>
                 <h2>Vertical (basic) form</h2>
                 <form>
@@ -170,6 +168,4 @@
         </div>
     </body>
 </html>
-
-
 

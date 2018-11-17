@@ -8,7 +8,7 @@
 
         <script>
 
-            function preencheCombo(cod){
+            function preenchePrioridadeCmb(cod){
                 var saida = "";
 
                 $.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
@@ -58,8 +58,7 @@
                 if (searchParams.has("cmp")){
                     $("#prioridadeCmb").attr("name", searchParams.get("cmp"));
                 }
-                
-                preencheCombo(variavel);
+                preenchePrioridadeCmb(variavel);
                 
             });
         

@@ -36,7 +36,11 @@
 
                         saida += "<tr>"
                             saida += "<td class='col0'>"
-                                saida += "<a class='historico btn' onclick='abreForm(" + prioridades[i].codPrioridade + ");'>"
+                                saida += "<a class='prioridade btn' href='/html/modelos/tarefas/prioridade.html?cod=" + 
+					prioridades[i].codPrioridade + 
+					"' onclick='abreForm(" + 
+					prioridades[i].codPrioridade + 
+					");'>" 
                                     saida += prioridades[i].codPrioridade
                                 saida += "</a>"
                             saida += "</td>"
@@ -56,8 +60,11 @@
             }
 
             function abreForm(cod){
-                urlForm = "/html/modelos/tarefas/prioridade.html"
-                abreNoPrincipal(urlForm, cod);
+                event.preventDefault();
+
+                var urlForm = "/html/modelos/tarefas/prioridade.html";
+                var param = 'cod=' + cod;
+                abreNoPrincipal(urlForm, cod, param);
             }
 
             $(document).ready(function() {

@@ -8,7 +8,7 @@
 
         <script>
 
-            function preencheCombo(cod){
+            function preencheTarefaCmb(cod){
                 var saida = "";
 
                 $.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
@@ -57,7 +57,7 @@
                     $("#tarefaCmb").attr("name", searchParams.get("cmp"));
                 }
                 
-                preencheCombo(variavel);
+                preencheTarefaCmb(variavel);
                 
             });
         

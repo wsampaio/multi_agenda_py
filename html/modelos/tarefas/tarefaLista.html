@@ -36,7 +36,11 @@
 
                         saida += "<tr>"
                             saida += "<td class='col0'>"
-                                saida += "<a class='historico btn' onclick='abreForm(" + tarefas[i].codTarefa + ");'>"
+                                saida += "<a class='terafa btn' href='/html/modelos/tarefas/tarefa.html?cod=" + 
+					tarefas[i].codTarefa + 
+					"' onclick='abreForm(" + 
+					tarefas[i].codTarefa + 
+					");'>";
                                     saida += tarefas[i].codTarefa
                                 saida += "</a>"
                             saida += "</td>"
@@ -61,10 +65,11 @@
             }
 
             function abreForm(cod){
+                event.preventDefault();
+
                 var urlForm = "/html/modelos/tarefas/tarefa.html";
                 var param = 'cod=' + cod;
                 abreNoPrincipal(urlForm, cod, param);
-                
             }
 
             $(document).ready(function() {
