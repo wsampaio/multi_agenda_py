@@ -3,6 +3,7 @@
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="/html/btp/jquery.js"></script>
         <title>origemRegistro</title>
         <style>
             table, td, th {
@@ -18,8 +19,6 @@
         <script>
             
             var variavel = 0;
-            //formNull();
-            //$("#codTarefaDiv").css("display", "none");
 
             
             function preencheForm() {
@@ -53,6 +52,9 @@
             });
             
             $(document).ready(function () {
+			
+                formNull();
+                //$("#codOrigemRegistroDiv").css("display", "none");
 
                 $("button").on("click", function(){
                     var txt = $(this).html();
@@ -75,6 +77,24 @@
                     }
                 });
                 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+				//procura na url da pagina
+				var urlParams = new URLSearchParams(window.location.search);
+
+				if ((urlParams.has('cod'))){
+                    variavel = urlParams.get("cod");
+                    preencheForm();
+				}
+
+				//procura na div container
                 let params = decodeURI(
                     $("#codOrigemRegistroDiv")
                     .parent()
