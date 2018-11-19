@@ -74,3 +74,16 @@ class OrigemRegistroDAO(CRUD.CRUD):
 		"""
 		return super().getList(sql)
 
+	def getListaOrigens(self):
+	
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					ORIGENS_REGISTRO
+				ORDER BY
+					lower(ORIGEM_REGISTRO)
+			;
+		"""
+		return super().getList(sql)
