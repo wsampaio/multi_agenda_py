@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<script src="/html/btp/jquery.js"></script>
+		<style>
+			tr, td, table {
+				border: solid;
+				border-width: thin;
+			}
+		</style>
+		<title>Detalhes</title>
+	</head>
+	<body>
+		<div class="container">
+			<h1 id="titulo">Titulo</h1>
+			<hr>
+			<table>
+				<thead>
+					<tr>
+						<th>Campo</th>
+						<th>Registro</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
+<script>
+	$(document).ready(function(){
+
+		var url = "/cgi-bin/passmots/registrosOrigem.py";
+
+		var urlParams = new URLSearchParams(window.location.search);
+
+		if ((urlParams.has('cod'))){
+			url += "?cod=" + urlParams.get('cod');
+		}
+
+
+		$.getJSON(url, function (data) {
+			
+			//console.log(data);
+			
+			var lista = data.registro;
+			var saida = "";
+			
+			$("#titulo").html(data.origemRegistro);
+			
+			for (i = 0; i < lista.length; i++) {
+				saida = "<tr><td><a href='/html/modelos/passmots/registro.html?cod=" +
+				lista[i].codRegistro +
+				"' target='_blank'>" +
+				lista[i].tipoCampo +
+				"</a></td><td>" +
+				lista[i].registro +
+				"</td></tr>";
+				$("tbody").append(saida);
+			}
+		})
+	});
+
+
+
+// Assuming "?post=1234&action=edit"
+
+//var urlParams = new URLSearchParams(window.location.search);
+
+//console.log(urlParams.has('post')); // true
+//console.log(urlParams.get('action')); // "edit"
+//console.log(urlParams.getAll('action')); // ["edit"]
+//console.log(urlParams.toString()); // "?post=1234&action=edit"
+//console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
+
+
+</script>
+

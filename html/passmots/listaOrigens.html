@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<script src="/html/btp/jquery.js"></script>
+		<style>
+			table, td, th {
+				border: solid;
+				border-width: thin;
+			}
+		</style>
+		<title>Lista de Origens</title>
+	</head>
+	<body>
+		<a href="/html/modelos/passmots/origemRegistro.html" target="_blank">(novo)</a>
+		<div class="container">
+			<table>
+				<thead>
+					<tr>
+						<th>Lista</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
+<script>
+	$(document).ready(function(){
+		var url = "/cgi-bin/passmots/listaOrigens.py";
+		$.getJSON(url, function (data) {
+			console.log(data);
+			var lista = data.lista;
+			var saida = "";
+			for (i = 0; i < lista.length; i++) {
+				saida += "<tr><td><a href='/html/passmots/registrosOrigem.html?cod=" +
+				lista[i].codOrigemRegistro +
+				"' target='_blank'>" +
+				lista[i].origemRegistro +
+				"</a></td></tr>";
+			}
+			
+			$("tbody").append(saida);
+		})
+	});
+</script>
