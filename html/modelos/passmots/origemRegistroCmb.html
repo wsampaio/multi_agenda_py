@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>origemRegistroCmb</title>
+        <script src="/html/btp/jquery.js"></script>
+
+        <script>
+
+            function preencheOrigemRegistroCmb(cod){
+                var saida = "";
+
+                $.getJSON("/cgi-bin/passmots/origemRegistroLista.py", function(data) {
+
+                    //console.log(data);
+
+                    var lista = data.origemRegistros;
+
+                    for (i = 0; i < lista.length; i++) {
+
+                        saida += "<option value='" + lista[i].codOrigemRegistro + "'";
+                    
+                        if (lista[i].codOrigemRegistro == cod){
+                            saida += " selected";
+                        }
+                        
+                        saida += ">";
+                        saida += 
+                            lista[i].origemRegistro.substring(0, 30) + 
+                            "</option>";
+
+                        //saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+
+                    }
+                    
+                    $("#origemRegistroCmb").append(saida);
+                    $("#loadOrigemRegistroCmb").css("display", "none");
+                });
+            }
+            
+            $(document).ready(function () {
+                
+                var variavel = 0;
+                
+                let params = decodeURI($("#origemRegistroCmb").parent().parent().attr('param'));
+                let searchParams = new URLSearchParams(params);
+                
+                if (searchParams.has("cod")){
+                    variavel = searchParams.get("cod");
+                }
+                
+                if (searchParams.has("lbl")){
+                    $("#origemRegistroLbl").html(searchParams.get("lbl"));
+                }
+                
+                if (searchParams.has("cmp")){
+                    $("#origemRegistroCmb").attr("name", searchParams.get("cmp"));
+                }
+                
+                preencheOrigemRegistroCmb(variavel);
+                
+            });
+        
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <label for="codOrigemRegistro">
+                <span id="origemRegistroLbl">
+                    Origem Registro
+                </span>
+            </label>
+            <select id="origemRegistroCmb" name="codOrigemRegistro">
+                <option value='0'>Selecione:</option>
+            </select>
+            <div id='loadOrigemRegistroCmb'>
+                <img src="/html/img/load21.gif" height="10">
+            </div>
+        </div>
+    </body>
+</html>
+
+
+

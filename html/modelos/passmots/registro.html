@@ -33,10 +33,10 @@
                         <small id="codRegistroHelp"
                                class="form-text text-muted">codRegistro</small>
                     </div>
-                    <div class="form-group" id="codOrigemRegsitroDiv"> 
+                    <div class="form-group" id="codOrigemRegistroDiv"> 
                         <label for="codOrigemRegistro">codOrigemRegistro</label>
-                        <input class="form-control" id="codOrigemDestino" name="codOrigemDestino" 
-                               placeholder="codOrigemDestino" type="number">
+                        <input class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
+                               placeholder="codOrigemRegistro" type="number">
                     </div>
                     <div class="form-group" id="codTipoCampoDiv"> 
                         <label for="codTipoCampo">codTipoCampo</label>
@@ -98,6 +98,31 @@
 		$("#registro").val(str);
 	};
 
+    function formatDate(date) {
+
+        var date = new Date(date);
+
+        var year = date.getFullYear();
+        var month = ("00" + (date.getMonth() + 1)).slice(-2); // months are zero indexed
+        var day = ("00" + (date.getDate())).slice(-2);
+        var hour = ("00" + (date.getHours())).slice(-2);
+        var minute = ("00" + (date.getMinutes())).slice(-2);
+        var second = date.getSeconds();
+        var hourFormatted = hour % 12 || 12; // hour returned in 24 hour format
+        var minuteFormatted = minute < 10 ? "0" + minute : minute;
+        var morning = hour < 12 ? "am" : "pm";
+
+        var formated = year + "-" + month + "-" + day + "T" + hour + ":" +
+        minute;
+
+        return formated;
+
+        /*
+        return month + "/" + day + "/" + year + " " + hourFormatted + ":" +
+        minuteFormatted + morning;
+        */
+    }
+
 	function preencheForm() {
 
 		var url = "/cgi-bin/passmots/registro.py";
@@ -116,10 +141,10 @@
 			$("#codTipoCampo").val(registro[0].codTipoCampo);
 			$("#ordem").val(registro[0].ordem);
 			
-			$("#registro").val(registro[0].registro.replace(/%r%n/g, "\n", -1));
+			$("#registro").val(registro[0].registro.replace("/%r%n/g", "\n", -1));
 			$("#dtAtualizacao").val(formatDate(registro[0].dtAtualizacao));
 			
-			carregaCombos(registro[0].codOrigemRegistro, registro[0].codTipoDocumento);
+			carregaCombos(registro[0].codOrigemRegistro, registro[0].codTipoCampo);
 		});
 	}
 
