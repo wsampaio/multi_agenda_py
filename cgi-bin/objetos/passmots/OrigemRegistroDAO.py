@@ -23,8 +23,8 @@ class OrigemRegistroDAO(CRUD.CRUD):
 	def __init__(self):
 
 		schema = "passmots"
-		tabela = "ORIGENS_REGISTRO"
-		pk = "COD_ORIGEM_REGISTRO"
+		tabela = "origensRegistro"
+		pk = "codOrigemRegistro"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -67,9 +67,9 @@ class OrigemRegistroDAO(CRUD.CRUD):
 			SELECT
 					*
 				FROM
-					ORIGENS_REGISTRO
+					origensRegistro
 				ORDER BY
-					COD_ORIGEM_REGISTRO
+					codOrigemRegistro
 			;
 		"""
 		return super().getList(sql)
@@ -81,9 +81,9 @@ class OrigemRegistroDAO(CRUD.CRUD):
 			SELECT
 					*
 				FROM
-					ORIGENS_REGISTRO
+					origensRegistro
 				ORDER BY
-					lower(ORIGEM_REGISTRO)
+					lower(origemRegistro)
 			;
 		"""
 		return super().getList(sql)

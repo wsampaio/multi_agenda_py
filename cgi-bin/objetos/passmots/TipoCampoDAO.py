@@ -22,8 +22,8 @@ class TipoCampoDAO(CRUD.CRUD):
 	def __init__(self):
 
 		schema = "passmots"
-		tabela = "TIPOS_CAMPOS"
-		pk = "COD_TIPO_CAMPO"
+		tabela = "tiposCampos"
+		pk = "codTipoCampo"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -66,9 +66,9 @@ class TipoCampoDAO(CRUD.CRUD):
 			SELECT
 					*
 				FROM
-					TIPOS_CAMPOS
+					tiposCampos
 				ORDER BY
-					COD_TIPO_CAMPO
+					codTipoCampo
 			;
 		"""
 		return super().getList(sql)

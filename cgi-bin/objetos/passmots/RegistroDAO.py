@@ -23,7 +23,7 @@ class RegistroDAO(CRUD.CRUD):
 
 		schema = "passmots"
 		tabela = "REGISTROS"
-		pk = "COD_REGISTRO"
+		pk = "codRegistro"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -68,7 +68,7 @@ class RegistroDAO(CRUD.CRUD):
 				FROM
 					REGISTROS
 				ORDER BY
-					COD_REGISTRO
+					codRegistro
 			;
 		"""
 		return super().getList(sql)
@@ -81,9 +81,9 @@ class RegistroDAO(CRUD.CRUD):
 				FROM
 					REGISTROS
 				WHERE
-					cod_origem_registro = {}
+					codOrigemRegistro = {}
 				ORDER BY
-					ORDEM
+					ordem
 			;
 		""".format(codOrigemRegistro)
 
