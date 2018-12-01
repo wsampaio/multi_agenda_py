@@ -13,6 +13,7 @@
 #
 
 import sqlite3
+import subprocess
 
 class ConnSQLite:
 	__conn = None
@@ -68,7 +69,6 @@ class ConnSQLite:
 		
 		for array in self.__cursor.fetchall():
 			num = array[0]
-
 		return num + 1
 
 

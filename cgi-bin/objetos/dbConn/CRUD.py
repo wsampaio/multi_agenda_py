@@ -157,6 +157,13 @@ class CRUD():
 				self.__pk[1:]
 		)
 
+        #verifica se a PK é igual a zero
+        #e puxa a autonumeração
+        if int(getPk()) < 1:
+            setPk(self.__conn.autoNumeracao())
+        else:
+            context.append(getPk())
+
         context = []
 
         i = 0
@@ -187,212 +194,8 @@ class CRUD():
 
             i += 1
 
-        if int(getPk()) == 0:
-            setPk(self.__conn.autoNumeracao())
-        else:
-            context.append(getPk())
-
-
         #print(sql)
-        #print(context)
+        print(context)
 
         self.__cursor.execute(sql, context)
 
-
-""" EM JAVA
-
-public class CRUD {    
-    
-    public Object getMetodo(String metodo, Object obj) throws Exception {
-        
-        Class c = Class.forName(obj.getClass().getName());
-        
-        Object returnValue;
-        Method m;
-
-        try {
-            // parameter type is null
-            m = c.getMethod(metodo, null);
-            
-            //executa o método
-            returnValue = m.invoke(obj);
-            
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return returnValue;
-    }
-    
-    public void setMetodo(int indexCampo, Object obj, Object valor){
-
-        //Concatena o nome do método
-        String strMetodo = 
-                "set" +
-                nomeCampo.get(indexCampo).substring(0, 1).toUpperCase() +
-                nomeCampo.get(indexCampo).substring(1)
-        ;
-
-        try {
-
-            //define o tipo de dado
-            //que entra em cArg
-            Class[] cArg = new Class[1];
-            switch (tipoCampo.get(indexCampo)) {
-                case "INTEGER":
-                    cArg[0] = int.class;
-                    break;
-
-                case "LocalDateTime":
-                    cArg[0] = LocalDateTime.class;
-                    break;
-
-                case "BOOLEAN":
-                    cArg[0] = boolean.class;
-                    break;
-                                
-                case "TEXT":
-                    cArg[0] = String.class;
-                    break;
-                    
-                /*TODO - preencher com outros tipo de dados*/
-
-
-
-
-
-                default: 
-                    //cArg[0] = int.class;
-                    break;
-            }
-
-
-            Method m = obj.getClass().getMethod(strMetodo, cArg);
-
-            //executa o metodo
-            m.invoke(obj, valor);
-            
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public void setStatement(Object obj, String sql) throws Exception{
-        
-        try{
-            
-            //Acessa a autonumeração
-            if ((int) getMetodo(
-                    "get" +
-                    pk.substring(0, 1).toUpperCase() +
-                    pk.substring(1), 
-                    obj) == 0){
-                
-                setMetodo(nomeCampo.size()-1, obj, 
-                    new AutoNumeracao().numerar(schema, tabela, pk)
-                );
-            }
-            
-            //prepara o Statement e preenche os campos
-            stmt = conn.prepareStatement(sql);
-            
-            for(int i = 0; i < nomeCampo.size(); i++){
-                
-                //switch que verifica o tipo de campo e
-                //preenche o stmt com o tipo correto
-                switch (tipoCampo.get(i)) {
-                    case "INTEGER":
-                        stmt.setInt(
-                            i+1, 
-                            (int) getMetodo(
-                                "get" +
-                                nomeCampo.get(i).substring(0, 1).toUpperCase() +
-                                nomeCampo.get(i).substring(1), 
-                                obj
-                            )
-                        );
-                        break;
-
-                    case "LocalDateTime":
-                        //passa para o SQLite como String
-                        LocalDateTime D = (LocalDateTime) getMetodo(
-                                "get" +
-                                nomeCampo.get(i).substring(0, 1).toUpperCase() +
-                                nomeCampo.get(i).substring(1), 
-                                obj
-                            );
-                        
-                        stmt.setString(i+1, D.toString());
-                        break;
-
-                    case "BOOLEAN":
-                        stmt.setString(
-                            i+1, 
-                            //(boolean) getMetodo(
-                            getMetodo(
-                                "get" +
-                                nomeCampo.get(i).substring(0, 1).toUpperCase() +
-                                nomeCampo.get(i).substring(1), 
-                                obj
-                            ).toString()
-                        );
-                        break;
-                    
-                    case "TEXT":
-                        stmt.setString(
-                            i+1, 
-                            (String) getMetodo(
-                                "get" +
-                                nomeCampo.get(i).substring(0, 1).toUpperCase() +
-                                nomeCampo.get(i).substring(1), 
-                                obj
-                            )
-                        );
-                        break;
-                        
-                    
-                    /*TODO - preencher com outros tipo de dados*/
-
-
-
-
-
-                    default: 
-                        //cArg[0] = int.class;
-                        break;
-                }
-            }
-            
-            stmt.execute();
-            stmt.close();
-            
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public List<Object> getList(String sql, Class objClass){
-        
-        try {
-            List<Object> lista = new ArrayList<>();
-            stmt = conn.prepareStatement(sql);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()){
-                
-                Object o = Class.forName(objClass.getName()).newInstance();
-                setSelect(rs.getInt(pk), o);
-                lista.add(o);
-            }
-            rs.close();
-            stmt.close();
-
-            return lista;
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-}
-
-"""
