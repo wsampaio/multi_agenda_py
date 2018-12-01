@@ -28,21 +28,29 @@
 	</body>
 </html>
 <script>
-	$(document).ready(function(){
+
 		var url = "/cgi-bin/passmots/listaOrigens.py";
 		$.getJSON(url, function (data) {
 			console.log(data);
 			var lista = data.lista;
 			var saida = "";
 			for (i = 0; i < lista.length; i++) {
-				saida += "<tr><td><a href='/html/passmots/registrosOrigem.html?cod=" +
+				saida += "<tr><td><a class='listaOrigemBtn' target='_blank' href='/html/passmots/registrosOrigem.html?cod=" +
 				lista[i].codOrigemRegistro +
-				"' target='_blank'>" +
+				"'>" +
 				lista[i].origemRegistro +
 				"</a></td></tr>";
 			}
 			
 			$("tbody").append(saida);
 		})
+
+	$(document).ready(function(){
+		
+		$(".listaOrigemBtn").on('click', function(event){
+			event.preventDefault();
+			urlPrincipal = $(this).attr("href")
+			$("#principal").load(urlPrincipal);
+		});
 	});
 </script>
