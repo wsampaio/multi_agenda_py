@@ -32,7 +32,7 @@ codHistorico = 0
 form = cgi.FieldStorage()
 
 if form:
-    codHistorico = int(form.getvalue("cod"))
+	codHistorico = int(form.getvalue("cod"))
 
 
 
@@ -44,7 +44,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "historico": [""")
+	"historico": [""")
 
 historico = historicoDAO.select(codHistorico)
 
@@ -52,30 +52,30 @@ historico = historicoDAO.select(codHistorico)
 
 print(
 """
-        {}
-            "codHistorico": "{}",
-            "codTarefa": "{}",
-            "data": "{}",
-            "obs": "{}"
-        {}""".
-        format(
-            "{",
-            historico.getCodHistorico(),
-            historico.getCodTarefa(),
-            historico.getData(),
-            historico.getObs()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codHistorico": "{}",
+			"codTarefa": "{}",
+			"data": "{}",
+			"obs": "{}"
+		{}""".
+		format(
+			"{",
+			historico.getCodHistorico(),
+			historico.getCodTarefa(),
+			historico.getData(),
+			historico.getObs()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

@@ -1,96 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>tarefas</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>tarefas</title>
 
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .col {
-                display: none;
-            }
-        </style>
-
-
-        <script src="/html/btp/jquery.js"></script>
+			.col {
+				display: none;
+			}
+		</style>
 
 
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
 
 
-            function preencheTabela (){
-                $.getJSON("/cgi-bin/passmots/origemRegistroLista.py", function(data) {
+		<script>
 
-                    //console.log(data);
-                    var origemRegistros = data.origemRegistros;
 
-                    var saida = "";
+			function preencheTabela (){
+				$.getJSON("/cgi-bin/passmots/origemRegistroLista.py", function(data) {
 
-                    for (i = 0; i < origemRegistros.length; i++) {
+					//console.log(data);
+					var origemRegistros = data.origemRegistros;
 
-                        saida += "<tr>"
-                            saida += "<td class='col0'>"
-                                saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/origemRegistro.html?cod=" + 
+					var saida = "";
+
+					for (i = 0; i < origemRegistros.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/origemRegistro.html?cod=" + 
 					origemRegistros[i].codOrigemRegistro + 
 					"' onclick='abreForm(" + 
 					origemRegistros[i].codOrigemRegistro + 
 					");'>";
-                                    saida += origemRegistros[i].codOrigemRegistro
-                                saida += "</a>"
-                            saida += "</td>"
-                            saida += "<td class='col1'>" + origemRegistros[i].origemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>"
-                        saida += "</tr>"
+									saida += origemRegistros[i].codOrigemRegistro
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + origemRegistros[i].origemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>"
+						saida += "</tr>"
 
-                    }
+					}
 
 
-                    saida = saida.replace("%r", "<br>");
-                    saida = saida.replace("%n", "<br>");
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
 
-                    $("tbody").append(saida);
-                });
-            }
+					$("tbody").append(saida);
+				});
+			}
 
-            function abreForm(cod){
-                event.preventDefault();
+			function abreForm(cod){
+				event.preventDefault();
 
-                var urlForm = "/html/modelos/passmots/origemRegistro.html";
-                var param = 'cod=' + cod;
-                abreNoPrincipal(urlForm, cod, param);
-            }
+				var urlForm = "/html/modelos/passmots/origemRegistro.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
 
-            $(document).ready(function() {
+			$(document).ready(function() {
 
-                preencheTabela();
+				preencheTabela();
 
-            });
-        </script>
+			});
+		</script>
 
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="row-fluid">
-                <a href="/html/modelos/passmots/origemRegistroLista.html" target="_blank">
-                    <h1>Origem Registro - Lista</h1>
-                </a>
+		<div class="row-fluid">
+				<a href="/html/modelos/passmots/origemRegistroLista.html" target="_blank">
+					<h1>Origem Registro - Lista</h1>
+				</a>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col0">codOrigemRegistro</th>
-                            <th class="col1">origemRegistro</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-        </div>
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codOrigemRegistro</th>
+							<th class="col1">origemRegistro</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-    </body>
+	</body>
 </html>

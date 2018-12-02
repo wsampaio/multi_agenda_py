@@ -42,7 +42,7 @@ class ConnSQLite:
 		self.__schema = schema
 		self.__tabela = tabela
 		self.__pk = pk
-                
+				
 		#para verificar arquivos no Termux
 		fTest = "../storage/downloads/DB-multi_agenda/financeiro.db"
 

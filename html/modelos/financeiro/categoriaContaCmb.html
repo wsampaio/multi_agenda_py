@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>categoriaContaCmb</title>
-        <script src="/html/btp/jquery.js"></script>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>categoriaContaCmb</title>
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
+		<script>
 
-            function preencheCategoriaContaCmb(cod){
-                var saida = "";
+			function preencheCategoriaContaCmb(cod){
+				var saida = "";
 
-                $.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
+				$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
 
-                    //console.log(data);
+					//console.log(data);
 
-                    var lista = data.categoriasContas;
+					var lista = data.categoriasContas;
 
-                    for (i = 0; i < lista.length; i++) {
+					for (i = 0; i < lista.length; i++) {
 
-                        saida += "<option value='" + lista[i].codCategoria + "'";
-                    
-                        if (lista[i].codCategoria == cod){
-                            saida += " selected";
-                        }
-                        
-                        saida += ">";
-                        saida += 
-                            lista[i].categoria.substring(0, 30) + 
-                            "</option>";
+						saida += "<option value='" + lista[i].codCategoria + "'";
+					
+						if (lista[i].codCategoria == cod){
+							saida += " selected";
+						}
+						
+						saida += ">";
+						saida += 
+							lista[i].categoria.substring(0, 30) + 
+							"</option>";
 
-                        //saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+						//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
 
-                    }
-                    
-                    $("#categoriaContaCmb").append(saida);
-                    $("#loadCategoriaContaCmb").css("display", "none");
-                });
-            }
-            
-            $(document).ready(function () {
-                
-                var variavel = 0;
-                
-                let params = decodeURI($("#categoriaContaCmb").parent().parent().attr('param'));
-                let searchParams = new URLSearchParams(params);
-                
-                if (searchParams.has("cod")){
-                    variavel = searchParams.get("cod");
-                }
-                
-                if (searchParams.has("lbl")){
-                    $("#categoriaContaLbl").html(searchParams.get("lbl"));
-                }
-                
-                if (searchParams.has("cmp")){
-                    $("#categoriaContaCmb").attr("name", searchParams.get("cmp"));
-                }
-                
-                preencheCategoriaContaCmb(variavel);
-                
-            });
-        
-        </script>
+					}
+					
+					$("#categoriaContaCmb").append(saida);
+					$("#loadCategoriaContaCmb").css("display", "none");
+				});
+			}
+			
+			$(document).ready(function () {
+				
+				var variavel = 0;
+				
+				let params = decodeURI($("#categoriaContaCmb").parent().parent().attr('param'));
+				let searchParams = new URLSearchParams(params);
+				
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+				
+				if (searchParams.has("lbl")){
+					$("#categoriaContaLbl").html(searchParams.get("lbl"));
+				}
+				
+				if (searchParams.has("cmp")){
+					$("#categoriaContaCmb").attr("name", searchParams.get("cmp"));
+				}
+				
+				preencheCategoriaContaCmb(variavel);
+				
+			});
+		
+		</script>
 
-    </head>
-    <body>
-        <div class="container">
-            <label for="codCategoria">
-                <span id="categoriaContaLbl">
-                    Categoria da conta
-                </span>
-            </label>
-            <select id="categoriaContaCmb" name="codCategoria">
-                <option value='0'>Selecione:</option>
-            </select>
-            <div id='loadCategoriaContaCmb'>
-                <img src="/html/img/load21.gif" height="10">
-            </div>
-        </div>
-    </body>
+	</head>
+	<body>
+		<div class="container">
+			<label for="codCategoria">
+				<span id="categoriaContaLbl">
+					Categoria da conta
+				</span>
+			</label>
+			<select id="categoriaContaCmb" name="codCategoria">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadCategoriaContaCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
+	</body>
 </html>
 
 

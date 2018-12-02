@@ -33,7 +33,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "prioridades": [""")
+	"prioridades": [""")
 
 i = 0
 lista = prioridadeDAO.getLista()
@@ -42,42 +42,42 @@ contaLista = len(lista) -1
 
 for forPrioridade in lista:
 
-    print(
+	print(
 """
-        {}
-            "codPrioridade": "{}",
-            "ordem": "{}",
-            "prioridade": "{}",
-            "descricao": "{}"
-        {}""".
-        format(
-            "{",
-            forPrioridade.getCodPrioridade(),
-            forPrioridade.getOrdem(),
-            forPrioridade.getPrioridade()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            forPrioridade.getDescricao()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codPrioridade": "{}",
+			"ordem": "{}",
+			"prioridade": "{}",
+			"descricao": "{}"
+		{}""".
+		format(
+			"{",
+			forPrioridade.getCodPrioridade(),
+			forPrioridade.getOrdem(),
+			forPrioridade.getPrioridade()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			forPrioridade.getDescricao()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

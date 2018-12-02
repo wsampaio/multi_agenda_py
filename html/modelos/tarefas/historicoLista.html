@@ -1,106 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>historicos</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>historicos</title>
 
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .colx {
-                display: none;
-            }
-        </style>
-
-
-        <script src="/html/btp/jquery.js"></script>
+			.colx {
+				display: none;
+			}
+		</style>
 
 
-
-        <script>
+		<script src="/html/btp/jquery.js"></script>
 
 
 
-            function preencheTabela (){
+		<script>
 
-                $.getJSON("/cgi-bin/tarefas/historicos.py", function(data) {
 
-                    console.log(data);
-                    var historicos = data.historicos;
 
-                    var saida = "";
+			function preencheTabela (){
 
-                    for (i = 0; i < historicos.length; i++) {
+				$.getJSON("/cgi-bin/tarefas/historicos.py", function(data) {
 
-                        saida += "<tr>";
-                            saida += "<td class='col0'>";
-                                saida += "<a class='historico btn' href='/html/modelos/tarefas/historico.html?cod=" + 
+					console.log(data);
+					var historicos = data.historicos;
+
+					var saida = "";
+
+					for (i = 0; i < historicos.length; i++) {
+
+						saida += "<tr>";
+							saida += "<td class='col0'>";
+								saida += "<a class='historico btn' href='/html/modelos/tarefas/historico.html?cod=" + 
 					historicos[i].codHistorico + 
 					"' onclick='abreForm(" + 
 					historicos[i].codHistorico + 
 					");'>";
-                                    saida += historicos[i].codHistorico 
-                                saida += "</a>"
-                            saida += "</td>"
-                            saida += "<td class='col1'>" + historicos[i].codTarefa + "</td>"
-                            saida += "<td class='col2'>" + historicos[i].data + "</td>"
-                            saida += "<td class='col3'>" + historicos[i].obs.replace(/%r%n/g, "<br>", -1) + "</td>"
-                        saida += "</tr>"
+									saida += historicos[i].codHistorico 
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + historicos[i].codTarefa + "</td>"
+							saida += "<td class='col2'>" + historicos[i].data + "</td>"
+							saida += "<td class='col3'>" + historicos[i].obs.replace(/%r%n/g, "<br>", -1) + "</td>"
+						saida += "</tr>"
 
-                    }
+					}
 
 
-                    saida = saida.replace("%r", "<br>");
-                    saida = saida.replace("%n", "<br>");
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
 
-                    $("tbody").append(saida);
-                });
-            }
+					$("tbody").append(saida);
+				});
+			}
 
-            function abreForm(cod){
-                event.preventDefault();
+			function abreForm(cod){
+				event.preventDefault();
 
-                var urlForm = "/html/modelos/tarefas/historico.html";
-                var param = 'cod=' + cod;
-                abreNoPrincipal(urlForm, cod, param);
-            }
-                
-            $(document).ready(function() {
+				var urlForm = "/html/modelos/tarefas/historico.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
+				
+			$(document).ready(function() {
 
-                preencheTabela();
+				preencheTabela();
 
-                $(".historico").on("click", function(event){
-                    event.preventDefault();
-                });
+				$(".historico").on("click", function(event){
+					event.preventDefault();
+				});
 
-            });
-        </script>
+			});
+		</script>
 
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="row-fluid">
-                <a href="/html/modelos/tarefas/historicoLista.html" target="_blank">
-                    <h1>Historicos</h1>
-                </a>
+		<div class="row-fluid">
+				<a href="/html/modelos/tarefas/historicoLista.html" target="_blank">
+					<h1>Historicos</h1>
+				</a>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col0">codHistorico</th>
-                            <th class="col1">codTarefa</th>
-                            <th class="col2">data</th>
-                            <th class="col3">obs</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-        </div>
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codHistorico</th>
+							<th class="col1">codTarefa</th>
+							<th class="col2">data</th>
+							<th class="col3">obs</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-    </body>
+	</body>
 </html>

@@ -34,7 +34,7 @@ form = cgi.FieldStorage()
 
 
 if form:
-    codRegistro = int(form.getvalue("cod"))
+	codRegistro = int(form.getvalue("cod"))
 
 
 registro = Registro()
@@ -45,7 +45,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "registro": [""")
+	"registro": [""")
 
 registro = registroDAO.select(codRegistro)
 
@@ -53,34 +53,34 @@ registro = registroDAO.select(codRegistro)
 
 print(
 """
-        {}
-            "codRegistro": "{}",
-            "codOrigemRegistro": "{}",
-            "codTipoCampo": "{}",
-            "ordem": "{}",
-            "registro": "{}",
-            "dtAtualizacao": "{}"
-        {}""".
-        format(
-            "{",
-            registro.getCodRegistro(),
-            registro.getCodOrigemRegistro(),
-            registro.getCodTipoCampo(),
-            registro.getOrdem(),
-            registro.getRegistro()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            registro.getDtAtualizacao(),
-            "}"
-        )
-    )
+		{}
+			"codRegistro": "{}",
+			"codOrigemRegistro": "{}",
+			"codTipoCampo": "{}",
+			"ordem": "{}",
+			"registro": "{}",
+			"dtAtualizacao": "{}"
+		{}""".
+		format(
+			"{",
+			registro.getCodRegistro(),
+			registro.getCodOrigemRegistro(),
+			registro.getCodTipoCampo(),
+			registro.getOrdem(),
+			registro.getRegistro()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			registro.getDtAtualizacao(),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

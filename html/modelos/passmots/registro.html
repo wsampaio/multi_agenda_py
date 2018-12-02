@@ -1,72 +1,72 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>registro</title>
-        <style>
-            table, td, th {
-                border:solid;
-            }
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>registro</title>
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .colx {
-                display: none;
-            }
-        </style>
-        <script src="/html/btp/jquery.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row-fluid"> 
-                <a href="/html/modelos/passmots/registro.html" target="_blank">
-                    <h1>Registro</h1>
-                </a>
-                <h2>Vertical (basic) form</h2>
-                <form>
-                    <div class="form-group" id="codRegistroDiv"> 
-                        <label for="codRegistro">codRegistro</label>
-                        <input 
-                            class="form-control" id="codRegistro" name="codRegistro" 
-                            aria-describedby="codRegistroHelp"
-                            placeholder="codRegistro" type="number"> 
-                        <br>
-                        <small id="codRegistroHelp"
-                               class="form-text text-muted">codRegistro</small>
-                    </div>
-                    <div class="form-group" id="codOrigemRegistroDiv"> 
-                        <label for="codOrigemRegistro">codOrigemRegistro</label>
-                        <input class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
-                               placeholder="codOrigemRegistro" type="number">
-                    </div>
-                    <div class="form-group" id="codTipoCampoDiv"> 
-                        <label for="codTipoCampo">codTipoCampo</label>
-                        <input class="form-control" id="codTipoCampo" name="codTipoCampo" 
-                               placeholder="codTipoCampo" type="number">
-                    </div>
-                    <div class="form-group" id="ordemDiv"> 
-                        <label for="ordem">ordem</label>
-                        <input class="form-control" id="ordem" name="ordem" 
-                               placeholder="ordem" type="number">
-                    </div>
-                    <div class="form-group" id="registroDiv"> 
-                        <label for="registro">registro</label>
-                        <input class="form-control" id="registro" name="registro" 
-                               placeholder="registro" type="text">
-                        <button id="newPass">Gerar Nova Senha</button>
-                    </div>
-                    <div class="form-group" id="dtAtualizacaoDiv"> 
-                        <label for="dtAtualizacao">dtAtualizacao</label>
-                        <input class="form-control" id="dtAtualizacao" name="dtAtualizacao" 
-                               placeholder="dtAtualizacao" type="datetime-local">
-                    </div>
-                </form>
-            </div>
-            <div class="row-fluid">
-                <button class="btn btn-primary">Salvar</button> 
-                <button class="btn btn-danger">Excuir</button> 
-            </div>
-        </div>
-    </body>
+			.colx {
+				display: none;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row-fluid"> 
+				<a href="/html/modelos/passmots/registro.html" target="_blank">
+					<h1>Registro</h1>
+				</a>
+				<h2>Vertical (basic) form</h2>
+				<form>
+					<div class="form-group" id="codRegistroDiv"> 
+						<label for="codRegistro">codRegistro</label>
+						<input 
+							class="form-control" id="codRegistro" name="codRegistro" 
+							aria-describedby="codRegistroHelp"
+							placeholder="codRegistro" type="number"> 
+						<br>
+						<small id="codRegistroHelp"
+							   class="form-text text-muted">codRegistro</small>
+					</div>
+					<div class="form-group" id="codOrigemRegistroDiv"> 
+						<label for="codOrigemRegistro">codOrigemRegistro</label>
+						<input class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
+							   placeholder="codOrigemRegistro" type="number">
+					</div>
+					<div class="form-group" id="codTipoCampoDiv"> 
+						<label for="codTipoCampo">codTipoCampo</label>
+						<input class="form-control" id="codTipoCampo" name="codTipoCampo" 
+							   placeholder="codTipoCampo" type="number">
+					</div>
+					<div class="form-group" id="ordemDiv"> 
+						<label for="ordem">ordem</label>
+						<input class="form-control" id="ordem" name="ordem" 
+							   placeholder="ordem" type="number">
+					</div>
+					<div class="form-group" id="registroDiv"> 
+						<label for="registro">registro</label>
+						<input class="form-control" id="registro" name="registro" 
+							   placeholder="registro" type="text">
+						<button id="newPass">Gerar Nova Senha</button>
+					</div>
+					<div class="form-group" id="dtAtualizacaoDiv"> 
+						<label for="dtAtualizacao">dtAtualizacao</label>
+						<input class="form-control" id="dtAtualizacao" name="dtAtualizacao" 
+							   placeholder="dtAtualizacao" type="datetime-local">
+					</div>
+				</form>
+			</div>
+			<div class="row-fluid">
+				<button class="btn btn-primary">Salvar</button> 
+				<button class="btn btn-danger">Excuir</button> 
+			</div>
+		</div>
+	</body>
 </html>
 
 
@@ -98,30 +98,30 @@
 		$("#registro").val(str);
 	};
 
-    function formatDate(date) {
+	function formatDate(date) {
 
-        var date = new Date(date);
+		var date = new Date(date);
 
-        var year = date.getFullYear();
-        var month = ("00" + (date.getMonth() + 1)).slice(-2); // months are zero indexed
-        var day = ("00" + (date.getDate())).slice(-2);
-        var hour = ("00" + (date.getHours())).slice(-2);
-        var minute = ("00" + (date.getMinutes())).slice(-2);
-        var second = date.getSeconds();
-        var hourFormatted = hour % 12 || 12; // hour returned in 24 hour format
-        var minuteFormatted = minute < 10 ? "0" + minute : minute;
-        var morning = hour < 12 ? "am" : "pm";
+		var year = date.getFullYear();
+		var month = ("00" + (date.getMonth() + 1)).slice(-2); // months are zero indexed
+		var day = ("00" + (date.getDate())).slice(-2);
+		var hour = ("00" + (date.getHours())).slice(-2);
+		var minute = ("00" + (date.getMinutes())).slice(-2);
+		var second = date.getSeconds();
+		var hourFormatted = hour % 12 || 12; // hour returned in 24 hour format
+		var minuteFormatted = minute < 10 ? "0" + minute : minute;
+		var morning = hour < 12 ? "am" : "pm";
 
-        var formated = year + "-" + month + "-" + day + "T" + hour + ":" +
-        minute;
+		var formated = year + "-" + month + "-" + day + "T" + hour + ":" +
+		minute;
 
-        return formated;
+		return formated;
 
-        /*
-        return month + "/" + day + "/" + year + " " + hourFormatted + ":" +
-        minuteFormatted + morning;
-        */
-    }
+		/*
+		return month + "/" + day + "/" + year + " " + hourFormatted + ":" +
+		minuteFormatted + morning;
+		*/
+	}
 
 	function preencheForm() {
 

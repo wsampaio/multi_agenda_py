@@ -34,7 +34,7 @@ form = cgi.FieldStorage()
 
 
 if form:
-    codOrigemRegistro = int(form.getvalue("cod"))
+	codOrigemRegistro = int(form.getvalue("cod"))
 
 
 origemRegistro = OrigemRegistro()
@@ -46,7 +46,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "origemRegistro": [""")
+	"origemRegistro": [""")
 
 origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
 
@@ -54,26 +54,26 @@ origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
 
 print(
 """
-        {}
-            "codOrigemRegistro": "{}",
-            "origemRegistro": "{}"
-        {}""".
-        format(
-            "{",
-            origemRegistro.getCodOrigemRegistro(),
-            origemRegistro.getOrigemRegistro()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codOrigemRegistro": "{}",
+			"origemRegistro": "{}"
+		{}""".
+		format(
+			"{",
+			origemRegistro.getCodOrigemRegistro(),
+			origemRegistro.getOrigemRegistro()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

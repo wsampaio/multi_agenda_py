@@ -33,7 +33,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "lista": [""")
+	"lista": [""")
 
 i = 0
 lista = origemRegistroDAO.getListaOrigens()
@@ -42,28 +42,28 @@ contaLista = len(lista) -1
 
 for forOrigemRegistro in lista:
 
-    print(
+	print(
 """
-        {}
-            "codOrigemRegistro": "{}",
-            "origemRegistro": "{}"
-        {}""".
-        format(
-            "{",
-            forOrigemRegistro.getCodOrigemRegistro(),
-            forOrigemRegistro.getOrigemRegistro(),
-            "}"
-        )
-    )
+		{}
+			"codOrigemRegistro": "{}",
+			"origemRegistro": "{}"
+		{}""".
+		format(
+			"{",
+			forOrigemRegistro.getCodOrigemRegistro(),
+			forOrigemRegistro.getOrigemRegistro(),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

@@ -36,27 +36,27 @@ origemRegistroDAO = OrigemRegistroDAO()
 
 
 if str(form) != "FieldStorage(None, None, '')":
-    codOrigemRegistro = int(form.getvalue("codOrigemRegistro"))
+	codOrigemRegistro = int(form.getvalue("codOrigemRegistro"))
 
-    origemRegistro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
-    origemRegistro.setOrigemRegistro(form.getvalue("origemRegistro"))
+	origemRegistro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
+	origemRegistro.setOrigemRegistro(form.getvalue("origemRegistro"))
 
-    if codOrigemRegistro > 0:
-        if form.getvalue("delete"):
-            origemRegistroDAO.delete(origemRegistro.getCodOrigemRegistro())
-        else:
-            origemRegistroDAO.update(origemRegistro)
-    else:
-        origemRegistroDAO.insert(origemRegistro)
+	if codOrigemRegistro > 0:
+		if form.getvalue("delete"):
+			origemRegistroDAO.delete(origemRegistro.getCodOrigemRegistro())
+		else:
+			origemRegistroDAO.update(origemRegistro)
+	else:
+		origemRegistroDAO.insert(origemRegistro)
 
 else:
-    #tentando enviar status de erro
-    #header("HTTP/1.0 404 Not Found");
-    #print "Status: 404 Not Found\r\n"
-    #print "Content-Type: text/html\r\n\r\n"
-    
-    #print "Status: 400 Bad Request\r\n"
-    pass
+	#tentando enviar status de erro
+	#header("HTTP/1.0 404 Not Found");
+	#print "Status: 404 Not Found\r\n"
+	#print "Content-Type: text/html\r\n\r\n"
+	
+	#print "Status: 400 Bad Request\r\n"
+	pass
 
 
 #print("Content-type: text/html\n")
@@ -67,9 +67,9 @@ else:
 
 
 if form.getvalue("delete"):
-    print("DELETE")
+	print("DELETE")
 else:
-    print("não delete")
+	print("não delete")
 
 print("""
 

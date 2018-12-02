@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>tarefas</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>tarefas</title>
 
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .col1, .col3, .col4, .col5, .col6, .col7, .col8 {
-                display: none;
-            }
-        </style>
-
-
-        <script src="/html/btp/jquery.js"></script>
+			.col1, .col3, .col4, .col5, .col6, .col7, .col8 {
+				display: none;
+			}
+		</style>
 
 
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
 
 
-            function preencheTabela (){
+		<script>
 
-                $.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
 
-                    console.log(data);
-                    var tarefas = data.tarefas;
+			function preencheTabela (){
 
-                    var saida = "";
+				$.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
 
-                    for (i = 0; i < tarefas.length; i++) {
+					console.log(data);
+					var tarefas = data.tarefas;
 
-                        saida += "<tr>"
-                            saida += "<td class='col0'>"
-                                saida += "<a class='terafa btn' href='/html/modelos/tarefas/tarefa.html?cod=" + 
+					var saida = "";
+
+					for (i = 0; i < tarefas.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='terafa btn' href='/html/modelos/tarefas/tarefa.html?cod=" + 
 					tarefas[i].codTarefa + 
 					"' onclick='abreForm(" + 
 					tarefas[i].codTarefa + 
 					");'>";
-                                    saida += tarefas[i].codTarefa
-                                saida += "</a>"
-                            saida += "</td>"
-                            saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
-                            saida += "<td class='col2'>" + tarefas[i].tarefa.replace(/%r%n/g, "<br>", -1) + "</td>"
-                            saida += "<td class='col3'>" + tarefas[i].inicio + "</td>"
-                            saida += "<td class='col4'>" + tarefas[i].fim + "</td>"
-                            saida += "<td class='col5'>" + tarefas[i].prazo + "</td>"
-                            saida += "<td class='col6'>" + tarefas[i].terminado + "</td>"
-                            saida += "<td class='col7'>" + tarefas[i].ordem + "</td>"
-                            saida += "<td class='col8'>" + tarefas[i].codPrioridade + "</td>"
-                        saida += "</tr>"
+									saida += tarefas[i].codTarefa
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+							saida += "<td class='col2'>" + tarefas[i].tarefa.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col3'>" + tarefas[i].inicio + "</td>"
+							saida += "<td class='col4'>" + tarefas[i].fim + "</td>"
+							saida += "<td class='col5'>" + tarefas[i].prazo + "</td>"
+							saida += "<td class='col6'>" + tarefas[i].terminado + "</td>"
+							saida += "<td class='col7'>" + tarefas[i].ordem + "</td>"
+							saida += "<td class='col8'>" + tarefas[i].codPrioridade + "</td>"
+						saida += "</tr>"
 
-                    }
+					}
 
 
-                    saida = saida.replace("%r", "<br>");
-                    saida = saida.replace("%n", "<br>");
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
 
-                    $("tbody").append(saida);
-                });
-            }
+					$("tbody").append(saida);
+				});
+			}
 
-            function abreForm(cod){
-                event.preventDefault();
+			function abreForm(cod){
+				event.preventDefault();
 
-                var urlForm = "/html/modelos/tarefas/tarefa.html";
-                var param = 'cod=' + cod;
-                abreNoPrincipal(urlForm, cod, param);
-            }
+				var urlForm = "/html/modelos/tarefas/tarefa.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
 
-            $(document).ready(function() {
+			$(document).ready(function() {
 
-                preencheTabela();
+				preencheTabela();
 
-            });
-        </script>
+			});
+		</script>
 
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="row-fluid">
-                <a href="/html/modelos/tarefas/tarefaLista.html" target="_blank">
-                    <h1>Tarefas</h1>
-                </a>
+		<div class="row-fluid">
+				<a href="/html/modelos/tarefas/tarefaLista.html" target="_blank">
+					<h1>Tarefas</h1>
+				</a>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col0">codTarefa</th>
-                            <th class="col1">codTarefaPai</th>
-                            <th class="col2">tarefa</th>
-                            <th class="col3">inicio</th>
-                            <th class="col4">fim</th>
-                            <th class="col5">prazo</th>
-                            <th class="col6">terminado</th>
-                            <th class="col7">ordem</th>
-                            <th class="col8">codPrioridade</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-        </div>
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codTarefa</th>
+							<th class="col1">codTarefaPai</th>
+							<th class="col2">tarefa</th>
+							<th class="col3">inicio</th>
+							<th class="col4">fim</th>
+							<th class="col5">prazo</th>
+							<th class="col6">terminado</th>
+							<th class="col7">ordem</th>
+							<th class="col8">codPrioridade</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-    </body>
+	</body>
 </html>

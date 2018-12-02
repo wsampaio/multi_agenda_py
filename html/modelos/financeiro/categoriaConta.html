@@ -1,152 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="/html/btp/jquery.js"></script>
-        <title>origemRegistro</title>
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<title>origemRegistro</title>
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .colx {
-                display: none;
-            }
-        </style>
-        <script src="/html/btp/jquery.js"></script>
+			.colx {
+				display: none;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
-            
-            var variavel = 0;
-
-            
-            function preencheForm() {
-
-                var url = "/cgi-bin/passmots/origemRegistro.py";
-
-                if (variavel > 0) {
-                    url += "?cod=" + variavel;
-                }
-
-                $.getJSON(url, function (data) {
-
-                    console.log(data);
-                    var origemRegistro = data.origemRegistro;
-
-                    $("#codOrigemRegistro").val(origemRegistro[0].codOrigemRegistro);
-                    $("#origemRegistro").val(origemRegistro[0].origemRegistro.replace(/%r%n/g, "\n", -1));
-
-                });
-            }
-
-            function formNull() {
-                
-                $("#codOrigemRegistro").val(0);
-                $("#origemRegistro").val("");
-
-            }
-
-            $("form").submit(function (event) {
-                event.preventDefault();
-            });
-            
-            $(document).ready(function () {
+		<script>
 			
-                formNull();
-                //$("#codOrigemRegistroDiv").css("display", "none");
+			var variavel = 0;
 
-                $("button").on("click", function(){
-                    var txt = $(this).html();
-                    var action = "/cgi-bin/passmots/salvaOrigemRegistro.py";
-                    
-                    if (txt === "Salvar") {
-                        alert(1);
-                        
-                        $.post(
-                            action, 
-                            $(this).serialize(), 
-                            function(data) {
-                                alert("Dados salvos!");
-                                console.log(data);
-                            }
-                        );
-                        
-                    } else if (txt === "Excuir") {
-                        alert(2);
-                    }
-                });
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+			
+			function preencheForm() {
+
+				var url = "/cgi-bin/passmots/origemRegistro.py";
+
+				if (variavel > 0) {
+					url += "?cod=" + variavel;
+				}
+
+				$.getJSON(url, function (data) {
+
+					console.log(data);
+					var origemRegistro = data.origemRegistro;
+
+					$("#codOrigemRegistro").val(origemRegistro[0].codOrigemRegistro);
+					$("#origemRegistro").val(origemRegistro[0].origemRegistro.replace(/%r%n/g, "\n", -1));
+
+				});
+			}
+
+			function formNull() {
+				
+				$("#codOrigemRegistro").val(0);
+				$("#origemRegistro").val("");
+
+			}
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+			
+			$(document).ready(function () {
+			
+				formNull();
+				//$("#codOrigemRegistroDiv").css("display", "none");
+
+				$("button").on("click", function(){
+					var txt = $(this).html();
+					var action = "/cgi-bin/passmots/salvaOrigemRegistro.py";
+					
+					if (txt === "Salvar") {
+						alert(1);
+						
+						$.post(
+							action, 
+							$(this).serialize(), 
+							function(data) {
+								alert("Dados salvos!");
+								console.log(data);
+							}
+						);
+						
+					} else if (txt === "Excuir") {
+						alert(2);
+					}
+				});
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				//procura na url da pagina
 				var urlParams = new URLSearchParams(window.location.search);
 
 				if ((urlParams.has('cod'))){
-                    variavel = urlParams.get("cod");
-                    preencheForm();
+					variavel = urlParams.get("cod");
+					preencheForm();
 				}
 
 				//procura na div container
-                let params = decodeURI(
-                    $("#codOrigemRegistroDiv")
-                    .parent()
-                    .parent()
-                    .parent()
-                    .parent()
-                    .attr('param')
-                );
-        
-                let searchParams = new URLSearchParams(params);
-                
-                if (searchParams.has("cod")){
-                    variavel = searchParams.get("cod");
-                    preencheForm();
-                }
+				let params = decodeURI(
+					$("#codOrigemRegistroDiv")
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.attr('param')
+				);
+		
+				let searchParams = new URLSearchParams(params);
+				
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+					preencheForm();
+				}
 
-            });
-            
-        </script>
+			});
+			
+		</script>
 
-    </head>
-    <body>
-        <div class="container">
-            <div class="row-fluid"> 
-                <a href="/html/modelos/passmots/origemRegistro.html" target="_blank">
-                    <h1>Origem do Registro</h1>
-                </a>
-                <h2>Vertical (basic) form</h2>
-                <form>
-                    <div class="form-group" id="codOrigemRegistroDiv"> 
-                        <label for="codOrigemRegistro">codOrigemRegistro</label>
-                        <input 
-                            class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
-                            aria-describedby="codOrigemRegistroHelp"
-                            placeholder="codOrigemRegistro" type="number"> 
-                        <br>
-                        <small id="codOrigemRegistroHelp"
-                               class="form-text text-muted">codOrigemRegistro</small>
-                    </div>
-                    <div class="form-group" id="origemRegistroDiv"> 
-                        <label for="origemRegistro">origemRegistro</label>
-                        <input class="form-control" id="origemRegistro" name="origemRegistro" 
-                               placeholder="origemRegistro" type="text">
-                    </div>
-                </form>
-            </div>
-            <div class="row-fluid">
-                <button class="btn btn-primary">Salvar</button> 
-                <button class="btn btn-danger">Excuir</button> 
-            </div>
-        </div>
-    </body>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row-fluid"> 
+				<a href="/html/modelos/passmots/origemRegistro.html" target="_blank">
+					<h1>Origem do Registro</h1>
+				</a>
+				<h2>Vertical (basic) form</h2>
+				<form>
+					<div class="form-group" id="codOrigemRegistroDiv"> 
+						<label for="codOrigemRegistro">codOrigemRegistro</label>
+						<input 
+							class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
+							aria-describedby="codOrigemRegistroHelp"
+							placeholder="codOrigemRegistro" type="number"> 
+						<br>
+						<small id="codOrigemRegistroHelp"
+							   class="form-text text-muted">codOrigemRegistro</small>
+					</div>
+					<div class="form-group" id="origemRegistroDiv"> 
+						<label for="origemRegistro">origemRegistro</label>
+						<input class="form-control" id="origemRegistro" name="origemRegistro" 
+							   placeholder="origemRegistro" type="text">
+					</div>
+				</form>
+			</div>
+			<div class="row-fluid">
+				<button class="btn btn-primary">Salvar</button> 
+				<button class="btn btn-danger">Excuir</button> 
+			</div>
+		</div>
+	</body>
 </html>
 
 

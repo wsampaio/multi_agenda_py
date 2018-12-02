@@ -50,10 +50,10 @@ codOrigemRegistro = 0
 
 
 if form:
-    codOrigemRegistro = int(form.getvalue("cod"))
+	codOrigemRegistro = int(form.getvalue("cod"))
 
 if codOrigemRegistro > 0:
-    origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
+	origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
 
 
 
@@ -66,7 +66,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "origemRegistro": \"""" + origemRegistro.getOrigemRegistro() + """\",
+	"origemRegistro": \"""" + origemRegistro.getOrigemRegistro() + """\",
 	"registro": ["""
 )
 
@@ -81,32 +81,32 @@ lista = registroDAO.getListaPelaOrigem(codOrigemRegistro)
 contaLista = len(lista) -1
 
 for forRegistro in lista:
-    tipoCampo = tipoCampoDAO.select(forRegistro.getCodTipoCampo())
+	tipoCampo = tipoCampoDAO.select(forRegistro.getCodTipoCampo())
 
-    print(
+	print(
 """
-        {}
-            "tipoCampo": "{}",
-            "codRegistro": {},
-            "registro": "{}"
-        {}""".
-        format(
-            "{",
-            tipoCampo.getTipoCampo(),
-            forRegistro.getCodRegistro(),
-            forRegistro.getRegistro(),
-            "}"
-        )
-    )
+		{}
+			"tipoCampo": "{}",
+			"codRegistro": {},
+			"registro": "{}"
+		{}""".
+		format(
+			"{",
+			tipoCampo.getTipoCampo(),
+			forRegistro.getCodRegistro(),
+			forRegistro.getRegistro(),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

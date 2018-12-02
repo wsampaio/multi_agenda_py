@@ -33,7 +33,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "registros": [""")
+	"registros": [""")
 
 i = 0
 lista = registroDAO.getLista()
@@ -42,41 +42,41 @@ contaLista = len(lista) -1
 
 for forRegistro in lista:
 
-    print(
+	print(
 """
-        {}
-            "codRegistro": "{}",
-            "codOrigemRegistro": "{}",
-            "codTipoCampo": "{}",
-            "ordem": "{}",
-            "registro": "{}",
-            "dtAtualizacao": "{}"
-        {}""".
-        format(
-            "{",
-            forRegistro.getCodRegistro(),
-            forRegistro.getCodOrigemRegistro(),
-            forRegistro.getCodTipoCampo(),
-            forRegistro.getOrdem(),
-            forRegistro.getRegistro()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            forRegistro.getDtAtualizacao(),
-            "}"
-        )
-    )
+		{}
+			"codRegistro": "{}",
+			"codOrigemRegistro": "{}",
+			"codTipoCampo": "{}",
+			"ordem": "{}",
+			"registro": "{}",
+			"dtAtualizacao": "{}"
+		{}""".
+		format(
+			"{",
+			forRegistro.getCodRegistro(),
+			forRegistro.getCodOrigemRegistro(),
+			forRegistro.getCodTipoCampo(),
+			forRegistro.getOrdem(),
+			forRegistro.getRegistro()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			forRegistro.getDtAtualizacao(),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

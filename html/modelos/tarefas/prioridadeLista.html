@@ -1,101 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>prioridades</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>prioridades</title>
 
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .colx {
-                display: none;
-            }
-        </style>
-
-
-        <script src="/html/btp/jquery.js"></script>
+			.colx {
+				display: none;
+			}
+		</style>
 
 
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
 
 
-            function preencheTabela (){
+		<script>
 
-                $.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
 
-                    console.log(data);
-                    var prioridades = data.prioridades;
+			function preencheTabela (){
 
-                    var saida = "";
+				$.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
 
-                    for (i = 0; i < prioridades.length; i++) {
+					console.log(data);
+					var prioridades = data.prioridades;
 
-                        saida += "<tr>"
-                            saida += "<td class='col0'>"
-                                saida += "<a class='prioridade btn' href='/html/modelos/tarefas/prioridade.html?cod=" + 
+					var saida = "";
+
+					for (i = 0; i < prioridades.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='prioridade btn' href='/html/modelos/tarefas/prioridade.html?cod=" + 
 					prioridades[i].codPrioridade + 
 					"' onclick='abreForm(" + 
 					prioridades[i].codPrioridade + 
 					");'>" 
-                                    saida += prioridades[i].codPrioridade
-                                saida += "</a>"
-                            saida += "</td>"
-                            saida += "<td class='col1'>" + prioridades[i].ordem + "</td>"
-                            saida += "<td class='col2'>" + prioridades[i].prioridade.replace(/%r%n/g, "<br>", -1) + "</td>"
-                            saida += "<td class='col3'>" + prioridades[i].descricao.replace(/%r%n/g, "<br>", -1) + "</td>"
-                        saida += "</tr>"
+									saida += prioridades[i].codPrioridade
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + prioridades[i].ordem + "</td>"
+							saida += "<td class='col2'>" + prioridades[i].prioridade.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col3'>" + prioridades[i].descricao.replace(/%r%n/g, "<br>", -1) + "</td>"
+						saida += "</tr>"
 
-                    }
+					}
 
 
-                    saida = saida.replace("%r", "<br>");
-                    saida = saida.replace("%n", "<br>");
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
 
-                    $("tbody").append(saida);
-                });
-            }
+					$("tbody").append(saida);
+				});
+			}
 
-            function abreForm(cod){
-                event.preventDefault();
+			function abreForm(cod){
+				event.preventDefault();
 
-                var urlForm = "/html/modelos/tarefas/prioridade.html";
-                var param = 'cod=' + cod;
-                abreNoPrincipal(urlForm, cod, param);
-            }
+				var urlForm = "/html/modelos/tarefas/prioridade.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
 
-            $(document).ready(function() {
+			$(document).ready(function() {
 
-                preencheTabela();
+				preencheTabela();
 
-            });
-        </script>
+			});
+		</script>
 
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="row-fluid">
-                <a href="/html/modelos/tarefas/prioridadeLista.html" target="_blank">
-                    <h1>prioridades</h1>
-                </a>
+		<div class="row-fluid">
+				<a href="/html/modelos/tarefas/prioridadeLista.html" target="_blank">
+					<h1>prioridades</h1>
+				</a>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col0">codPrioridade</th>
-                            <th class="col1">ordem</th>
-                            <th class="col2">prioridade</th>
-                            <th class="col3">descricao</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-        </div>
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codPrioridade</th>
+							<th class="col1">ordem</th>
+							<th class="col2">prioridade</th>
+							<th class="col3">descricao</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-    </body>
+	</body>
 </html>

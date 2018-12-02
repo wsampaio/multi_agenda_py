@@ -34,7 +34,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "historicos": [""")
+	"historicos": [""")
 
 i = 0
 lista = historicoDAO.getLista()
@@ -43,37 +43,37 @@ contaLista = len(lista) -1
 
 for forHistorico in lista:
 
-    print(
+	print(
 """
-        {}
-            "codHistorico": "{}",
-            "codTarefa": "{}",
-            "data": "{}",
-            "obs": "{}"
-        {}""".
-        format(
-            "{",
-            forHistorico.getCodHistorico(),
-            forHistorico.getCodTarefa(),
-            forHistorico.getData(),
-            forHistorico.getObs()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codHistorico": "{}",
+			"codTarefa": "{}",
+			"data": "{}",
+			"obs": "{}"
+		{}""".
+		format(
+			"{",
+			forHistorico.getCodHistorico(),
+			forHistorico.getCodTarefa(),
+			forHistorico.getData(),
+			forHistorico.getObs()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

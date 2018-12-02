@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>Tipo Campo - Lista</title>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Tipo Campo - Lista</title>
 
-        <style>
-            table, td, th {
-                border:solid;
-            }
+		<style>
+			table, td, th {
+				border:solid;
+			}
 
-            .col {
-                display: none;
-            }
-        </style>
-
-
-        <script src="/html/btp/jquery.js"></script>
+			.col {
+				display: none;
+			}
+		</style>
 
 
+		<script src="/html/btp/jquery.js"></script>
 
-        <script>
 
 
-            function preencheTabela (){
+		<script>
 
-                $.getJSON("/cgi-bin/passmots/tipoCampoLista.py", function(data) {
 
-                    console.log(data);
-                    var tiposCampos = data.tiposCampos;
+			function preencheTabela (){
 
-                    var saida = "";
+				$.getJSON("/cgi-bin/passmots/tipoCampoLista.py", function(data) {
 
-                    for (i = 0; i < tiposCampos.length; i++) {
+					console.log(data);
+					var tiposCampos = data.tiposCampos;
 
-                        saida += "<tr>"
-                            saida += "<td class='col0'>"
-                                saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/tipoCampo.html?cod=" + 
+					var saida = "";
+
+					for (i = 0; i < tiposCampos.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/tipoCampo.html?cod=" + 
 					tiposCampos[i].codTipoCampo + 
 					"' onclick='abreForm(" + 
 					tiposCampos[i].codTipoCampo + 
 					");'>";
-                                    saida += tiposCampos[i].codTipoCampo
-                                saida += "</a>"
-                            saida += "</td>"
-                            saida += "<td class='col1'>" + tiposCampos[i].tipoCampo + "</td>"
-                        saida += "</tr>"
+									saida += tiposCampos[i].codTipoCampo
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + tiposCampos[i].tipoCampo + "</td>"
+						saida += "</tr>"
 
-                    }
+					}
 
 
-                    saida = saida.replace("%r", "<br>");
-                    saida = saida.replace("%n", "<br>");
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
 
-                    $("tbody").append(saida);
-                });
-            }
+					$("tbody").append(saida);
+				});
+			}
 
-            function abreForm(cod){
-            	event.preventDefault();
-            
-                var urlForm = "/html/modelos/passmots/tipoCampo.html";
-                var param = 'cod=' + cod;
-                abreNoPrincipal(urlForm, cod, param);
-                
-            }
+			function abreForm(cod){
+				event.preventDefault();
+			
+				var urlForm = "/html/modelos/passmots/tipoCampo.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+				
+			}
 
-            $(document).ready(function() {
+			$(document).ready(function() {
 
-                preencheTabela();
+				preencheTabela();
 
-            });
-        </script>
+			});
+		</script>
 
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="row-fluid">
-                <a href="/html/modelos/passmots/tipoCampoLista.html" target="_blank">
-                    <h1>Tipo Campo - Lista</h1>
-                </a>
+		<div class="row-fluid">
+				<a href="/html/modelos/passmots/tipoCampoLista.html" target="_blank">
+					<h1>Tipo Campo - Lista</h1>
+				</a>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col0">codTipoCampo</th>
-                            <th class="col1">tipoCampo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-        </div>
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codTipoCampo</th>
+							<th class="col1">tipoCampo</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-    </body>
+	</body>
 </html>

@@ -34,7 +34,7 @@ form = cgi.FieldStorage()
 
 
 if form:
-    codCategoria = int(form.getvalue("cod"))
+	codCategoria = int(form.getvalue("cod"))
 
 
 categoriaConta = CategoriaConta()
@@ -46,7 +46,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "categoriaConta": [""")
+	"categoriaConta": [""")
 
 categoriaConta = categoriaContaDAO.select(codCategoria)
 
@@ -54,26 +54,26 @@ categoriaConta = categoriaContaDAO.select(codCategoria)
 
 print(
 """
-        {}
-            "codCategoria": "{}",
-            "categoria": "{}"
-        {}""".
-        format(
-            "{",
-            categoriaConta.getCodCategoria(),
-            categoriaConta.getCategoria()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codCategoria": "{}",
+			"categoria": "{}"
+		{}""".
+		format(
+			"{",
+			categoriaConta.getCodCategoria(),
+			categoriaConta.getCategoria()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

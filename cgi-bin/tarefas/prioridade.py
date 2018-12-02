@@ -34,7 +34,7 @@ form = cgi.FieldStorage()
 
 
 if form:
-    codPrioridade = int(form.getvalue("cod"))
+	codPrioridade = int(form.getvalue("cod"))
 
 
 
@@ -46,7 +46,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "prioridade": [""")
+	"prioridade": [""")
 
 prioridade = prioridadeDAO.select(codPrioridade)
 
@@ -54,35 +54,35 @@ prioridade = prioridadeDAO.select(codPrioridade)
 
 print(
 """
-        {}
-            "codPrioridade": "{}",
-            "ordem": "{}",
-            "prioridade": "{}",
-            "descricao": "{}"
-        {}""".
-        format(
-            "{",
-            prioridade.getCodPrioridade(),
-            prioridade.getOrdem(),
-            prioridade.getPrioridade()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            prioridade.getDescricao()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            "}"
-        )
-    )
+		{}
+			"codPrioridade": "{}",
+			"ordem": "{}",
+			"prioridade": "{}",
+			"descricao": "{}"
+		{}""".
+		format(
+			"{",
+			prioridade.getCodPrioridade(),
+			prioridade.getOrdem(),
+			prioridade.getPrioridade()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			prioridade.getDescricao()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

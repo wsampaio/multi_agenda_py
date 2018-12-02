@@ -45,46 +45,46 @@ print(sys.path)
 
 def abreServidor ():
 
-    PORT = 8000
-    server_address = ('', PORT)
+	PORT = 8000
+	server_address = ('', PORT)
 
-    handler = CGIHTTPRequestHandler
-    handler.cgi_directories = ['/cgi-bin']
+	handler = CGIHTTPRequestHandler
+	handler.cgi_directories = ['/cgi-bin']
 
-    try:
-        with HTTPServer(server_address,CGIHTTPRequestHandler) as httpd:
-            #httpd.shutdown()
-            print('Python %s on %s' % (sys.version, sys.platform))
-            print("serving at port", PORT)
-            httpd.serve_forever()
+	try:
+		with HTTPServer(server_address,CGIHTTPRequestHandler) as httpd:
+			#httpd.shutdown()
+			print('Python %s on %s' % (sys.version, sys.platform))
+			print("serving at port", PORT)
+			httpd.serve_forever()
 
-    except KeyboardInterrupt:
-        httpd.shutdown()
+	except KeyboardInterrupt:
+		httpd.shutdown()
 
 
 def abreServidor3 ():
-    print("VAI CORINTHIANS!")
-    tarefa = Tarefa.Tarefa()
-    tarefaDAO = TarefaDAO.TarefaDAO()
+	print("VAI CORINTHIANS!")
+	tarefa = Tarefa.Tarefa()
+	tarefaDAO = TarefaDAO.TarefaDAO()
 
-    #tarefa = tarefaDAO.select(381)
-
-
-    print(tarefa.getCodTarefa())
-    print(tarefa.getTarefa())
+	#tarefa = tarefaDAO.select(381)
 
 
-    tarefa.setTarefa("MUDEI!!!")
-    tarefa.setCodTarefa(0)
-    #print(tarefaDAO.insert(tarefa))
+	print(tarefa.getCodTarefa())
+	print(tarefa.getTarefa())
 
-    print(tarefa.getTarefa())
-    print(tarefa.getTerminado())
+
+	tarefa.setTarefa("MUDEI!!!")
+	tarefa.setCodTarefa(0)
+	#print(tarefaDAO.insert(tarefa))
+
+	print(tarefa.getTarefa())
+	print(tarefa.getTerminado())
 
 
 if __name__ == "__main__":
-    print("Hello World")
-    abreServidor()
+	print("Hello World")
+	abreServidor()
 
 
 

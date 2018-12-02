@@ -33,7 +33,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "tarefas": [""")
+	"tarefas": [""")
 
 i = 0
 #lista = tarefaDAO.listaPrincipaisEmAberto()
@@ -43,47 +43,47 @@ contaLista = len(lista) -1
 
 for forTarefa in lista:
 
-    print(
+	print(
 """
-        {}
-            "codTarefa": "{}",
-            "codTarefaPai": "{}",
-            "tarefa": "{}",
-            "inicio": "{}",
-            "fim": "{}",
-            "prazo": "{}",
-            "terminado": "{}",
-            "ordem": "{}",
-            "codPrioridade": "{}"
-        {}""".
-        format(
-            "{",
-            forTarefa.getCodTarefa(),
-            forTarefa.getCodTarefaPai(),
-            forTarefa.getTarefa()
-                .replace("\r", "%r")
-                .replace("\n", "%n")
-                .replace("\t", "$t")
-                .replace("\\", "$b")
-                .replace("\"", "\\\""),
-            forTarefa.getInicio(),
-            forTarefa.getFim(),
-            forTarefa.getPrazo(),
-            forTarefa.getTerminado(),
-            forTarefa.getOrdem(),
-            forTarefa.getCodPrioridade(),
-            "}"
-        )
-    )
+		{}
+			"codTarefa": "{}",
+			"codTarefaPai": "{}",
+			"tarefa": "{}",
+			"inicio": "{}",
+			"fim": "{}",
+			"prazo": "{}",
+			"terminado": "{}",
+			"ordem": "{}",
+			"codPrioridade": "{}"
+		{}""".
+		format(
+			"{",
+			forTarefa.getCodTarefa(),
+			forTarefa.getCodTarefaPai(),
+			forTarefa.getTarefa()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			forTarefa.getInicio(),
+			forTarefa.getFim(),
+			forTarefa.getPrazo(),
+			forTarefa.getTerminado(),
+			forTarefa.getOrdem(),
+			forTarefa.getCodPrioridade(),
+			"}"
+		)
+	)
 
-    if i < contaLista:
-        print(",")
-        i += 1
-    else:
-        break
+	if i < contaLista:
+		print(",")
+		i += 1
+	else:
+		break
 
 print(
 """
-    ]
+	]
 }
 """)

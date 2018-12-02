@@ -36,30 +36,30 @@ historicoDAO = HistoricoDAO()
 
 
 if str(form) != "FieldStorage(None, None, '')":
-    codHistorico = int(form.getvalue("codHistorico"))
+	codHistorico = int(form.getvalue("codHistorico"))
 
-    historico.setCodHistorico(form.getvalue("codHistorico"))
-    historico.setCodTarefa(form.getvalue("codTarefa"))
-    historico.setData(form.getvalue("data"))
-    historico.setObs(form.getvalue("obs"))
-    
+	historico.setCodHistorico(form.getvalue("codHistorico"))
+	historico.setCodTarefa(form.getvalue("codTarefa"))
+	historico.setData(form.getvalue("data"))
+	historico.setObs(form.getvalue("obs"))
+	
 
-    if codHistorico > 0:
-        if form.getvalue("delete"):
-            historicoDAO.delete(historico.getCodHistorico())
-        else:
-            historicoDAO.update(historico)
-    else:
-        historicoDAO.insert(historico)
+	if codHistorico > 0:
+		if form.getvalue("delete"):
+			historicoDAO.delete(historico.getCodHistorico())
+		else:
+			historicoDAO.update(historico)
+	else:
+		historicoDAO.insert(historico)
 
 else:
-    #tentando enviar status de erro
-    #header("HTTP/1.0 404 Not Found");
-    #print "Status: 404 Not Found\r\n"
-    #print "Content-Type: text/html\r\n\r\n"
-    
-    #print "Status: 400 Bad Request\r\n"
-    pass
+	#tentando enviar status de erro
+	#header("HTTP/1.0 404 Not Found");
+	#print "Status: 404 Not Found\r\n"
+	#print "Content-Type: text/html\r\n\r\n"
+	
+	#print "Status: 400 Bad Request\r\n"
+	pass
 
 
 #print("Content-type: text/html\n")
@@ -70,9 +70,9 @@ else:
 
 
 if form.getvalue("delete"):
-    print("DELETE")
+	print("DELETE")
 else:
-    print("não delete")
+	print("não delete")
 
 print("""
 

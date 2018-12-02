@@ -34,7 +34,7 @@ form = cgi.FieldStorage()
 
 
 if form:
-    codTipoCampo = int(form.getvalue("cod"))
+	codTipoCampo = int(form.getvalue("cod"))
 
 
 tipoCampo = TipoCampo()
@@ -45,7 +45,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-    "tipoCampo": [""")
+	"tipoCampo": [""")
 
 tipoCampo = tipoCampoDAO.select(codTipoCampo)
 
@@ -53,21 +53,21 @@ tipoCampo = tipoCampoDAO.select(codTipoCampo)
 
 print(
 """
-        {}
-            "codTipoCampo": "{}",
-            "tipoCampo": "{}"
-        {}""".
-        format(
-            "{",
-            tipoCampo.getCodTipoCampo(),
-            tipoCampo.getTipoCampo(),
-            "}"
-        )
-    )
+		{}
+			"codTipoCampo": "{}",
+			"tipoCampo": "{}"
+		{}""".
+		format(
+			"{",
+			tipoCampo.getCodTipoCampo(),
+			tipoCampo.getTipoCampo(),
+			"}"
+		)
+	)
 
 
 print(
 """
-    ]
+	]
 }
 """)

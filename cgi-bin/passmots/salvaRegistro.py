@@ -36,31 +36,31 @@ registroDAO = RegistroDAO()
 
 
 if str(form) != "FieldStorage(None, None, '')":
-    codRegistro = int(form.getvalue("codRegistro"))
+	codRegistro = int(form.getvalue("codRegistro"))
 
-    registro.setCodRegistro(form.getvalue("codRegistro"))
-    registro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
-    registro.setCodTipoCampo(form.getvalue("codTipoCampo"))
-    registro.setOrdem(form.getvalue("ordem"))
-    registro.setRegistro(form.getvalue("registro"))
-    registro.setDtAtualizacao(form.getvalue("dtAtualizacao"))
+	registro.setCodRegistro(form.getvalue("codRegistro"))
+	registro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
+	registro.setCodTipoCampo(form.getvalue("codTipoCampo"))
+	registro.setOrdem(form.getvalue("ordem"))
+	registro.setRegistro(form.getvalue("registro"))
+	registro.setDtAtualizacao(form.getvalue("dtAtualizacao"))
 
-    if codRegistro > 0:
-        if form.getvalue("delete"):
-            registroDAO.delete(registro.getCodRegistro())
-        else:
-            registroDAO.update(registro)
-    else:
-        registroDAO.insert(registro)
+	if codRegistro > 0:
+		if form.getvalue("delete"):
+			registroDAO.delete(registro.getCodRegistro())
+		else:
+			registroDAO.update(registro)
+	else:
+		registroDAO.insert(registro)
 
 else:
-    #tentando enviar status de erro
-    #header("HTTP/1.0 404 Not Found");
-    #print "Status: 404 Not Found\r\n"
-    #print "Content-Type: text/html\r\n\r\n"
-    
-    #print "Status: 400 Bad Request\r\n"
-    pass
+	#tentando enviar status de erro
+	#header("HTTP/1.0 404 Not Found");
+	#print "Status: 404 Not Found\r\n"
+	#print "Content-Type: text/html\r\n\r\n"
+	
+	#print "Status: 400 Bad Request\r\n"
+	pass
 
 
 print("Content-type: text/html\n")
@@ -80,9 +80,9 @@ print("Content-type: text/html\n")
 
 
 #if form.getvalue("delete"):
-#    print("DELETE")
+#	print("DELETE")
 #else:
-#    print("não delete")
+#	print("não delete")
 
 print("""
 
