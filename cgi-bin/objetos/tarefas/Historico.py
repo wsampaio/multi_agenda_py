@@ -12,9 +12,7 @@
 # https://www.linkedin.com/in/wellsampaio/
 #
 
-
 from objetos.dbConn.FormatData import FormatData
-
 
 """
 CREATE TABLE historicos (
