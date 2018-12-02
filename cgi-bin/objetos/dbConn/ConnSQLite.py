@@ -42,14 +42,14 @@ class ConnSQLite:
 		self.__schema = schema
 		self.__tabela = tabela
 		self.__pk = pk
-		
-                #para verificar arquivos no Termux
-                fTest = "../storage/downloads/DB-multi_agenda/financeiro.db"
+                
+		#para verificar arquivos no Termux
+		fTest = "../storage/downloads/DB-multi_agenda/financeiro.db"
 
-                if os.path.isfile(fTest):
-		    url = "../storage/downloads/DB-multi_agenda/" + self.__schema + ".db"
-                else:
-		    url = "../../DB-multi_agenda/" + self.__schema + ".db"
+		if os.path.isfile(fTest):
+			 url = "../storage/downloads/DB-multi_agenda/" + self.__schema + ".db"
+		else:
+			 url = "../../DB-multi_agenda/" + self.__schema + ".db"
 
 		self.__conn = sqlite3.connect(url)
 		self.__cursor = self.__conn.cursor()
