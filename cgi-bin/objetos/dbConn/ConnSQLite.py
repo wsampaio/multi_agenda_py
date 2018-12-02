@@ -49,7 +49,7 @@ class ConnSQLite:
 		if os.path.isfile(fTest):
 			 url = "../storage/downloads/DB-multi_agenda/" + self.__schema + ".db"
 		else:
-			 url = "../../DB-multi_agenda/" + self.__schema + ".db"
+			 url = "../DB-multi_agenda/" + self.__schema + ".db"
 
 		self.__conn = sqlite3.connect(url)
 		self.__cursor = self.__conn.cursor()
