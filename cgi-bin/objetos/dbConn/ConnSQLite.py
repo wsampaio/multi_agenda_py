@@ -14,6 +14,7 @@
 
 import sqlite3
 import subprocess
+import os.path
 
 class ConnSQLite:
 	__conn = None
@@ -42,10 +43,13 @@ class ConnSQLite:
 		self.__tabela = tabela
 		self.__pk = pk
 		
-		url = "../DB/" + self.__schema + ".db"
-		url = "../../multi_agenda_java/DB-multi_agenda/" + self.__schema + ".db"
-		url = "../../DB-multi_agenda/" + self.__schema + ".db"
-		#url = "/home/wsampaio/Documentos/NetBeansProjects/DB-multi_agenda/" + self.__schema + ".db"
+                #para verificar arquivos no Termux
+                fTest = "../storage/downloads/DB-multi_agenda/financeiro.db"
+
+                if os.path.isfile(fTest):
+		    url = "../storage/downloads/DB-multi_agenda/" + self.__schema + ".db"
+                else:
+		    url = "../../DB-multi_agenda/" + self.__schema + ".db"
 
 		self.__conn = sqlite3.connect(url)
 		self.__cursor = self.__conn.cursor()
