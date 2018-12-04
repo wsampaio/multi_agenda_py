@@ -36,7 +36,7 @@ class CategoriaConta:
 
 
 	def getCodCategoria(self):
-		return self.__codCategoria
+		return int(self.__codCategoria)
 
 	def setCodCategoria(self, codCategoria):
 		try:
@@ -44,9 +44,13 @@ class CategoriaConta:
 		except ValueError:
 			self.__codCategoria = self.getCodCategoria()
 
+
 	def getCategoria(self):
-		return self.__categoria
+		return str(self.__categoria)
 
 	def setCategoria(self, categoria):
-		self.__categoria = str(categoria)
+		try:
+			self.__categoria = str(categoria)
+		except ValueError:
+			self.__categoria = self.getCategoria()
 
