@@ -36,7 +36,9 @@ class FormatData:
 	def para_Data_Serial(data):
 		#retorna uma string com o formato data serial
 		#Serve para o campo "imput date" do HTML
-		strData = data.strftime('%Y-%m-%d')
+		strData = str("0000" + data.strftime('%Y'))[-4:]
+		strData += "-" + data.strftime('%m')
+		strData += "-" + data.strftime('%d')
 		return strData
 
 	def mesRef(datetime):
