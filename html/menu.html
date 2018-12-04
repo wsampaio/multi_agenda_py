@@ -54,9 +54,9 @@
 						Menu
 					</a>
 				</li>
-		<div id="menuCompleto">
-					<li><a href="" class="btnSide" url="home.html" id="tarefas">Home</a></li>
-					<li><a href="menu.html" class="" target="_blank" id="menu">Menu</a></li>
+				<div id="menuCompleto">
+					<li><a class="btnSide" target="_blank" href="home.html" id="home">Home</a></li>
+					<li><a class="btnSide" target="_blank" href="menu.html" id="menu">Menu</a></li>
 
 
 					<li class="nav-header">Facul</li>
@@ -107,7 +107,7 @@
 
 
 					<li class="nav-header">Tarefas</li>
-					<div class="rowUp"><div class="linkModelos">
+					<div class="rowUp"><div class="linkModelos1">
 					<li><a class="btnSide" target="_blank" href="/html/modelos/tarefas/historicoLista.html">historicos</a></li>
 					<li><a class="btnSide" target="_blank" href="/html/modelos/tarefas/prioridadeLista.html">prioridades</a></li>
 					<li><a class="btnSide" target="_blank" href="/html/modelos/tarefas/tarefaLista.html">tarefas</a></li>
@@ -138,12 +138,18 @@
 					<li><a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#">Link</a></li>
 					<li><a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#">Link</a></li>
 					</div>
-		</div>
+				</div>
 			</ul>
-
-			<hr>
-				by: /WELLSampaio
+			<ul class="nav nav-list">
+				<li class="nav-header">
+					<a id="btnNome">
+						by: /WELLSampaio
+					</a>
+				</li>
+			</ul>
 			</div>
+				
+			
 		</div><!--/.well -->
 
 
@@ -155,9 +161,12 @@
 <script>
 	$(document).ready(function() {
 		$("#menuDiv").css("overflow", "hidden");
+		$("#menuCompleto").css("display", "none");
 
 		$("#btnMenu").on('click', function(event){
 			event.preventDefault();
+			
+			//função de abre ou fecha o menu
 
 			if ($("#menuCompleto").css("display") == "block"){
 				$("#menuCompleto").css("display", "none");
