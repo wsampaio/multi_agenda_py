@@ -74,3 +74,30 @@ class TipoContaDAO(CRUD.CRUD):
 		return super().getList(sql)
 
 
+
+	def naoListadasNoPeriodo(self, dtRef):
+		sql = \
+			"""
+				SELECT
+						*
+					FROM
+						tiposContas
+					WHERE
+						codTipoConta NOT IN(
+							SELECT 
+									codTipoConta 
+								FROM 
+									contas 
+								WHERE 
+									strftime('%Y-%m',dtVencimento) = '{}'
+						) AND
+						tipoContaAtivo = 1
+					ORDER BY 
+						tipoConta
+				;
+
+
+		""".format(dtRef)
+		
+		return super().getList(sql)
+
