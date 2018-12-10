@@ -9,12 +9,7 @@ from http.server import HTTPServer
 from http.server import CGIHTTPRequestHandler
 
 import cgi
-import objetos.tarefas.Tarefa as Tarefa
-import objetos.tarefas.TarefaDAO as TarefaDAO
 
-#import sys
-
-#sys.path.append("..")
 import sys
 import os
 
