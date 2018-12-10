@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>contasPeloVencimentoSub</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="panel panel-default">
+			<div id="listaReceitas"></div>
+			<div class="panel-heading">
+				<h2>Receita</h2>
+				ref:<br>
+				total receita:<br>
+				total debito:<br>
+				total rec - deb:<br>
+				total rec - ctnPG:<br>
+			</div>
+			<div class="panel-body" id="">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Conta</th>
+							<th>Vencimento/Pagamento</th>
+							<th>Valor</th>
+							<th>Receita Pagadora</th>
+						</tr>
+					</thead>
+					<tbody id="contasPeloVencimentoSubTbl"></tbody>
+				</table>
+			</div>
+		</div>
+		
+		
+		<script>
+		
+			function preencheListaReceitas (dtRef){
+			
+				url = "/cgi-bin/financeiro/receitasDoPeriodo.py";
+				
+				if (dtRef.length > 0) {
+					url += "?dtRef=" + dtRef;
+				}
+
+				$.getJSON(url, function(data) {
+
+					console.log(data);
+					var lista = data.receitasDoPeriodo;
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+							saida += 
+"codReceita: " + lista[i].codReceita + "<br>" +
+"referencia: " + lista[i].referencia + "<br>" +
+"valorReceita: " + lista[i].valorReceita + "<br>" +
+"mediaReceita: " + lista[i].mediaReceita + "<br>" +
+"valorTtlContas: " + lista[i].valorTtlContas + "<br>" +
+"valorTtlContasPagas: " + lista[i].valorTtlContasPagas + "<br><br>"
+
+					}
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					console.log(saida);
+
+					$("#listaReceitas").append(saida);
+
+				}).fail(function(jqxhr, textStatus, error){
+					var err = textStatus + ", " + error;
+					console.log("ERRO!!! " + err)
+				});
+			}
+		
+		
+		
+		
+		
+		
+			$(document).ready(function() {
+			
+				var searchParams = "";
+				var dtRef = "";
+				
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('dtRef')) {
+					dtRef = searchParams.get("dtRef");
+				} else {
+					dtRef = 
+						d.getFullYear() + "-" + 
+						("00" + (d.getMonth() + 1)).substr(-2)
+				}
+			
+				preencheListaReceitas(dtRef);
+			});
+		</script>
+	</body>
+</html>

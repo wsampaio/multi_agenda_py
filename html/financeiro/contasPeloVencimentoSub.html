@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>contasPeloVencimentoSub</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2>Despesas</h2>
+			</div>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Conta</th>
+							<th>Vencimento/Pagamento</th>
+							<th>Valor</th>
+							<th>Receita Pagadora</th>
+						</tr>
+					</thead>
+					<tbody id="contasPeloVencimentoSubTbl"></tbody>
+				</table>
+			</div>
+		</div>
+		
+		
+		<script>
+		
+			function preencheTabelaContasPeloVencimentoSubTbl (dtRef){
+			
+				url = "/cgi-bin/financeiro/contasPeloVencimento.py";
+				
+				if (dtRef.length > 0) {
+					url += "?dtRef=" + dtRef;
+				}
+			
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.contas;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						if (lista[i].contaPaga == "True") {
+							saida += "<tr class='success'>"
+						} else {
+							saida += "<tr>"
+						}
+						
+							saida += "<td class='col0'>"
+								saida += "<a class='conta' target='_blank' href='/html/modelos/financeiro/conta.html?cod=" + 
+									lista[i].codConta + 
+									"' onclick='abreForm(" + 
+									lista[i].codConta + 
+									");'>";
+									saida += lista[i].tipoConta;
+								saida += "</a>"
+							saida += "</td>"
+							
+							if (lista[i].contaPaga == "True") {
+								saida += "<td class='col1'>" + lista[i].dtPagamento + "</td>"
+								saida += "<td class='col2'>" + lista[i].valorPago + "</td>"
+							} else {
+								saida += "<td class='col1'>" + lista[i].vencimento + "</td>"
+								saida += "<td class='col2'>" + lista[i].valor + "</td>"
+							}
+							
+							
+							saida += "<td class='col3'>" + lista[i].receitaPagadora.replace(/%r%n/g, "<br>", -1) + "</td>"
+							
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("#contasPeloVencimentoSubTbl").append(saida);
+				});
+			}
+		
+		
+		
+		
+		
+		
+			$(document).ready(function() {
+			
+				var searchParams = "";
+				var dtRef = "";
+				
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('dtRef')) {
+					dtRef = searchParams.get("dtRef");
+				} else {
+					dtRef = 
+						d.getFullYear() + "-" + 
+						("00" + (d.getMonth() + 1)).substr(-2)
+				}
+			
+			
+			
+				preencheTabelaContasPeloVencimentoSubTbl(dtRef);
+			});
+		</script>
+	</body>
+</html>

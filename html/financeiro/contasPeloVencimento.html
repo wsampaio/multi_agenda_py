@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>contasPeloVencimento</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="page-header jumbotron">
+			<h1>
+				Contas pelo Vencimento no mês
+				<span id="dtTitulo">--/----</span>
+			</h1>
+			<div class="btn-group">
+				<a class="btn cntsVencimento btn-primary" target="_blank" href="/html/financeiro/contasPeloVencimento.html">Anterior</a>
+				<a class="btn cntsVencimento btn-primary" target="_blank" href="/html/financeiro/contasPeloVencimento.html">Ver Hoje</a>
+				<a class="btn cntsVencimento btn-primary" target="_blank" href="/html/financeiro/contasPeloVencimento.html">Próximo</a>
+			</div>
+		</div>
+
+		<div id="contasPeloVencimentoSub">well</div>
+		<div id="naoListadasNoPeriodo">well</div>
+
+		<script>
+		
+			function calcMes (oper) {
+				
+				var d = new Date(
+					$("#dtTitulo").html().substr(0,2) + "/" +
+					"01" + "/" +
+					$("#dtTitulo").html().substr(-4)
+				);
+				
+				// CUIDADO!!! - getMonth() devolve o mes de 0 a 11!!
+				var m = d.getMonth();
+				var y = d.getFullYear();
+				
+				if (oper == "menos") {
+					if (m < 1) {
+						d.setMonth(11);
+						d.setFullYear(y - 1);
+					} else {
+						d.setMonth(--m);
+					}
+				} else {
+					if (m > 10) {
+						d.setMonth(0);
+						d.setFullYear(y + 1);
+					} else {
+						d.setMonth(m + 1);
+					}
+				}
+				
+				var str = 
+					d.getFullYear() + "-" + 
+					("00" + (d.getMonth() + 1)).substr(-2)
+					//y + "-" + m
+				;
+				
+				return str;
+				
+			}
+		
+		
+			$(document).ready(function() {
+				
+				$(".cntsVencimento").on("click", function(){
+					event.preventDefault();
+					var url = $(this).attr("href");
+					
+					switch ($(this).html()) {
+						case "Anterior":
+							url += "?dtRef=" + calcMes("menos");
+							break;
+						case "Próximo":
+							url += "?dtRef=" + calcMes();
+							break;
+						default:
+							break;
+					}
+					
+					//alert(url);
+					
+					if ($("#principal").length > 0) {
+						$("#principal").attr("url", url);
+						$("#principal").load(url);
+					} else {
+						window.location = url;
+					}
+					
+					
+					
+					//$("#principal").load($(this).attr("href"));
+					//$("#principal").length
+				});
+				
+				
+				d = new Date();
+				var searchParams = "";
+				var dtRef = "";
+				
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('dtRef')) {
+					dtRef = searchParams.get("dtRef");
+				} else {
+					dtRef = 
+						d.getFullYear() + "-" + 
+						("00" + (d.getMonth() + 1)).substr(-2)
+				}
+				
+				
+				$("#dtTitulo").html(
+					dtRef.substr(-2) + "/" + dtRef.substr(0,4)
+				);
+				
+				//alert(dtRef)
+				
+				// TODO - carregar subPagina
+				//carregar 
+				
+				
+				$("#contasPeloVencimentoSub").load(
+								"/html/financeiro/contasPeloVencimentoSub.html?dtRef=" + dtRef
+				);
+				$("#naoListadasNoPeriodo").load(
+								"/html/financeiro/naoListadasNoPeriodo.html?dtRef=" + dtRef
+				);
+				
+				
+				//naoListadasNoPeriodo
+				
+				
+			});
+		</script>
+	</body>
+</html>
+
