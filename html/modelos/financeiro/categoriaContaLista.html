@@ -14,62 +14,7 @@
 				display: none;
 			}
 		</style>
-
-
 		<script src="/html/btp/jquery.js"></script>
-
-
-
-		<script>
-
-
-			function preencheTabela (){
-				$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
-
-					//console.log(data);
-					var categoriasContas = data.categoriasContas;
-
-					var saida = "";
-
-					for (i = 0; i < categoriasContas.length; i++) {
-
-						saida += "<tr>"
-							saida += "<td class='col0'>"
-								saida += "<a class='categoriaConta btn' href='/html/modelos/financeiro/categoriaConta.html?cod=" + 
-					categoriasContas[i].codCategoria + 
-					"' onclick='abreForm(" + 
-					categoriasContas[i].codCategoria + 
-					");'>";
-									saida += categoriasContas[i].codCategoria;
-								saida += "</a>"
-							saida += "</td>"
-							saida += "<td class='col1'>" + categoriasContas[i].categoria.replace(/%r%n/g, "<br>", -1) + "</td>"
-						saida += "</tr>"
-
-					}
-
-
-					saida = saida.replace("%r", "<br>");
-					saida = saida.replace("%n", "<br>");
-
-					$("tbody").append(saida);
-				});
-			}
-
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/financeiro/categoriaConta.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
-			$(document).ready(function() {
-
-				preencheTabela();
-
-			});
-		</script>
 
 	</head>
 
@@ -92,5 +37,57 @@
 				</table>
 		</div>
 
+		<script>
+			function preencheTabela (){
+				$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
+
+					//console.log(data);
+					var lista = data.categoriasContas;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='categoriaConta btn' href='/html/modelos/financeiro/categoriaConta.html?cod=" + 
+									lista[i].codCategoria + 
+									"' onclick='abreForm(" + 
+									lista[i].codCategoria + 
+									");'>";
+									saida += lista[i].codCategoria;
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + lista[i].categoria.replace(/%r%n/g, "<br>", -1) + "</td>"
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				});
+			}
+
+			function abreForm(cod){
+				try {
+				event.preventDefault();
+
+				var urlForm = "/html/modelos/financeiro/categoriaConta.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+				} catch {
+
+				}
+			}
+
+			$(document).ready(function() {
+
+				preencheTabela();
+
+			});
+		</script>
 	</body>
 </html>

@@ -3,16 +3,112 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>contas</title>
+		<title>contaLista</title>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col1, .col4, .col5, .col6, .col7, .col8, .col9, .col11 {
+				display: none;
+			}
+		</style>
+
+
+		<script src="/html/btp/jquery.js"></script>
+
+
+
+		<script>
+
+
+			function preencheTabela (){
+
+				$.getJSON("/cgi-bin/financeiro/contaLista.py", function(data) {
+					//console.log(data);
+					var lista = data.contas;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='conta btn' href='/html/modelos/financeiro/conta.html?cod=" + 
+									lista[i].codConta + 
+									"' onclick='abreForm(" + 
+									lista[i].codConta + 
+									");'>";
+									saida += lista[i].codConta;
+								saida += "</a>"
+							saida += "</td>"
+
+							saida += "<td class='col1'>" + lista[i].codTipoConta + "</td>"
+							saida += "<td class='col2'>" + lista[i].descricao.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col3'>" + lista[i].mesReferencia + "</td>"
+							saida += "<td class='col4'>" + lista[i].dtVencimento + "</td>"
+							saida += "<td class='col5'>" + lista[i].codBarras.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col6'>" + lista[i].valor + "</td>"
+							saida += "<td class='col7'>" + lista[i].codReceitaPagadora + "</td>"
+							saida += "<td class='col8'>" + lista[i].codPagador + "</td>"
+							saida += "<td class='col9'>" + lista[i].contaPaga + "</td>"
+							saida += "<td class='col10'>" + lista[i].valorPago + "</td>"
+							saida += "<td class='col11'>" + lista[i].dtPagamento + "</td>"
+
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				});
+			}
+
+			function abreForm(cod){
+				event.preventDefault();
+
+				var urlForm = "/html/modelos/financeiro/conta.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
+
 	</head>
+
 	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/financeiro/contaLista.html" target="_blank">
+				<h1>Conta - Lista</h1>
+			</a>
 
-
-
-
-
-	CREATE TABLE contas (codConta INTEGER, codTipoConta INTEGER, descricao TEXT, mesReferencia TEXT, dtVencimento TEXT, codBarras TEXT, valor REAL, codReceitaPagadora INTEGER, codPagador INTEGER, contaPaga BOOLEAN, valorPago REAL, dtPagamento TEXT);
-
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codConta</th>
+						<th class="col1">codTipoConta</th>
+						<th class="col2">descricao</th>
+						<th class="col3">mesReferencia</th>
+						<th class="col4">dtVencimento</th>
+						<th class="col5">codBarras</th>
+						<th class="col6">valor</th>
+						<th class="col7">codReceitaPagadora</th>
+						<th class="col8">codPagador</th>
+						<th class="col9">contaPaga</th>
+						<th class="col10">valorPago</th>
+						<th class="col11">dtPagamento</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>
-

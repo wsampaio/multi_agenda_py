@@ -3,16 +3,94 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>pagadores</title>
+		<title>pagadorLista</title>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col {
+				display: none;
+			}
+		</style>
+
+
+		<script src="/html/btp/jquery.js"></script>
+
+
+
+		<script>
+
+
+			function preencheTabela (){
+				$.getJSON("/cgi-bin/financeiro/pagadorLista.py", function(data) {
+
+					console.log(data);
+					var lista = data.pagadores;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='categoriaConta btn' href='/html/modelos/financeiro/pagador.html?cod=" + 
+									lista[i].codPagador + 
+									"' onclick='abreForm(" + 
+									lista[i].codPagador + 
+									");'>";
+									saida += lista[i].codPagador;
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + lista[i].pagador + "</td>"
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				});
+			}
+
+			function abreForm(cod){
+				event.preventDefault();
+
+				var urlForm = "/html/modelos/financeiro/pagador.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
+
+			$(document).ready(function() {
+
+				preencheTabela();
+
+			});
+		</script>
+
 	</head>
+
 	<body>
 
+		<div class="row-fluid">
+				<a href="/html/modelos/financeiro/pagadorLista.html" target="_blank">
+					<h1>Pagadores - Lista</h1>
+				</a>
 
-
-
-
-	CREATE TABLE pagadores (codPagador INTEGER, pagador TEXT);
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codPagador</th>
+							<th class="col1">pagador</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
 	</body>
 </html>
-

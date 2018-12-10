@@ -3,15 +3,117 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>tiposContas</title>
+		<title>tipoContaLista</title>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+
+			.col2, .col3, .col4, .col5, .col6 {
+				display: none;
+			}
+		</style>
+
+
+		<script src="/html/btp/jquery.js"></script>
+
+
+
+		
+
 	</head>
+
 	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/financeiro/tipoContaLista.html" target="_blank">
+				<h1>Tipo de Conta - Lista</h1>
+			</a>
 
-
-
-
-
-CREATE TABLE tiposContas (codTipoConta INTEGER, tipoConta TEXT, codModelo INTEGER, codPagador INTEGER, tipoContaAtivo BOOLEAN DEFAULT false, dtInicio TEXT, dtFinal TEXT);
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codTipoConta</th>
+						<th class="col1">tipoConta</th>
+						<th class="col2">codModelo</th>
+						<th class="col3">codPagador</th>
+						<th class="col4">tipoContaAtivo</th>
+						<th class="col5">dtInicio</th>
+						<th class="col6">dtFinal</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>
+<script>
 
+
+	function preencheTabela (){
+
+		$.getJSON("/cgi-bin/financeiro/tipoContaLista.py", function(data) {
+			//console.log(data);
+			var lista = data.tiposContas;
+
+			var saida = "";
+
+			for (i = 0; i < lista.length; i++) {
+
+				saida += "<tr>"
+					saida += "<td class='col0'>"
+						saida += "<a class='tipoConta btn' target='_blank' href='/html/modelos/financeiro/TipoConta.html?cod=" + 
+							lista[i].codTipoConta + 
+							"'>";
+							saida += lista[i].codTipoConta;
+						saida += "</a>"
+					saida += "</td>"
+
+					saida += "<td class='col1'>" + lista[i].tipoConta + "</td>"
+					saida += "<td class='col2'>" + lista[i].codModelo + "</td>"
+					saida += "<td class='col3'>" + lista[i].codPagador + "</td>"
+					saida += "<td class='col4'>" + lista[i].tipoContaAtivo + "</td>"
+					saida += "<td class='col5'>" + lista[i].dtInicio + "</td>"
+					saida += "<td class='col6'>" + lista[i].dtFinal + "</td>"
+
+				saida += "</tr>"
+
+			}
+
+			saida = saida.replace("%r", "<br>");
+			saida = saida.replace("%n", "<br>");
+
+			$("tbody").append(saida);
+		});
+	}
+
+	$(".tipoConta").on("click", function(){
+		event.preventDefault();
+		alert();
+		//abreForm();
+	});
+
+	function abreForm(cod){
+		try {
+			event.preventDefault();
+
+			var urlForm = "/html/modelos/financeiro/tipoConta.html";
+			var param = 'cod=' + cod;
+			abreNoPrincipal(urlForm, cod, param);
+		} catch {
+		
+		}
+	}
+
+	$(document).ready(function() {
+		preencheTabela();
+	
+		$(".tipoConta").on("click", function(){
+			event.preventDefault();
+			alert();
+			//abreForm();
+		});
+	});
+</script>

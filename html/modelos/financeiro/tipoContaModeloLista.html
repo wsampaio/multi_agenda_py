@@ -3,15 +3,100 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>tiposContasModelos</title>
+		<title>categoriaContaLista</title>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col2, .col3 {
+				display: none;
+			}
+		</style>
+
+
+		<script src="/html/btp/jquery.js"></script>
+
+
+
+		<script>
+
+
+			function preencheTabela (){
+				$.getJSON("/cgi-bin/financeiro/tipoContaModeloLista.py", function(data) {
+
+					//console.log(data);
+					var lista = data.tiposContasModelos;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='tipoContaModelo btn' href='/html/modelos/financeiro/tipoContaModelo.html?cod=" + 
+									lista[i].codModelo + 
+									"' onclick='abreForm(" + 
+									lista[i].codModelo + 
+									");'>";
+									saida += lista[i].codModelo;
+								saida += "</a>"
+							saida += "</td>"
+
+							saida += "<td class='col1'>" + lista[i].descricao + "</td>"
+							saida += "<td class='col2'>" + lista[i].codTipoGasto + "</td>"
+							saida += "<td class='col3'>" + lista[i].codCategoria + "</td>"
+
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				});
+			}
+
+			function abreForm(cod){
+				event.preventDefault();
+
+				var urlForm = "/html/modelos/financeiro/tipoContaModelo.html";
+				var param = 'cod=' + cod;
+				abreNoPrincipal(urlForm, cod, param);
+			}
+
+			$(document).ready(function() {
+
+				preencheTabela();
+
+			});
+		</script>
+
 	</head>
+
 	<body>
 
+		<div class="row-fluid">
+				<a href="/html/modelos/financeiro/tipoContaModeloLista.html" target="_blank">
+					<h1>Tipos de Contas (modelos) - Lista</h1>
+				</a>
 
+				<table>
+					<thead>
+						<tr>
+							<th class="col0">codModelo</th>
+							<th class="col1">descricao</th>
+							<th class="col2">codTipoGasto</th>
+							<th class="col3">codCategoria</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		</div>
 
-
-
-CREATE TABLE tiposContasModelos (codModelo INTEGER, descricao TEXT, codTipoGasto INTEGER, codCategoria INTEGER);
 	</body>
 </html>
-
