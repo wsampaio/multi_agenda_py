@@ -3,20 +3,20 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>categoriaContaCmb</title>
+		<title>pagadorCmb</title>
 		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
-		<div class="container">
-			<label for="codCategoria">
-				<span id="categoriaContaLbl">
-					Categoria da conta
+		<div class="form-group">
+			<label for="codPagador">
+				<span id="pagadorLbl">
+					Pagador
 				</span>
 			</label>
-			<select id="categoriaContaCmb" name="codCategoria">
+			<select class="form-control" id="pagadorCmb" name="codPagador">
 				<option value='0'>Selecione:</option>
 			</select>
-			<div id='loadCategoriaContaCmb'>
+			<div id='loadPagadorCmb'>
 				<img src="/html/img/load21.gif" height="10">
 			</div>
 		</div>
@@ -26,34 +26,30 @@
 
 <script>
 
-	function preencheCategoriaContaCmb(cod){
+	function preenchePagadorCmb(cod){
 		var saida = "";
 
-		$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
-
-			//console.log(data);
-
-			var lista = data.categoriasContas;
+		$.getJSON("/cgi-bin/financeiro/pagadorLista.py", function(data) {
+			var lista = data.pagadores;
 
 			for (i = 0; i < lista.length; i++) {
-
-				saida += "<option value='" + lista[i].codCategoria + "'";
+				saida += "<option value='" + lista[i].codPagador + "'";
 			
-				if (lista[i].codCategoria == cod){
+				if (lista[i].codPagador == cod){
 					saida += " selected";
 				}
 				
 				saida += ">";
 				saida += 
-					lista[i].categoria.substring(0, 30) + 
+					lista[i].pagador.substring(0, 30) + 
 					"</option>";
 
 				//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
 
 			}
 			
-			$("#categoriaContaCmb").append(saida);
-			$("#loadCategoriaContaCmb").css("display", "none");
+			$("#pagadorCmb").append(saida);
+			$("#loadPagadorCmb").css("display", "none");
 		});
 	}
 	
@@ -61,7 +57,7 @@
 		
 		var variavel = 0;
 		
-		let params = decodeURI($("#categoriaContaCmb").parent().parent().attr('param'));
+		let params = decodeURI($("#pagadorCmb").parent().parent().attr('param'));
 		let searchParams = new URLSearchParams(params);
 		
 		if (searchParams.has("cod")){
@@ -69,16 +65,17 @@
 		}
 		
 		if (searchParams.has("lbl")){
-			$("#categoriaContaLbl").html(searchParams.get("lbl"));
+			$("#pagadorLbl").html(searchParams.get("lbl"));
 		}
 		
 		if (searchParams.has("cmp")){
-			$("#categoriaContaCmb").attr("name", searchParams.get("cmp"));
+			$("#pagadorCmb").attr("name", searchParams.get("cmp"));
 		}
 		
-		preencheCategoriaContaCmb(variavel);
+		preenchePagadorCmb(variavel);
 		
 	});
 
 </script>
+
 
