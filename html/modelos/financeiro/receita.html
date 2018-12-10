@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="/html/btp/jquery.js"></script>
+		<title>receita</title>
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.colx {
+				display: none;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row-fluid"> 
+				<a href="/html/modelos/financeiro/Receita.html" target="_blank">
+					<h1>Receita</h1>
+				</a>
+				<h2>Vertical (basic) form</h2>
+				<form>
+					<div class="form-group" id="codReceitaDiv"> 
+						<label for="codReceita">codReceita</label>
+						<input 
+							class="form-control" id="codReceita" name="codReceita" 
+							aria-describedby="codReceitaHelp"
+							placeholder="codReceita" type="number"> 
+						<br>
+						<small id="codReceitaHelp"
+							   class="form-text text-muted">codReceita</small>
+					</div>
+
+					<div class="form-group" id="codPagadorDiv"> 
+						<label for="codPagador">codPagador</label>
+						<input class="form-control" id="codPagador" name="codPagador" 
+							   placeholder="codPagador" type="number">
+					</div>
+
+					<div class="form-group" id="codFavorecidoDiv"> 
+						<label for="codFavorecido">codFavorecido</label>
+						<input class="form-control" id="codFavorecido" name="codFavorecido" 
+							   placeholder="codFavorecido" type="number">
+					</div>
+					
+					<div class="form-group" id="descricaoDiv"> 
+						<label for="descricao">descricao</label>
+						<textarea class="form-control" id="descricao" name="descricao" 
+							   placeholder="descricao"></textarea>
+					</div>
+					
+					<div class="form-group" id="padraoDiv"> 
+						<label for="padrao">padrao</label>
+						<input class="form-control" id="padrao" name="padrao" 
+							   placeholder="padrao" type="number">
+					</div>
+					
+					<div class="form-group" id="acrescimosDiv"> 
+						<label for="acrescimos">acrescimos</label>
+						<input class="form-control" id="acrescimos" name="acrescimos" 
+							   placeholder="acrescimos" type="number">
+					</div>
+					
+					<div class="form-group" id="valorDiv"> 
+						<label for="valor">valor</label>
+						<input class="form-control" id="valor" name="valor" 
+							   placeholder="valor" type="number">
+					</div>
+					
+					<div class="form-group" id="mesReferenciaDiv"> 
+						<label for="mesReferencia">mesReferencia</label>
+						<input class="form-control" id="mesReferencia" name="mesReferencia" 
+							   placeholder="mesReferencia" type="month">
+					</div>
+					
+					<div class="form-group" id="dtCreditoDiv"> 
+						<label for="dtCredito">dtCredito</label>
+						<input class="form-control" id="dtCredito" name="dtCredito" 
+							   placeholder="dtCredito" type="date">
+					</div>
+					
+					<div class="form-group" id="obsDiv"> 
+						<label for="obs">obs</label>
+						<textarea class="form-control" id="obs" name="obs" 
+							   placeholder="obs"></textarea>
+					</div>
+
+				</form>
+			</div>
+			<div class="row-fluid">
+				<button class="btn btn-primary">Salvar</button> 
+				<button class="btn btn-danger">Excuir</button> 
+			</div>
+		</div>
+
+		<script>
+			
+			var variavel = 0;
+
+			
+			function preencheForm() {
+
+				var url = "/cgi-bin/financeiro/receita.py";
+
+				if (variavel > 0) {
+					url += "?cod=" + variavel;
+				}
+
+				$.getJSON(url, function (data) {
+
+					console.log(data);
+					var obj = data.receita;
+
+					$("#codReceita").val(obj[0].codReceita);
+					$("#codPagador").val(obj[0].codPagador);
+					$("#codFavorecido").val(obj[0].codFavorecido);
+					$("#descricao").val(obj[0].descricao.replace(/%r%n/g, "\n", -1));
+					$("#padrao").val(obj[0].padrao);
+					$("#acrescimos").val(obj[0].acrescimos);
+					$("#valor").val(obj[0].valor);
+					$("#mesReferencia").val(obj[0].mesReferencia);
+					$("#dtCredito").val(obj[0].dtCredito);
+					$("#obs").val(obj[0].obs.replace(/%r%n/g, "\n", -1));
+
+				});
+			}
+
+			function formNull() {
+				
+				$("#codReceita").val(0);
+				$("#codPagador").val(0);
+				$("#codFavorecido").val(0);
+				$("#descricao").val("");
+				$("#padrao").val(0.0);
+				$("#acrescimos").val(0.0);
+				$("#valor").val(0.0);
+				$("#mesReferencia").val("0001-01");
+				$("#dtCredito").val("0001-01-01");
+				$("#obs").val("");
+
+			}
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+			
+			$(document).ready(function () {
+
+				formNull();
+				//$("#codReceitaDiv").css("display", "none");
+
+				$("button").on("click", function(){
+					var txt = $(this).html();
+					var action = "/cgi-bin/financeiro/salvaReceita.py";
+					
+					if (txt === "Salvar") {
+						
+						$.post(
+							action, 
+							$(this).serialize(), 
+							function(data) {
+								alert("Dados salvos!");
+								console.log(data);
+							}
+						);
+						
+					} else if (txt === "Excuir") {
+						alert(2);
+					}
+				});
+				
+				
+				//procura na url da pagina
+				var urlParams = new URLSearchParams(window.location.search);
+
+				if ((urlParams.has('cod'))){
+					variavel = urlParams.get("cod");
+					preencheForm();
+				}
+
+				//procura na div container
+				let params = decodeURI(
+					$("#codReceitaDiv")
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.attr('param')
+				);
+
+				let searchParams = new URLSearchParams(params);
+				
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+					preencheForm();
+				}
+
+			});
+			
+		</script>
+	</body>
+</html>
+
+
+

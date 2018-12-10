@@ -4,7 +4,7 @@
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="/html/btp/jquery.js"></script>
-		<title>categoriaConta</title>		
+		<title>pagador</title>		
 		<style>
 			table, td, th {
 				border:solid;
@@ -19,25 +19,25 @@
 	<body>
 		<div class="container">
 			<div class="row-fluid"> 
-				<a href="/html/modelos/financeiro/categoriaConta.html" target="_blank">
-					<h1>Categoria Conta</h1>
+				<a href="/html/modelos/financeiro/pagador.html" target="_blank">
+					<h1>Pagador</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
 				<form>
-					<div class="form-group" id="codCategoriaDiv"> 
-						<label for="codCategoria">codCategoria</label>
+					<div class="form-group" id="codPagadorDiv"> 
+						<label for="codPagador">codPagador</label>
 						<input 
-							class="form-control" id="codCategoria" name="codCategoria" 
-							aria-describedby="codCategoriaHelp"
-							placeholder="codCategoria" type="number"> 
+							class="form-control" id="codPagador" name="codPagador" 
+							aria-describedby="codPagadorHelp"
+							placeholder="codPagador" type="number"> 
 						<br>
-						<small id="codCategoriaHelp"
-							   class="form-text text-muted">codCategoria</small>
+						<small id="codPagadorHelp"
+							   class="form-text text-muted">codPagador</small>
 					</div>
-					<div class="form-group" id="categoriaDiv"> 
-						<label for="categoria">categoria</label>
-						<input class="form-control" id="categoria" name="categoria" 
-							   placeholder="categoria" type="text">
+					<div class="form-group" id="pagadorDiv"> 
+						<label for="pagador">pagador</label>
+						<input class="form-control" id="pagador" name="pagador" 
+							   placeholder="pagador" type="text">
 					</div>
 				</form>
 			</div>
@@ -54,7 +54,7 @@
 			
 			function preencheForm() {
 
-				var url = "/cgi-bin/financeiro/categoriaConta.py";
+				var url = "/cgi-bin/financeiro/pagador.py";
 
 				if (variavel > 0) {
 					url += "?cod=" + variavel;
@@ -62,19 +62,19 @@
 
 				$.getJSON(url, function (data) {
 
-					console.log(data);
-					var obj = data.categoriaConta;
+					//console.log(data);
+					var obj = data.pagador;
 
-					$("#codCategoria").val(obj[0].codCategoria);
-					$("#categoria").val(obj[0].categoria);
+					$("#codPagador").val(obj[0].codPagador);
+					$("#pagador").val(obj[0].pagador);
 
 				});
 			}
 
 			function formNull() {
 				
-				$("#codCategoria").val(0);
-				$("#categoria").val("");
+				$("#codPagador").val(0);
+				$("#pagador").val("");
 
 			}
 
@@ -89,7 +89,7 @@
 
 				$("button").on("click", function(){
 					var txt = $(this).html();
-					var action = "/cgi-bin/financeiro/salvaCategoriaConta.py";
+					var action = "/cgi-bin/financeiro/salvaPagador.py";
 					
 					if (txt === "Salvar") {
 						
@@ -118,7 +118,7 @@
 
 				//procura na div container
 				let params = decodeURI(
-					$("#codCategoriaDiv")
+					$("#codPagadorDiv")
 					.parent()
 					.parent()
 					.parent()
