@@ -56,10 +56,8 @@ class ContaDAO(CRUD.CRUD):
 		)
 		return getPk()
 
-
 # ==================================== CRUD ====================================
 # ==============================================================================
-
 
 	def getLista(self):
 		sql = \
@@ -73,5 +71,108 @@ class ContaDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+	def listaPeloVencimento(self, dtRef):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					contas
+				WHERE 
+					strftime('%Y-%m',dtVencimento) = '{}' 
+				ORDER BY
+					dtVencimento,
+					codConta
+			;
+		""".format(dtRef)
+		
+		return super().getList(sql)
+
+
+	def listaPelaReceita(self, codReceita):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					contas
+				WHERE 
+					codReceitaPagadora ={} 
+				ORDER BY
+					dtVencimento,
+					codConta
+			;
+		""".format(codReceita)
+		
+		return super().getList(sql)
+
+
+	def somaPelaReceitaPagadora(self, codReceitaPagadora):
+		sql = \
+			"""
+SELECT 
+			SUM(CASE WHEN contaPaga = 1 THEN valorPago ELSE valor END) 
+		AS vlrTotal 
+	FROM 
+		contas 
+	WHERE 
+		codReceitaPagadora = {} 
+	GROUP BY 
+		codReceitaPagadora
+;
+		""".format(codReceitaPagadora)
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+		
+
+
+	def somaPagasPelaReceita(self, codReceitaPagadora):
+		sql = \
+			"""
+SELECT 
+			SUM(CASE WHEN contaPaga = 1 THEN valorPago ELSE valor END) 
+		AS vlrTotal 
+	FROM 
+		contas 
+	WHERE 
+		codReceitaPagadora = {} AND
+		contaPaga = 1
+	GROUP BY 
+		codReceitaPagadora
+;
+		""".format(codReceitaPagadora)
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
+
+	def mediaTresUltimas(self, codTipoConta, dtRef):
+		sql = \
+			"""
+
+SELECT AVG(valor) FROM (
+    SELECT 
+ 			codConta, 
+				CASE
+				WHEN contaPaga = 1 THEN
+					valorPago
+				ELSE
+					valor
+				END
+			AS valor
+		FROM 
+			contas
+		WHERE 
+			codTipoConta = {} AND 
+			dtVencimento < '{}' 
+		ORDER BY 
+			dtVencimento DESC 
+		LIMIT 3 
+); 
+		""".format(codTipoConta, dtRef + "-01T00:00")
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
+
 
 
