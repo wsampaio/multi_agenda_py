@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>contasPeloVencimentoSub</title>
+		<title>contasPelaReceita</title>
 
 		<style>
 			table, td, th {
@@ -42,11 +42,8 @@
 			function preencheContasPelaReceitaTbl (cod){
 			
 				url = "/cgi-bin/financeiro/contasPelaReceita.py";
-				
-				if (cod > 0) {
-					url += "?cod=" + cod;
-				}
-			
+				url += "?cod=" + cod;
+
 				$.getJSON(url, function(data) {
 
 					//console.log(data);
@@ -89,7 +86,7 @@
 					saida = saida.replace("%r", "<br>");
 					saida = saida.replace("%n", "<br>");
 
-					$("#contasPelaReceitaTbl").append(saida);
+					$("#contasPelaReceitaTbl" + cod).append(saida);
 				});
 			}
 		
@@ -104,17 +101,29 @@
 				var cod = 0
 				
 				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
 					searchParams = $("#principal").attr("url").split("?")[1];
 				} else {
 					searchParams = window.location.search;
 				}
-				
+
+
+				var panelReceita = $("#contasPelaReceitaTbl")
+					.parent().parent()
+					.parent()
+					.parent()
+				;
+
+				if (panelReceita.attr("id") != undefined){
+					cod =  panelReceita.attr("id").substr(12);
+				}
+	
 				searchParams = new URLSearchParams(searchParams);
 				
 				if (searchParams.has('cod')) {
 					cod = searchParams.get("cod");
 				}
+				
+				$("#contasPelaReceitaTbl").attr("id", "contasPelaReceitaTbl" + cod);
 
 				preencheContasPelaReceitaTbl(cod);
 			});

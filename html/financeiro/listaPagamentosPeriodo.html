@@ -21,36 +21,13 @@
 		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
-		<div class="panel panel-default">
-			<div id="listaReceitas"></div>
-			<div class="panel-heading">
-				<h2>Receita</h2>
-				ref:<br>
-				total receita:<br>
-				total debito:<br>
-				total rec - deb:<br>
-				total rec - ctnPG:<br>
-			</div>
-			<div class="panel-body" id="">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Conta</th>
-							<th>Vencimento/Pagamento</th>
-							<th>Valor</th>
-							<th>Receita Pagadora</th>
-						</tr>
-					</thead>
-					<tbody id="contasPeloVencimentoSubTbl"></tbody>
-				</table>
-			</div>
-		</div>
-		
+		<div id="listaReceitas"></div>
 		
 		<script>
 		
 			function preencheListaReceitas (dtRef){
 			
+				var lista = [];
 				url = "/cgi-bin/financeiro/receitasDoPeriodo.py";
 				
 				if (dtRef.length > 0) {
@@ -60,36 +37,83 @@
 				$.getJSON(url, function(data) {
 
 					console.log(data);
-					var lista = data.receitasDoPeriodo;
+					lista = data.receitasDoPeriodo;
 					var saida = "";
 
 					for (i = 0; i < lista.length; i++) {
-							saida += 
-"codReceita: " + lista[i].codReceita + "<br>" +
-"referencia: " + lista[i].referencia + "<br>" +
-"valorReceita: " + lista[i].valorReceita + "<br>" +
-"mediaReceita: " + lista[i].mediaReceita + "<br>" +
-"valorTtlContas: " + lista[i].valorTtlContas + "<br>" +
-"valorTtlContasPagas: " + lista[i].valorTtlContasPagas + "<br><br>"
+
+						var codReceita = lista[i].codReceita;
+						var ttlContas = lista[i].valorTtlContas;
+						var ttlPagas = lista[i].valorTtlContasPagas;
+						var valorReceita = 0.0;
+
+						if (lista[i].valorReceita > 0){
+							valorReceita = lista[i].valorReceita;
+						} else {
+							valorReceita = lista[i].mediaReceita;
+						}
+
+
+						saida =
+							"<div class='panel panel-default'>" +
+								"<div class='panel-heading'>" +
+									"<h2>Receita</h2>" +
+									"ref: " + lista[i].referencia + "<br>" +
+									"total receita: " + valorReceita + "";
+
+						if (lista[i].valorReceita == 0) {
+							saida += " (previsão)";
+						}
+
+						saida += "<br>";
+
+						saida +=
+									"total debitos: " + ttlContas + "<br>" +
+									"total Saldo geral: " + (valorReceita - ttlContas) + "<br>" +
+									"total Saldo no banco: " + (lista[i].valorReceita - ttlPagas ) + "<br>" +
+									"<a " + 
+										"class='mais btn btn-success' " +
+										"target='_blank' " +
+										"onClick='mais(" + codReceita + ");' " + 
+										"href='/html/financeiro/contasPelaReceita.html?cod=" + codReceita + "' " +
+										"id='mais" + codReceita + "'>+</a>" +
+								"</div>" +
+								"<div class='panel-body' id='panelReceita" + codReceita + "'></div>" +
+							"</div>" 
+
+						saida = saida.replace("%r", "<br>");
+						saida = saida.replace("%n", "<br>");
+
+						$("#listaReceitas").append(saida);
+
+						$("#panelReceita" + codReceita).load(
+							"/html/financeiro/contasPelaReceita.html?cod=" + codReceita
+						);
+						
+						$("#panelReceita" + codReceita).css("display", "none");
 
 					}
-
-					saida = saida.replace("%r", "<br>");
-					saida = saida.replace("%n", "<br>");
-
-					console.log(saida);
-
-					$("#listaReceitas").append(saida);
 
 				}).fail(function(jqxhr, textStatus, error){
 					var err = textStatus + ", " + error;
 					console.log("ERRO!!! " + err)
 				});
+
+				$(".mais").on("click", function(event){
+				});
+
 			}
 		
-		
-		
-		
+			function mais(cod){
+				event.preventDefault();
+
+				if ($("#panelReceita" + cod).css("display") == 'none'){
+					$("#panelReceita" + cod).css("display", 'block')
+				} else {
+					$("#panelReceita" + cod).css("display", 'none')
+				}
+
+			}
 		
 		
 			$(document).ready(function() {
