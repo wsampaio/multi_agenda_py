@@ -33,7 +33,7 @@ print("Content-type: application/json\n")
 print(
 """
 {
-	"tiposContas": [""")
+	"tiposContasModelos": [""")
 
 i = 0
 lista = tipoContaModeloDAO.getLista()
