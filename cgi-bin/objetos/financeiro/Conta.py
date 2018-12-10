@@ -60,14 +60,15 @@ class Conta:
 		self.setValor(array[6])
 		self.setCodReceitaPagadora(array[7])
 		self.setCodPagador(array[8])
-		self.setContaPaga(array[9])
+		self.setContaPaga(bool(array[9]))
 		self.setValorPago(array[10])
 		self.setDtPagamento(FormatData.de_JDate(array[11]))
+
 		return self
 
 
 	def getCodConta(self):
-		return self.__codConta
+		return int(self.__codConta)
 
 	def setCodConta(self, codConta):
 		try:
@@ -76,7 +77,7 @@ class Conta:
 			self.__codConta = self.getCodConta()
 
 	def getCodTipoConta(self):
-		return self.__codTipoConta
+		return int(self.__codTipoConta)
 
 	def setCodTipoConta(self, codTipoConta):
 		try:
@@ -85,7 +86,7 @@ class Conta:
 			self.__codTipoConta = self.getCodTipoConta()
 
 	def getDescricao(self):
-		return self.__descricao
+		return str(self.__descricao)
 
 	def setDescricao(self, descricao):
 		try:
@@ -95,7 +96,7 @@ class Conta:
 
 	def getMesReferencia(self):
 		return self.__mesReferencia
-		return datetime.strptime(self.__mesReferencia, "%Y-%m-%dT%H:%M")
+		#return datetime.datetime.strptime(self.__mesReferencia, "%Y-%m-%dT%H:%M")
 
 	def setMesReferencia(self, mesReferencia):
 		if type(mesReferencia) == datetime.datetime:
@@ -149,7 +150,7 @@ class Conta:
 			self.__codPagador = self.getCodPagador()
 
 	def getContaPaga(self):
-		return self.__contaPaga
+		return bool(self.__contaPaga)
 
 	def setContaPaga(self, contaPaga):
 		try:
