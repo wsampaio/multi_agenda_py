@@ -51,8 +51,12 @@ class FormatData:
 		return datetime.strftime('%Y-%m')
 
 	def dataSimples(datetime):
-		#retorna uma str no formato desejado
+		#retorna uma str no formato dd/mm/aa
 		return datetime.strftime('%d/%m/%Y')
+
+	def dataSimplesMin(datetime):
+		#retorna uma str no formato dd/mm
+		return datetime.strftime('%d/%m')
 
 	def horaSimples(data):
 		#retorna uma str no formato desejado
