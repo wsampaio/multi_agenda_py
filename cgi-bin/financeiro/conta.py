@@ -25,7 +25,6 @@ cgitb.enable()
 
 
 from objetos.dbConn.FormatData import FormatData
-#import objetos.dbConn.FormatData as FormatData
 
 from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
@@ -47,15 +46,22 @@ contaDAO = ContaDAO()
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+saida = ""
+
+
+saida += """
 {
-	"conta": [""")
+	"conta": ["""
 
 conta = contaDAO.select(codConta)
 
-print(
-"""
+contaPaga = False
+
+if conta.getContaPaga():
+	contaPaga = True
+
+
+saida+= """
 		{}
 			"codConta": "{}",
 			"codTipoConta": "{}",
@@ -69,8 +75,7 @@ print(
 			"contaPaga": "{}",
 			"valorPago": "{}",
 			"dtPagamento": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			conta.getCodConta(),
 			conta.getCodTipoConta(),
@@ -79,22 +84,25 @@ print(
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			
 			FormatData.mesRefSerial(conta.getMesReferencia()),
 			FormatData.para_Data_Serial(conta.getDtVencimento()),
 			conta.getCodBarras(),
 			conta.getValor(),
 			conta.getCodReceitaPagadora(),
 			conta.getCodPagador(),
-			conta.getContaPaga(),
+			contaPaga,
 			conta.getValorPago(),
 			FormatData.para_Data_Serial(conta.getDtPagamento()),
 			"}"
 		)
-	)
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
