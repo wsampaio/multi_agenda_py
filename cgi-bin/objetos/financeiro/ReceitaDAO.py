@@ -74,3 +74,60 @@ class ReceitaDAO(CRUD.CRUD):
 		return super().getList(sql)
 
 
+
+
+	def listaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					receita
+				ORDER BY
+					dtCredito DESC
+			;
+		"""
+		return super().getList(sql)
+
+
+
+	def listaPorMesReferencia(self, dtRef):
+		sql = \
+			"""
+SELECT
+		*
+	FROM 
+		receita
+	WHERE
+		strftime('%Y-%m', mesReferencia)  = '{}'
+	ORDER BY
+		dtCredito
+;
+		""".format(dtRef)
+
+		return super().getList(sql)
+
+
+	def mediaTresUltimas(self, codPagador, dtRef):
+		sql = \
+			"""
+
+SELECT AVG(valor) FROM (
+	SELECT 
+			valor
+		FROM 
+			receita 
+		WHERE 
+			codPagador = {} AND
+			dtCredito < '{}' 
+		ORDER BY 
+			dtCredito DESC 
+		LIMIT 3 
+); 
+		""".format(codPagador, dtRef + "-01T00:00")
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
+
+
+
