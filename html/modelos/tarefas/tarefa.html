@@ -14,127 +14,6 @@
 			}
 		</style>
 		<script src="/html/btp/jquery.js"></script>
-
-		<script>
-			
-			var variavel = 0;
-			//formNull();
-			//$("#codTarefaDiv").css("display", "none");
-
-			
-			function preencheForm() {
-
-				var url = "/cgi-bin/tarefas/tarefa.py";
-
-				if (variavel > 0) {
-					url += "?cod=" + variavel;
-				}
-
-				$.getJSON(url, function (data) {
-
-					console.log(data);
-					var tarefa = data.tarefa;
-
-					$("#codTarefa").val(tarefa[0].codTarefa);
-					$("#codTarefaPai").val(tarefa[0].codTarefaPai);
-					$("#tarefa").val(tarefa[0].tarefa.replace(/%r%n/g, "\n", -1));
-					$("#inicio").val(formatDate(tarefa[0].inicio));
-					$("#fim").val(formatDate(tarefa[0].fim));
-					$("#prazo").val(formatDate(tarefa[0].prazo));
-					$("#ordem").val(tarefa[0].ordem);
-					$("#codPrioridade").val(tarefa[0].codPrioridade);
-
-					if (tarefa[0].terminado) {
-						$("#terminado").prop("checked", true);
-					}
-					
-					carregaCombos(tarefa[0].codTarefaPai, tarefa[0].codPrioridade);
-
-				});
-			}
-
-			function formNull() {
-				
-				$("#codTarefa").val(0);
-				$("#codTarefaPai").val(0);
-				$("#tarefa").val("");
-				$("#inicio").val("0001-01-01T00:00");
-				$("#fim").val("0001-01-01T00:00");
-				$("#prazo").val("0001-01-01T00:00");
-				//$("#terminado").val(tarefa[0].terminado);
-				$("#ordem").val(0);
-				$("#codPrioridade").val(0);
-				
-				carregaCombos(0, 0);
-
-			}
-
-			function carregaCombos(codTarefaPai, codPrioridade) {
-				
-				var param = "";
-				
-				param = encodeURI(
-						"cod=" + codTarefaPai +
-						"&lbl=Tarefa pai&cmp=codTarefaPai" +
-			""
-		);
-		
-				$("#codTarefaPaiDiv").attr('param', param);
-				$("#codTarefaPaiDiv").load("/html/modelos/tarefas/tarefaCmb.html");
-				
-				param = encodeURI("cod=" + codPrioridade);
-		
-				$("#codPrioridadeDiv").attr('param', param);
-				$("#codPrioridadeDiv").load("/html/modelos/tarefas/prioridadeCmb.html");
-			}
-			
-			$("form").submit(function (event) {
-				event.preventDefault();
-			});
-			
-			$(document).ready(function () {
-
-				$("button").on("click", function(){
-					var txt = $(this).html();
-					var action = "/cgi-bin/tarefas/salvaTarefa.py";
-					
-					if (txt === "Salvar") {
-						alert(1);
-						
-						$.post(
-							action, 
-							$(this).serialize(), 
-							function(data) {
-								alert("Dados salvos!");
-								console.log(data);
-							}
-						);
-						
-					} else if (txt === "Excuir") {
-						alert(2);
-					}
-				});
-				
-				let params = decodeURI(
-					$("#codTarefaDiv")
-					.parent()
-					.parent()
-					.parent()
-					.parent()
-					.attr('param')
-				);
-		
-				let searchParams = new URLSearchParams(params);
-				
-				if (searchParams.has("cod")){
-					variavel = searchParams.get("cod");
-					preencheForm();
-				}
-
-			});
-			
-		</script>
-
 	</head>
 	<body>
 		<div class="container">
@@ -205,8 +84,123 @@
 				<button class="btn btn-danger">Excuir</button> 
 			</div>
 		</div>
+
+
+
+		<script>
+
+			var variavel = 0;
+			//formNull();
+			//$("#codTarefaDiv").css("display", "none");
+
+			function preencheForm() {
+				var url = "/cgi-bin/tarefas/tarefa.py";
+
+				if (variavel > 0) {
+					url += "?cod=" + variavel;
+				}
+
+				$.getJSON(url, function (data) {
+					console.log(data);
+					var tarefa = data.tarefa;
+
+					$("#codTarefa").val(tarefa[0].codTarefa);
+					$("#codTarefaPai").val(tarefa[0].codTarefaPai);
+					$("#tarefa").val(tarefa[0].tarefa.replace(/%r%n/g, "\n", -1));
+					$("#inicio").val(formatDate(tarefa[0].inicio));
+					$("#fim").val(formatDate(tarefa[0].fim));
+					$("#prazo").val(formatDate(tarefa[0].prazo));
+					$("#ordem").val(tarefa[0].ordem);
+					$("#codPrioridade").val(tarefa[0].codPrioridade);
+
+					if (tarefa[0].terminado) {
+						$("#terminado").prop("checked", true);
+					}
+
+					carregaCombos(tarefa[0].codTarefaPai, tarefa[0].codPrioridade);
+
+				});
+			}
+
+			function formNull() {
+				$("#codTarefa").val(0);
+				$("#codTarefaPai").val(0);
+				$("#tarefa").val("");
+				$("#inicio").val("0001-01-01T00:00");
+				$("#fim").val("0001-01-01T00:00");
+				$("#prazo").val("0001-01-01T00:00");
+				//$("#terminado").val(tarefa[0].terminado);
+				$("#ordem").val(0);
+				$("#codPrioridade").val(0);
+
+				carregaCombos(0, 0);
+			}
+
+			function carregaCombos(codTarefaPai, codPrioridade) {
+				var param = "";
+
+				param = encodeURI(
+					"cod=" + codTarefaPai +
+					"&lbl=Tarefa pai&cmp=codTarefaPai" +
+					""
+				);
+
+				$("#codTarefaPaiDiv").attr('param', param);
+				$("#codTarefaPaiDiv").load("/html/modelos/tarefas/tarefaCmb.html");
+
+				param = encodeURI("cod=" + codPrioridade);
+
+				$("#codPrioridadeDiv").attr('param', param);
+				$("#codPrioridadeDiv").load("/html/modelos/tarefas/prioridadeCmb.html");
+			}
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+
+			$(document).ready(function () {
+
+				$("button").on("click", function(){
+					var txt = $(this).html();
+					var action = "/cgi-bin/tarefas/salvaTarefa.py";
+	
+					if (txt === "Salvar") {
+						alert(1);
+
+						$.post(
+							action, 
+							$(this).serialize(), 
+							function(data) {
+								alert("Dados salvos!");
+								console.log(data);
+							}
+						);
+
+					} else if (txt === "Excuir") {
+						alert(2);
+					}
+				});
+		
+				let params = decodeURI(
+					$("#codTarefaDiv")
+					.parent()
+					.parent()
+					.parent()
+					.parent()
+					.attr('param')
+				);
+
+				let searchParams = new URLSearchParams(params);
+		
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+					preencheForm();
+				}
+
+			});
+
+		</script>
 	</body>
 </html>
-
 
 
