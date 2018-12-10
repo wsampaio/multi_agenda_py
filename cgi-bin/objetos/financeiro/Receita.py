@@ -1,4 +1,4 @@
-#
+
 # Este arquivo é parte do programa multi_agenda
 #
 # Esta obra está licenciada com uma 
