@@ -1,274 +1,133 @@
 <!DOCTYPE html>
-<!-- saved from url=(0056)http://alexanmtz.github.io/bootstrap/examples/fluid.html -->
 <html lang="pt-br">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 		<title>multi_agenda</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<meta name="author" content="">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="theme-color" content="#FF8C00">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
+		<script src="/html/btp/jquery.min.js"></script>
+		<script src="/html/btp/bootstrap.min.js"></script>
+		<style>
+			.navbar {
+				z-index: 100;
+			}
+			@media screen and (max-width: 767px) {
 
-		<!-- Le styles -->
-		<link href="/html/btp/bootstrap.css" rel="stylesheet">
-		<style type="text/css">
-			body {
-				padding-top: 60px;
-				padding-bottom: 40px;
+				.navbar-inverse .navbar-toggle:focus, 
+				.navbar-inverse .navbar-toggle:hover,
+				.navbar-inverse .navbar-nav>.open>a, 
+				.navbar-inverse .navbar-nav>.open>a:focus, 
+				.navbar-inverse .navbar-nav>.open>a:hover
+				{
+					color: #fff;
+					background-color: #FF0000;
+				}
+
+				.navbar-inverse .navbar-brand:focus, 
+				.navbar-inverse .navbar-brand:hover>a ,
+				.navbar-inverse,
+				.navbar-inverse .navbar-nav>.active>a, 
+				.navbar-inverse .navbar-nav>.active>a:focus, 
+				.navbar-inverse .navbar-nav>.active>a:hover
+				{
+					color: #fff;
+					background-color: #FF8C00;
+				}
+
+				.navbar-inverse .navbar-nav>li>a, 
+				.navbar-inverse .navbar-brand 
+				{
+					color: #fff;
+				}
+
+				.navbar {
+					position: fixed;
+					width: 100%;
+				}
+
+				body {
+					background-color: #F5DEB3;
+				}
+
+				.navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
+					color: #fff;
+				}
+
+				#espaco {
+					height: 58px;
+				}
+
+				.col-sm-4 {
+					text-align: center;
+					margin: 25px 0;
+				}
+				.btn-lg {
+					width: 100%;
+					margin-bottom: 35px;
+				}
+				table {
+					font-size: 10px;
+				}
 			}
 
-			.sidebar-nav {
-				padding: 9px 0;
-			}
+
 		</style>
-		<link href="/html/btp/bootstrap-responsive.css" rel="stylesheet">
-
-		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-		<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-
-		<!-- Le fav and touch icons -->
-		<link rel="shortcut icon" href="http://alexanmtz.github.io/bootstrap/assets/ico/favicon.ico">
-		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://alexanmtz.github.io/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://alexanmtz.github.io/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://alexanmtz.github.io/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" href="http://alexanmtz.github.io/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
 	</head>
-
 	<body>
-
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container-fluid">
-					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</a>
-					<a class="brand" href="index.html">
-						multi_agenda
-					</a>
-					<div class="nav-collapse collapse">
-						<p class="navbar-text pull-right">
-							Logged in as <a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#" class="navbar-link">Username</a>
-						</p>
-						<ul class="nav">
-							<li class="active"><a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#">Home</a></li>
-							<li><a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#about">About</a></li>
-							<li><a href="http://alexanmtz.github.io/bootstrap/examples/fluid.html#contact">Contact</a></li>
-						</ul>
-					</div><!--/.nav-collapse -->
+						<span class="icon-bar"></span>                        
+					</button>
+					<a class="navbar-brand" target="_blank" href="/html/index.html">multi_agenda</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/html/index.html">Home</a></li>
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Financeiro <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a class="btn" target="_blank" href="/html/financeiro/contasPeloVencimento.html">contasPeloVencimento</a></li>
+								<li><a class="btn" target="_blank" href="/html/financeiro/contasPeloPagamento.html">contasPeloPagamento</a></li>
+								<li><a class="btn" target="_blank" href="#">Page 1-3</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Passmots <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a class="btn" target="_blank" href="/html/passmots/origemLista.html">origemLista</a></li>
+								<li><a class="btn" target="_blank" href="/html/passmots/registrosOrigem.html">registrosOrigem</a></li>
+								<li><a class="btn" target="_blank" href="#">Page 1-3</a></li>
+							</ul>
+						</li>
+						<li><a href="#">Page 2</a></li>
+						<li><a target="_blank" href="/html/modelos.html">Modelos</a></li>
+					</ul>
 				</div>
 			</div>
+		</nav>
+
+		<div id="espaco"></div>
+
+
+		<div class="container" id="principal">
+			<h1>multi_agenda</h1>
+			<p>Only when the button is clicked, the navigation bar will be displayed.</p>
+			<p><img style="width: 98%;" src="/html/img/hello.jpg"></p>
 		</div>
-
-
-
-
-
-
-
-
-
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div class="span3" id="menu">
-				</div><!--/span-->
-
-
-
-
-
-
-				<div class="span9" id="principal" param="">
-				</div><!--/span-->
-
-			</div><!--/row-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<hr>
-
-
-			<footer>
-			<p>© Company 2012</p>
-			</footer>
-
-		</div><!--/.fluid-container-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<!-- Le javascript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="./btp/jquery.js"></script>
-		<script src="./btp/bootstrap-transition.js"></script>
-		<script src="./btp/bootstrap-alert.js"></script>
-		<script src="./btp/bootstrap-modal.js"></script>
-		<script src="./btp/bootstrap-dropdown.js"></script>
-		<script src="./btp/bootstrap-scrollspy.js"></script>
-		<script src="./btp/bootstrap-tab.js"></script>
-		<script src="./btp/bootstrap-tooltip.js"></script>
-		<script src="./btp/bootstrap-popover.js"></script>
-		<script src="./btp/bootstrap-button.js"></script>
-		<script src="./btp/bootstrap-collapse.js"></script>
-		<script src="./btp/bootstrap-carousel.js"></script>
-		<script src="./btp/bootstrap-typeahead.js"></script>
-
-
-
+		<script>
+			// Shorthand for $( document ).ready()
+			$(function() {
+				$(".btn").on("click", function(){
+					event.preventDefault();
+					$("#principal").attr("url", $(this).attr("href"));
+					$("#principal").load($(this).attr("href"));
+				});
+			});
+		</script>
 	</body>
 </html>
-
-
-<script>
-
-	var urlPrincipal = "home.html";
-
-	function abreNoPrincipal(url, cod, param) {
-		urlPrincipal = url + "?cod=" + cod
-		//alert(param)
-		$("#principal").attr('param', param);
-		$("#principal").load(urlPrincipal);
-	}
-
-
-	// função pra ler querystring
-	function queryString(parameter) {
-
-		var loc = window.location + "";
-
-		loc = urlPrincipal
-		loc = loc.substring(1, loc.length);
-
-		var param_value = false;
-
-		var params = loc.split("?");
-
-		for (i=1; i<params.length;i++) {
-			param_name = params[i].substring(0,params[i].indexOf('='));
-			if (param_name == parameter) {
-				param_value = params[i].substring(params[i].indexOf('=')+1);
-			}
-		}
-
-		if (param_value) {
-			return param_value;
-		} else {
-			return 0;
-		}
-		
-		
-		/*
-		jeito certo
-
-
-		let uri = encodeURI("name=foo FOO&age=1337")
-		let paramsString = decodeURI(uri)
-		let searchParams = new URLSearchParams(paramsString);
-
-		searchParams.has("name") === true; // true
-		searchParams.get("age") === "1337"; // true
-
-		document.write(uri);
-		document.write(paramsString);
-		document.write(searchParamssearchParams.get("name"));
-		document.write(searchParams.entries());
-		
-		
-		*/
-
-		
-		
-		
-		
-	}
-
-
-	function formatDate(date) {
-
-		var date = new Date(date);
-
-		var year = date.getFullYear();
-		var month = ("00" + (date.getMonth() + 1)).slice(-2); // months are zero indexed
-		var day = ("00" + (date.getDate())).slice(-2);
-		var hour = ("00" + (date.getHours())).slice(-2);
-		var minute = ("00" + (date.getMinutes())).slice(-2);
-		var second = date.getSeconds();
-		var hourFormatted = hour % 12 || 12; // hour returned in 24 hour format
-		var minuteFormatted = minute < 10 ? "0" + minute : minute;
-		var morning = hour < 12 ? "am" : "pm";
-
-		var formated = year + "-" + month + "-" + day + "T" + hour + ":" +
-		minute;
-
-		return formated;
-
-		/*
-		return month + "/" + day + "/" + year + " " + hourFormatted + ":" +
-		minuteFormatted + morning;
-		*/
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	$(document).ready(function() {
-
-		$("#principal").load(urlPrincipal);
-		$("#menu").load("menu.html");
-
-	});
-
-
-
-
-
-
-</script>
