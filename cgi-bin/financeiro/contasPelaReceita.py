@@ -94,6 +94,7 @@ for forConta in lista:
 	saida += """
 		{}
 			"codConta": {},
+			"codReceitaPagadora": {},
 			"tipoConta": "{}",
 			"vencimento": "{}",
 			"contaPaga": "{}",
@@ -104,6 +105,7 @@ for forConta in lista:
 		{}""".format(
 			"{",
 			forConta.getCodConta(),
+			forConta.getCodReceitaPagadora(),
 			tipoConta.getTipoConta(),
 			FormatData.dataSimplesMin(forConta.getDtVencimento()),
 			forConta.getContaPaga(),
@@ -128,6 +130,6 @@ saida += """
 
 
 print(saida
-#.replace("\n", "")
-#.replace("\t", "")
+.replace("\n", "")
+.replace("\t", "")
 )
