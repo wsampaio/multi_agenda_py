@@ -104,7 +104,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="row-fluid">
+			<div class="row-fluid btn-group">
 				<button class="salvar btn btn-primary">Salvar</button> 
 				<button class="copiar btn btn-success">Copiar</button> 
 				<button class="salvar btn btn-danger">Excluir</button> 
@@ -205,13 +205,14 @@
 				
 				$(".salvar").on("click", function(){
 					var txt = $(this).html();
+					var frm = $("#contaFrm");
 					var action = "/cgi-bin/financeiro/salvaConta.py";
 					var dados = "";
 					
 					if (txt === "Salvar") {
-						dados = $("#contaFrm").serialize();
+						dados = frm.serialize();
 					} else if (txt === "Excluir") {
-						dados = $("#contaFrm").serialize() + "&delete=True";
+						dados = frm.serialize() + "&delete=True";
 					}
 					
 					$.post(
