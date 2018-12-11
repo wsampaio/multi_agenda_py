@@ -3,6 +3,7 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
 		<title>receita</title>
 		<style>
@@ -23,7 +24,7 @@
 					<h1>Receita</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
-				<form>
+				<form id="receitaFrm">
 					<div class="form-group" id="codReceitaDiv"> 
 						<label for="codReceita">codReceita</label>
 						<input 
@@ -91,8 +92,9 @@
 
 				</form>
 			</div>
-			<div class="row-fluid">
+			<div class="row-fluid btn-group">
 				<button class="btn btn-primary">Salvar</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
 				<button class="btn btn-danger">Excuir</button> 
 			</div>
 		</div>
@@ -126,6 +128,9 @@
 					$("#dtCredito").val(obj[0].dtCredito);
 					$("#obs").val(obj[0].obs.replace(/%r%n/g, "\n", -1));
 
+				})
+				.done(function( json ) {
+					carregaCombos();
 				});
 			}
 
@@ -142,63 +147,79 @@
 				$("#dtCredito").val("0001-01-01");
 				$("#obs").val("");
 
+				carregaCombos();
 			}
 
 			$("form").submit(function (event) {
 				event.preventDefault();
 			});
 			
+			function carregaCombos() {
+				var param = "";
+				
+				param = encodeURI("cod=" + $("#codPagador").val());
+				$("#codPagadorDiv").attr('param', param);
+				$("#codPagadorDiv").load("/html/modelos/financeiro/pagadorCmb.html");
+
+/* TODO - arrumar duplicidade nos combos
+				param = encodeURI(
+					"cod=" + $("#codFavorecido").val() +
+					"&lbl=Favorecido&cmp=codFavorecido" +
+					""
+				);
+				$("#codFavorecidoDiv").attr('param', param);
+				$("#codFavorecidoDiv").load("/html/modelos/financeiro/pagadorCmb.html");
+*/
+
+			}
+
 			$(document).ready(function () {
 
-				formNull();
-				//$("#codReceitaDiv").css("display", "none");
+				$("#codReceitaDiv").css("display", "none");
+				$(".copiar").on("click", function(){
+					$("#codReceitaDiv").css("display", "block");
+					$("#codReceita").val(0);
+				});
 
 				$("button").on("click", function(){
 					var txt = $(this).html();
+					var frm = $("#receitaFrm");
 					var action = "/cgi-bin/financeiro/salvaReceita.py";
 					
 					if (txt === "Salvar") {
-						
-						$.post(
-							action, 
-							$(this).serialize(), 
-							function(data) {
-								alert("Dados salvos!");
-								console.log(data);
-							}
-						);
-						
+						dados = frm.serialize();
 					} else if (txt === "Excuir") {
-						alert(2);
+						dados = frm.serialize() + "&delete=True";
 					}
+
+					$.post(
+						action, 
+						dados, 
+						function(data) {
+							alert("Dados salvos!");
+							//console.log(data);
+						}
+					)
 				});
 				
+				var searchParams = "";
 				
-				//procura na url da pagina
-				var urlParams = new URLSearchParams(window.location.search);
-
-				if ((urlParams.has('cod'))){
-					variavel = urlParams.get("cod");
-					preencheForm();
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
 				}
-
-				//procura na div container
-				let params = decodeURI(
-					$("#codReceitaDiv")
-					.parent()
-					.parent()
-					.parent()
-					.parent()
-					.attr('param')
-				);
-
-				let searchParams = new URLSearchParams(params);
 				
-				if (searchParams.has("cod")){
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('cod')) {
 					variavel = searchParams.get("cod");
 					preencheForm();
+				} else {
+					formNull();
 				}
-
+				
 			});
 			
 		</script>
