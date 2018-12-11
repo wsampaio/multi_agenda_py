@@ -43,7 +43,7 @@
 					for (i = 0; i < lista.length; i++) {
 
 						var codReceita = lista[i].codReceita;
-						var ttlContas = lista[i].valorTtlContas;
+						var ttlContas = lista[i].valorTtlContas.toFixed(2);
 						var ttlPagas = lista[i].valorTtlContasPagas;
 						var valorReceita = 0.0;
 
@@ -53,12 +53,20 @@
 							valorReceita = lista[i].mediaReceita;
 						}
 
+var sldGeral = (valorReceita - ttlContas).toFixed(2);
+var sldBanco = (lista[i].valorReceita - ttlPagas).toFixed(2);
+
 
 						saida =
 							"<div class='panel panel-default'>" +
 								"<div class='panel-heading'>" +
 									"<h2>Receita</h2>" +
-									"ref: " + lista[i].referencia + "<br>" +
+"<a class='receita' target='_blanc' " +
+"href='/html/modelos/financeiro/receita.html?cod=" +
+lista[i].codReceita + "'>" +
+"ref: " + lista[i].referencia +
+"</a>" +
+"<br>" +
 									"total receita: " + valorReceita + "";
 
 						if (lista[i].valorReceita == 0) {
@@ -69,8 +77,8 @@
 
 						saida +=
 									"total debitos: " + ttlContas + "<br>" +
-									"total Saldo geral: " + (valorReceita - ttlContas) + "<br>" +
-									"total Saldo no banco: " + (lista[i].valorReceita - ttlPagas ) + "<br>" +
+									"total Saldo geral: " + sldGeral + "<br>" +
+									"total Saldo no banco: " + sldBanco + "<br>" +
 									"<a " + 
 										"class='mais btn btn-success' " +
 										"target='_blank' " +
