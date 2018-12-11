@@ -43,6 +43,13 @@
 					for (i = 0; i < lista.length; i++) {
 
 						var codReceita = lista[i].codReceita;
+
+						var referencia = 
+							lista[i].pagador + " - Ref: " +
+							lista[i].mesRef + " em: " +
+							lista[i].dtCreditoMin
+						;
+
 						var ttlContas = lista[i].valorTtlContas.toFixed(2);
 						var ttlPagas = lista[i].valorTtlContasPagas;
 						var valorReceita = 0.0;
@@ -53,20 +60,20 @@
 							valorReceita = lista[i].mediaReceita;
 						}
 
-var sldGeral = (valorReceita - ttlContas).toFixed(2);
-var sldBanco = (lista[i].valorReceita - ttlPagas).toFixed(2);
+						var sldGeral = (valorReceita - ttlContas).toFixed(2);
+						var sldBanco = (lista[i].valorReceita - ttlPagas).toFixed(2);
 
 
 						saida =
 							"<div class='panel panel-default'>" +
 								"<div class='panel-heading'>" +
-									"<h2>Receita</h2>" +
-"<a class='receita' target='_blanc' " +
-"href='/html/modelos/financeiro/receita.html?cod=" +
-lista[i].codReceita + "'>" +
-"ref: " + lista[i].referencia +
-"</a>" +
-"<br>" +
+									"<h4>Receita</h4>" +
+									"<a class='receita' target='_blanc' " +
+										"href='/html/modelos/financeiro/receita.html?cod=" +
+											lista[i].codReceita + "'>" +
+										referencia +
+									"</a>" +
+									"<br>" +
 									"total receita: " + valorReceita + "";
 
 						if (lista[i].valorReceita == 0) {
@@ -76,15 +83,23 @@ lista[i].codReceita + "'>" +
 						saida += "<br>";
 
 						saida +=
-									"total debitos: " + ttlContas + "<br>" +
-									"total Saldo geral: " + sldGeral + "<br>" +
-									"total Saldo no banco: " + sldBanco + "<br>" +
-									"<a " + 
-										"class='mais btn btn-success' " +
-										"target='_blank' " +
-										"onClick='mais(" + codReceita + ");' " + 
-										"href='/html/financeiro/contasPelaReceita.html?cod=" + codReceita + "' " +
-										"id='mais" + codReceita + "'>+</a>" +
+									"<div class='btn-group' id='btnReceita'>" +
+										"<a " +
+											"class='mais btn btn-success btn-sm' " +
+											"href='#' " +
+											"id='detalhes?" + codReceita + "' " +
+											">detalhes</a>" +
+										"<a " + 
+											"class='mais btn btn-success btn-sm' " +
+											"target='_blank' " +
+											"href='/html/financeiro/contasPelaReceita.html?cod=" + codReceita + "' " +
+											"id='contas?" + codReceita + "'>contas</a>" +
+									"</div>" +
+									"<div class='dtlReceita' id='detalhesReceita" + codReceita + "'>" +
+										"total debitos: " + ttlContas + "<br>" +
+										"total Saldo geral: " + sldGeral + "<br>" +
+										"total Saldo no banco: " + sldBanco + "<br>" +
+									"</div>" +
 								"</div>" +
 								"<div class='panel-body' id='panelReceita" + codReceita + "'></div>" +
 							"</div>" 
@@ -99,27 +114,40 @@ lista[i].codReceita + "'>" +
 						);
 						
 						$("#panelReceita" + codReceita).css("display", "none");
+						$(".dtlReceita").css("display", "none");
 
 					}
 
 				}).fail(function(jqxhr, textStatus, error){
 					var err = textStatus + ", " + error;
 					console.log("ERRO!!! " + err)
+				}).success(function(){
+					$(".mais").on("click", function(){
+						event.preventDefault();
+
+						var cod = $(this).attr("id").split("?")[1];
+						var id = $(this).attr("id").split("?")[0];
+
+						if (id == "detalhes") {
+							if ($("#detalhesReceita" + cod).css("display") == 'none'){
+								$("#detalhesReceita" + cod).css("display", 'block')
+							} else {
+								$("#detalhesReceita" + cod).css("display", 'none')
+							}
+						}
+
+						if (id == "contas") {
+							if ($("#panelReceita" + cod).css("display") == 'none'){
+								$("#panelReceita" + cod).css("display", 'block')
+							} else {
+								$("#panelReceita" + cod).css("display", 'none')
+							}
+						}
+					});
 				});
 
-				$(".mais").on("click", function(event){
-				});
 
-			}
-		
-			function mais(cod){
-				event.preventDefault();
 
-				if ($("#panelReceita" + cod).css("display") == 'none'){
-					$("#panelReceita" + cod).css("display", 'block')
-				} else {
-					$("#panelReceita" + cod).css("display", 'none')
-				}
 
 			}
 		
