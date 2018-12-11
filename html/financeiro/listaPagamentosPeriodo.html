@@ -55,9 +55,9 @@
 						var valorReceita = 0.0;
 
 						if (lista[i].valorReceita > 0){
-							valorReceita = lista[i].valorReceita;
+							valorReceita = lista[i].valorReceita.toFixed(2);
 						} else {
-							valorReceita = lista[i].mediaReceita;
+							valorReceita = lista[i].mediaReceita.toFixed(2);
 						}
 
 						var sldGeral = (valorReceita - ttlContas).toFixed(2);
