@@ -77,6 +77,12 @@ for forReceita in lista:
 	if (forReceita.getCodReceita() > 0):
 		pagador = pagadorDAO.select(forReceita.getCodPagador())
 		
+		mesRef = \
+			FormatData.mesRef(forReceita.getMesReferencia())
+
+		dtCreditoMin = \
+			FormatData.dataSimplesMin(forReceita.getDtCredito())
+
 		referencia = "" + \
 			FormatData.mesRef(forReceita.getMesReferencia()) + " - " + \
 			pagador.getPagador() + \
@@ -88,7 +94,9 @@ for forReceita in lista:
 	saida += """
 		{}
 			"codReceita": {},
-			"referencia": "{}",
+			"mesRef": "{}",
+			"dtCreditoMin": "{}",
+			"pagador": "{}",
 			"valorReceita": {},
 			"mediaReceita": {},
 			"valorTtlContas": {},
@@ -96,7 +104,9 @@ for forReceita in lista:
 		{}""".format(
 			"{",
 			forReceita.getCodReceita(),
-			referencia,
+			mesRef,
+			dtCreditoMin,
+			pagador.getPagador(),
 			"{0:.2f}".format(forReceita.getValor()),
 			receitaDAO.mediaTresUltimas(
 				forReceita.getCodPagador(),
@@ -120,6 +130,6 @@ saida += """
 
 
 print(saida
-#.replace("\n", "")
-#.replace("\t", "")
+.replace("\n", "")
+.replace("\t", "")
 )
