@@ -23,6 +23,8 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.passmots.Registro import Registro
 from objetos.passmots.RegistroDAO import RegistroDAO
 
@@ -35,15 +37,35 @@ registro = Registro()
 registroDAO = RegistroDAO()
 
 
+print("Content-type: text/html\n")
+
+
 if str(form) != "FieldStorage(None, None, '')":
 	codRegistro = int(form.getvalue("codRegistro"))
+.
 
-	registro.setCodRegistro(form.getvalue("codRegistro"))
-	registro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
-	registro.setCodTipoCampo(form.getvalue("codTipoCampo"))
-	registro.setOrdem(form.getvalue("ordem"))
-	registro.setRegistro(form.getvalue("registro"))
-	registro.setDtAtualizacao(form.getvalue("dtAtualizacao"))
+	if form.getvalue("codRegistro"):
+		registro.setCodRegistro(int(form.getvalue("codRegistro")))
+
+	if form.getvalue("codOrigemRegistro"):
+		registro.setCodOrigemRegistro(int(form.getvalue("codOrigemRegistro")))
+
+	if form.getvalue("codTipoCampo"):
+		registro.setCodTipoCampo(int(form.getvalue("codTipoCampo")))
+
+	if form.getvalue("ordem"):
+		registro.setOrdem(int(form.getvalue("ordem")))
+
+	if form.getvalue("registro"):
+		registro.setRegistro(str(form.getvalue("registro")))
+
+	if form.getvalue("dtAtualizacao"):
+		registro.setDtAtualizacao(
+			FormatData.de_JDate(form.getvalue("dtAtualizacao"))
+		)
+
+
+
 
 	if codRegistro > 0:
 		if form.getvalue("delete"):
@@ -63,8 +85,6 @@ else:
 	pass
 
 
-print("Content-type: text/html\n")
-#print("Content-type: application/json\n")
 
 #print("form = " + str(form))
 #print("codRegistro = " + str(registro.getCodRegistro()))

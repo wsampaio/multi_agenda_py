@@ -61,183 +61,154 @@
 					</div>
 				</form>
 			</div>
-			<div class="row-fluid">
-				<button class="btn btn-primary">Salvar</button> 
-				<button class="btn btn-danger">Excuir</button> 
+			<div class="row-fluid btn-group">
+				<button class="salvar btn btn-primary">Salvar</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-danger">Excluir</button> 
 			</div>
 		</div>
+		
+		
+		<script>
+
+			var variavel = 0;
+
+			function gerarSenha(){
+				var ascII = [
+					64, 35, 36, 37, 33, 42, 43, 45, 46, 95, 
+					48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 
+					65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 
+					75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 
+					85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 
+					101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 
+					111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 
+					121, 122
+				]
+
+				str = "";
+				i = 0;
+
+				while (i < 15) {
+					x = Math.floor((Math.random() * 71) + 1);
+					str += String.fromCharCode(ascII[x]);
+					i++;
+				}
+
+				$("#registro").val(str);
+			};
+
+			function preencheForm() {
+
+				var url = "/cgi-bin/passmots/registro.py";
+
+				if (variavel > 0) {
+					url += "?cod=" + variavel;
+				}
+
+				$.getJSON(url, function (data) {
+					//console.log(data);
+					var obj = data.registro;
+
+					$("#codRegistro").val(obj[0].codRegistro);
+					$("#codOrigemRegistro").val(obj[0].codOrigemRegistro);
+					$("#codTipoCampo").val(obj[0].codTipoCampo);
+					$("#ordem").val(obj[0].ordem);
+			
+					$("#registro").val(obj[0].registro.replace("/%r%n/g", "\n", -1));
+					$("#dtAtualizacao").val(obj[0].dtAtualizacao);
+				})
+				.done(function( json ) {
+					carregaCombos();
+				});
+			}
+
+			function formNull() {
+				$("#codRegistro").val(0);
+				$("#codOrigemRegistro").val(0);
+				$("#codTipoCampo").val(0);
+				$("#ordem").val(0);
+				$("#registro").val("");
+				$("#dtAtualizacao").val("0001-01-01T00:00");
+		
+				carregaCombos();
+			}
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+
+			function carregaCombos() {
+				var param = "";
+
+				param = encodeURI("cod=" + $("#codOrigemRegistro").val());
+				$("#codOrigemRegistroDiv").attr('param', param);
+				$("#codOrigemRegistroDiv").load("/html/modelos/passmots/origemRegistroCmb.html");
+
+				param = encodeURI("cod=" + $("#codTipoCampo").val());
+				$("#codTipoCampoDiv").attr('param', param);
+				$("#codTipoCampoDiv").load("/html/modelos/passmots/tipoCampoCmb.html");
+			}
+
+			$("#newPass").on("click", function () {
+				//event.preventDefault();
+				var conf = confirm("Deseja realmente gerar\numa nova senha?");
+				
+				if (conf){
+					gerarSenha();
+				}
+			});
+
+
+			$(document).ready(function () {
+				$("#codRegistroDiv").css("display", "none");
+
+				$(".copiar").on("click", function(){
+					$("#codContaDiv").css("display", "block");
+					$("#codConta").val(0);
+				});
+				
+				$(".salvar").on("click", function(){
+					var txt = $(this).html();
+					var frm = $("#contaFrm");
+					var action = "/cgi-bin/financeiro/salvaConta.py";
+					var dados = "";
+					
+					if (txt === "Salvar") {
+						dados = frm.serialize();
+					} else if (txt === "Excluir") {
+						dados = frm.serialize() + "&delete=True";
+					}
+					
+					$.post(
+						action, 
+						dados, 
+						function(data) {
+							alert("Dados salvos!");
+							//console.log(data);
+						}
+					)
+				});
+				
+				var searchParams = "";
+				
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('cod')) {
+					variavel = searchParams.get("cod");
+					preencheForm();
+				} else {
+					formNull();
+				}
+
+			});
+
+		</script>
 	</body>
 </html>
-
-
-<script>
-
-	var variavel = 0;
-
-	function gerarSenha(){
-		var ascII = [
-			64, 35, 36, 37, 33, 42, 43, 45, 46, 95, 
-			48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 
-			65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 
-			75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 
-			85, 86, 87, 88, 89, 90, 97, 98, 99, 100, 
-			101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 
-			111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 
-			121, 122
-		]
-
-		str = "";
-		i = 0;
-
-		while (i < 15) {
-			x = Math.floor((Math.random() * 71) + 1);
-			str += String.fromCharCode(ascII[x]);
-			i++;
-		}
-
-		$("#registro").val(str);
-	};
-
-	function formatDate(date) {
-
-		var date = new Date(date);
-
-		var year = date.getFullYear();
-		var month = ("00" + (date.getMonth() + 1)).slice(-2); // months are zero indexed
-		var day = ("00" + (date.getDate())).slice(-2);
-		var hour = ("00" + (date.getHours())).slice(-2);
-		var minute = ("00" + (date.getMinutes())).slice(-2);
-		var second = date.getSeconds();
-		var hourFormatted = hour % 12 || 12; // hour returned in 24 hour format
-		var minuteFormatted = minute < 10 ? "0" + minute : minute;
-		var morning = hour < 12 ? "am" : "pm";
-
-		var formated = year + "-" + month + "-" + day + "T" + hour + ":" +
-		minute;
-
-		return formated;
-
-		/*
-		return month + "/" + day + "/" + year + " " + hourFormatted + ":" +
-		minuteFormatted + morning;
-		*/
-	}
-
-	function preencheForm() {
-
-		var url = "/cgi-bin/passmots/registro.py";
-
-		if (variavel > 0) {
-			url += "?cod=" + variavel;
-		}
-
-		$.getJSON(url, function (data) {
-
-			//console.log(data);
-			var registro = data.registro;
-
-			$("#codRegistro").val(registro[0].codRegistro);
-			$("#codOrigemRegistro").val(registro[0].codOrigemRegistro);
-			$("#codTipoCampo").val(registro[0].codTipoCampo);
-			$("#ordem").val(registro[0].ordem);
-			
-			$("#registro").val(registro[0].registro.replace("/%r%n/g", "\n", -1));
-			$("#dtAtualizacao").val(formatDate(registro[0].dtAtualizacao));
-			
-			carregaCombos(registro[0].codOrigemRegistro, registro[0].codTipoCampo);
-		});
-	}
-
-	function formNull() {
-		$("#codRegistro").val(0);
-		$("#codOrigemRegistro").val(0);
-		$("#codTipoCampo").val(0);
-		$("#ordem").val(0);
-		$("#registro").val("");
-		$("#dtAtualizacao").val("0001-01-01T00:00");
-		
-		carregaCombos(0, 0);
-	}
-
-	function carregaCombos(codOrigemRegistro, codTipoCampo) {
-
-		param = encodeURI("cod=" + codOrigemRegistro);
-
-		$("#codOrigemRegistroDiv").attr('param', param);
-		$("#codOrigemRegistroDiv").load("/html/modelos/passmots/origemRegistroCmb.html");
-
-		param = encodeURI("cod=" + codTipoCampo);
-
-		$("#codTipoCampoDiv").attr('param', param);
-		$("#codTipoCampoDiv").load("/html/modelos/passmots/tipoCampoCmb.html");
-	}
-
-	$("form").submit(function (event) {
-		event.preventDefault();
-	});
-	
-	
-	$("#newPass").on("click", function () {
-		//event.preventDefault();
-		var conf = confirm("Deseja realmente gerar\numa nova senha?");
-		
-		if (conf){
-			gerarSenha();
-		}
-	});
-	
-
-	$(document).ready(function () {
-		formNull();
-		//$("#codRegistroDiv").css("display", "none");
-
-		$("button").on("click", function(){
-			var txt = $(this).html();
-			var action = "/cgi-bin/passmots/salvaRegistro.py";
-
-			if (txt === "Salvar") {
-				alert(1);
-
-				$.post(
-					action, 
-					$(this).serialize(), 
-					function(data) {
-						alert("Dados salvos!");
-						console.log(data);
-					}
-				);
-
-			} else if (txt === "Excuir") {
-				alert(2);
-			}
-		});
-
-		//procura na url da pagina
-		var urlParams = new URLSearchParams(window.location.search);
-
-		if ((urlParams.has('cod'))){
-			variavel = urlParams.get("cod");
-			preencheForm();
-		}
-
-		//procura na div container
-		let params = decodeURI(
-			$("#codRegistroDiv")
-				.parent()
-				.parent()
-				.parent()
-				.parent()
-				.attr('param')
-		);
-
-		let searchParams = new URLSearchParams(params);
-
-		if (searchParams.has("cod")){
-			variavel = searchParams.get("cod");
-			preencheForm();
-		}
-
-	});
-
-</script>
-

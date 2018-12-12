@@ -23,6 +23,9 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.passmots.Registro import Registro
 from objetos.passmots.RegistroDAO import RegistroDAO
 
@@ -42,26 +45,27 @@ registroDAO = RegistroDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+
+saida = ""
+
+
+saida += """
 {
-	"registro": [""")
+	"registro": ["""
 
 registro = registroDAO.select(codRegistro)
 
 
 
-print(
-"""
+saida += """
 		{}
-			"codRegistro": "{}",
-			"codOrigemRegistro": "{}",
-			"codTipoCampo": "{}",
-			"ordem": "{}",
+			"codRegistro": {},
+			"codOrigemRegistro": {},
+			"codTipoCampo": {},
+			"ordem": {},
 			"registro": "{}",
 			"dtAtualizacao": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			registro.getCodRegistro(),
 			registro.getCodOrigemRegistro(),
@@ -73,14 +77,19 @@ print(
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			registro.getDtAtualizacao(),
+			FormatData.para_JDate(registro.getDtAtualizacao()),
 			"}"
 		)
-	)
+
+
+saida += """
+	]
+}
+"""
 
 
 print(
-"""
-	]
-}
-""")
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
