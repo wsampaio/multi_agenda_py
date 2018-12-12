@@ -37,19 +37,7 @@ conta = Conta()
 contaDAO = ContaDAO()
 
 
-
-
-
-
-
 print("Content-type: text/html\n")
-
-
-
-
-
-
-
 
 
 if str(form) != "FieldStorage(None, None, '')":
