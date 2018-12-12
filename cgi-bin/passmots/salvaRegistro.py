@@ -42,7 +42,7 @@ print("Content-type: text/html\n")
 
 if str(form) != "FieldStorage(None, None, '')":
 	codRegistro = int(form.getvalue("codRegistro"))
-.
+
 
 	if form.getvalue("codRegistro"):
 		registro.setCodRegistro(int(form.getvalue("codRegistro")))
