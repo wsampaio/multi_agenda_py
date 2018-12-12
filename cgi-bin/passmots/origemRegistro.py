@@ -43,7 +43,10 @@ origemRegistroDAO = OrigemRegistroDAO()
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
+saida = ""
+
+
+saida += """
 """
 {
 	"origemRegistro": [""")
@@ -52,8 +55,7 @@ origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
 
 
 
-print(
-"""
+saida+= """
 		{}
 			"codOrigemRegistro": "{}",
 			"origemRegistro": "{}"
@@ -72,8 +74,14 @@ print(
 	)
 
 
-print(
-"""
+saida+= """
 	]
 }
 """)
+
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
