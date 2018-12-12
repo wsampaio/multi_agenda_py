@@ -30,10 +30,12 @@ tipoCampoDAO = TipoCampoDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = ""
+
+
+saida += """
 {
-	"tiposCampos": [""")
+	"tiposCampos": ["""
 
 i = 0
 lista = tipoCampoDAO.getLista()
@@ -42,28 +44,30 @@ contaLista = len(lista) -1
 
 for forTipoCampo in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codTipoCampo": "{}",
+			"codTipoCampo": {},
 			"tipoCampo": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			forTipoCampo.getCodTipoCampo(),
 			forTipoCampo.getTipoCampo(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
