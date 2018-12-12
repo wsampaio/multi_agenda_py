@@ -22,7 +22,7 @@
 					<h1>Registro</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
-				<form>
+				<form id="registroFrm">
 					<div class="form-group" id="codRegistroDiv"> 
 						<label for="codRegistro">codRegistro</label>
 						<input 
@@ -169,8 +169,8 @@
 				
 				$(".salvar").on("click", function(){
 					var txt = $(this).html();
-					var frm = $("#contaFrm");
-					var action = "/cgi-bin/financeiro/salvaConta.py";
+					var frm = $("#registroFrm");
+					var action = "/cgi-bin/passmots/salvaRegistro.py";
 					var dados = "";
 					
 					if (txt === "Salvar") {
@@ -205,6 +205,10 @@
 					preencheForm();
 				} else {
 					formNull();
+				}
+
+				if (searchParams.has('cod2')) {
+					$("#codOrigemRegistro").val(searchParams.get("cod2"));
 				}
 
 			});
