@@ -23,7 +23,7 @@
 					<h1>Origem do Registro</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
-				<form>
+				<form id="origemRegistroFrm">
 					<div class="form-group" id="codOrigemRegistroDiv"> 
 						<label for="codOrigemRegistro">codOrigemRegistro</label>
 						<input 
@@ -52,10 +52,8 @@
 		<script>
 			
 			var variavel = 0;
-
 			
 			function preencheForm() {
-
 				var url = "/cgi-bin/passmots/origemRegistro.py";
 
 				if (variavel > 0) {
@@ -63,21 +61,20 @@
 				}
 
 				$.getJSON(url, function (data) {
+					//console.log(data);
+					var obj = data.origemRegistro;
 
-					console.log(data);
-					var origemRegistro = data.origemRegistro;
-
-					$("#codOrigemRegistro").val(origemRegistro[0].codOrigemRegistro);
-					$("#origemRegistro").val(origemRegistro[0].origemRegistro.replace(/%r%n/g, "\n", -1));
-
+					$("#codOrigemRegistro").val(obj[0].codOrigemRegistro);
+					$("#origemRegistro").val(obj[0].origemRegistro.replace(/%r%n/g, "\n", -1));
+				})
+				.done(function( json ) {
+					//
 				});
 			}
 
 			function formNull() {
-				
 				$("#codOrigemRegistro").val(0);
 				$("#origemRegistro").val("");
-
 			}
 
 			$("form").submit(function (event) {
@@ -86,62 +83,52 @@
 			
 			$(document).ready(function () {
 			
-				formNull();
-				//$("#codOrigemRegistroDiv").css("display", "none");
+				$("#codOrigemRegistroDiv").css("display", "none");
 
-				$("button").on("click", function(){
+				$(".copiar").on("click", function(){
+					$("#codOrigemRegistroDiv").css("display", "block");
+					$("#codOrigemRegistro").val(0);
+				});
+
+				$(".salvar").on("click", function(){
 					var txt = $(this).html();
+					var frm = $("#origemRegistroFrm");
 					var action = "/cgi-bin/passmots/salvaOrigemRegistro.py";
+					var dados = "";
 					
 					if (txt === "Salvar") {
-						alert(1);
-						
-						$.post(
-							action, 
-							$(this).serialize(), 
-							function(data) {
-								alert("Dados salvos!");
-								console.log(data);
-							}
-						);
-						
-					} else if (txt === "Excuir") {
-						alert(2);
+						dados = frm.serialize();
+					} else if (txt === "Excluir") {
+						dados = frm.serialize() + "&delete=True";
 					}
+					
+					$.post(
+						action, 
+						dados, 
+						function(data) {
+							alert("Dados salvos!");
+							//console.log(data);
+						}
+					)
 				});
 				
 				
+				var searchParams = "";
 				
-				
-				
-				
-				
-				
-				
-				
-				//procura na url da pagina
-				var urlParams = new URLSearchParams(window.location.search);
-
-				if ((urlParams.has('cod'))){
-					variavel = urlParams.get("cod");
-					preencheForm();
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
 				}
-
-				//procura na div container
-				let params = decodeURI(
-					$("#codOrigemRegistroDiv")
-					.parent()
-					.parent()
-					.parent()
-					.parent()
-					.attr('param')
-				);
-		
-				let searchParams = new URLSearchParams(params);
 				
-				if (searchParams.has("cod")){
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('cod')) {
 					variavel = searchParams.get("cod");
 					preencheForm();
+				} else {
+					formNull();
 				}
 
 			});

@@ -47,20 +47,18 @@ saida = ""
 
 
 saida += """
-"""
 {
-	"origemRegistro": [""")
+	"origemRegistro": ["""
 
 origemRegistro = origemRegistroDAO.select(codOrigemRegistro)
 
 
 
-saida+= """
+saida += """
 		{}
-			"codOrigemRegistro": "{}",
+			"codOrigemRegistro": {},
 			"origemRegistro": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			origemRegistro.getCodOrigemRegistro(),
 			origemRegistro.getOrigemRegistro()
@@ -71,13 +69,12 @@ saida+= """
 				.replace("\"", "\\\""),
 			"}"
 		)
-	)
 
 
 saida+= """
 	]
 }
-""")
+"""
 
 
 print(

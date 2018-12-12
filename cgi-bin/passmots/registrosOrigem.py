@@ -62,13 +62,15 @@ if codOrigemRegistro > 0:
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
+saida = ""
 
-print(
-"""
+
+saida += """
 {
+	"codOrigemRegistro": """ + str(origemRegistro.getCodOrigemRegistro()) + """,
 	"origemRegistro": \"""" + origemRegistro.getOrigemRegistro() + """\",
-	"registro": ["""
-)
+	"registros": ["""
+
 
 
 tipoCampo = tipoCampoDAO.select(2)
@@ -83,30 +85,35 @@ contaLista = len(lista) -1
 for forRegistro in lista:
 	tipoCampo = tipoCampoDAO.select(forRegistro.getCodTipoCampo())
 
-	print(
-"""
+	saida += """
 		{}
 			"tipoCampo": "{}",
 			"codRegistro": {},
 			"registro": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			tipoCampo.getTipoCampo(),
 			forRegistro.getCodRegistro(),
 			forRegistro.getRegistro(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
+

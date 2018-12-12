@@ -39,10 +39,10 @@ if str(form) != "FieldStorage(None, None, '')":
 	codOrigemRegistro = int(form.getvalue("codOrigemRegistro"))
 
 	if form.getvalue("codOrigemRegistro"):
-		conta.setCodOrigemRegistro(int(form.getvalue("codOrigemRegistro")))
+		origemRegistro.setCodOrigemRegistro(int(form.getvalue("codOrigemRegistro")))
 
 	if form.getvalue("origemRegistro"):
-		conta.setOrigemRegistro(str(form.getvalue("origemRegistro")))
+		origemRegistro.setOrigemRegistro(str(form.getvalue("origemRegistro")))
 
 
 
