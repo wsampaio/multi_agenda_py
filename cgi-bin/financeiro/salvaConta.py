@@ -56,13 +56,13 @@ if str(form) != "FieldStorage(None, None, '')":
 	codConta = int(form.getvalue("codConta"))
 
 	if form.getvalue("codConta"):
-		conta.setCodConta(form.getvalue("codConta"))
+		conta.setCodConta(int(form.getvalue("codConta")))
 
 	if form.getvalue("codTipoConta"):
-		conta.setCodTipoConta(form.getvalue("codTipoConta"))
+		conta.setCodTipoConta(int(form.getvalue("codTipoConta")))
 
 	if form.getvalue("descricao"):
-		conta.setDescricao(form.getvalue("descricao"))
+		conta.setDescricao(str(form.getvalue("descricao")))
 	
 	if form.getvalue("mesReferencia"):
 		conta.setMesReferencia(
@@ -75,16 +75,16 @@ if str(form) != "FieldStorage(None, None, '')":
 		)
 	
 	if form.getvalue("codBarras"):
-		conta.setCodBarras(form.getvalue("codBarras"))
+		conta.setCodBarras(str(form.getvalue("codBarras")))
 
 	if form.getvalue("valor"):
-		conta.setValor(form.getvalue("valor"))
+		conta.setValor(float(form.getvalue("valor")))
 
 	if form.getvalue("codReceitaPagadora"):
-		conta.setCodReceitaPagadora(form.getvalue("codReceitaPagadora"))
+		conta.setCodReceitaPagadora(int(form.getvalue("codReceitaPagadora")))
 
 	if form.getvalue("codPagador"):
-		conta.setCodPagador(form.getvalue("codPagador"))
+		conta.setCodPagador(int(form.getvalue("codPagador")))
 	
 	if form.getvalue("contaPaga"):
 		conta.setContaPaga(True)
@@ -92,7 +92,7 @@ if str(form) != "FieldStorage(None, None, '')":
 		conta.setContaPaga(False)
 	
 	if form.getvalue("valorPago"):
-		conta.setValorPago(form.getvalue("valorPago"))
+		conta.setValorPago(float(form.getvalue("valorPago")))
 	
 	if form.getvalue("dtPagamento"):
 		conta.setDtPagamento(
