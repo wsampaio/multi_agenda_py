@@ -38,8 +38,13 @@ origemRegistroDAO = OrigemRegistroDAO()
 if str(form) != "FieldStorage(None, None, '')":
 	codOrigemRegistro = int(form.getvalue("codOrigemRegistro"))
 
-	origemRegistro.setCodOrigemRegistro(form.getvalue("codOrigemRegistro"))
-	origemRegistro.setOrigemRegistro(form.getvalue("origemRegistro"))
+	if form.getvalue("codOrigemRegistro"):
+		conta.setCodOrigemRegistro(int(form.getvalue("codOrigemRegistro")))
+
+	if form.getvalue("origemRegistro"):
+		conta.setOrigemRegistro(str(form.getvalue("origemRegistro")))
+
+
 
 	if codOrigemRegistro > 0:
 		if form.getvalue("delete"):
