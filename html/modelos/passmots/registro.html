@@ -122,9 +122,9 @@
 				});
 			}
 
-			function formNull() {
+			function formNull(cod2) {
 				$("#codRegistro").val(0);
-				$("#codOrigemRegistro").val(0);
+				$("#codOrigemRegistro").val(cod2);
 				$("#codTipoCampo").val(0);
 				$("#ordem").val(0);
 				$("#registro").val("");
@@ -204,12 +204,16 @@
 					variavel = searchParams.get("cod");
 					preencheForm();
 				} else {
-					formNull();
+					var cod2 = 0;
+					
+					if (searchParams.has('cod2')) {
+						cod2 = searchParams.get("cod2");
+					}
+					
+					formNull(cod2);
 				}
 
-				if (searchParams.has('cod2')) {
-					$("#codOrigemRegistro").val(searchParams.get("cod2"));
-				}
+				
 
 			});
 
