@@ -108,9 +108,9 @@ else:
 
 #print("Content-type: application/json\n")
 
-print("form = " + str(form))
+#print("form = " + str(form))
 #print("codConta = " + str(conta.getCodConta()))
-print("delete = " + str(form.getvalue("delete")))
+#print("delete = " + str(form.getvalue("delete")))
 
 
 #print("dtAtualizacao = " + str(registro.getDtAtualizacao()))
