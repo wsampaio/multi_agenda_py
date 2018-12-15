@@ -148,7 +148,7 @@
 				.done(function( json ) {
 					carregaCombos();
 				});
-				
+
 				//
 			}
 
@@ -165,7 +165,7 @@
 				$("#contaPaga").val(false);
 				$("#valorPago").val(0.0);
 				$("#dtPagamento").val("0001-01-01");
-				
+
 				carregaCombos();
 			}
 
@@ -175,7 +175,7 @@
 
 			function carregaCombos() {
 				var param = "";
-				
+
 				param = encodeURI("cod=" + $("#codTipoConta").val());
 				$("#codTipoContaDiv").attr('param', param);
 				$("#codTipoContaDiv").load("/html/modelos/financeiro/tipoContaCmb.html");
@@ -201,19 +201,19 @@
 					$("#codContaDiv").css("display", "block");
 					$("#codConta").val(0);
 				});
-				
+
 				$(".salvar").on("click", function(){
 					var txt = $(this).html();
 					var frm = $("#contaFrm");
 					var action = "/cgi-bin/financeiro/salvaConta.py";
 					var dados = "";
-					
+
 					if (txt === "Salvar") {
 						dados = frm.serialize();
 					} else if (txt === "Excluir") {
 						dados = frm.serialize() + "&delete=True";
 					}
-					
+
 					$.post(
 						action, 
 						dados, 
@@ -223,18 +223,18 @@
 						}
 					)
 				});
-				
+
 				var searchParams = "";
-				
+
 				if ($("#principal").length > 0) {
 					//url = new URL($("#principal").attr("url"));
 					searchParams = $("#principal").attr("url").split("?")[1];
 				} else {
 					searchParams = window.location.search;
 				}
-				
+
 				searchParams = new URLSearchParams(searchParams);
-				
+
 				if (searchParams.has('cod')) {
 					variavel = searchParams.get("cod");
 					preencheForm();
