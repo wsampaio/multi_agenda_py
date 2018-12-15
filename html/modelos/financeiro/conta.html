@@ -10,10 +10,6 @@
 			table, td, th {
 				border:solid;
 			}
-
-			.colx {
-				display: none;
-			}
 		</style>
 		<script src="/html/btp/jquery.js"></script>
 	</head>
@@ -35,68 +31,68 @@
 						<small id="codCategoriaHelp"
 							   class="form-text text-muted">codConta</small>
 					</div>
-					
+
 					<div class="form-group" id="codTipoContaDiv"> 
 						<label for="codTipoConta">codTipoConta</label>
 						<input class="form-control" id="codTipoConta" name="codTipoConta" 
 							   placeholder="codTipoConta" type="number">
 					</div>
-					
+
 					<div class="form-group" id="descricaoDiv"> 
 						<label for="descricao">descricao</label>
 						<textarea class="form-control" id="descricao" name="descricao" 
 							   placeholder="descricao"></textarea>
 					</div>
-					
+
 					<div class="form-group" id="mesReferenciaDiv"> 
 						<label for="mesReferencia">mesReferencia</label>
 						<input class="form-control" id="mesReferencia" name="mesReferencia" 
 							   placeholder="mesReferencia" type="month">
 					</div>
-					
+
 					<div class="form-group" id="dtVencimentoDiv"> 
 						<label for="dtVencimento">dtVencimento</label>
 						<input class="form-control" id="dtVencimento" name="dtVencimento" 
 							   placeholder="dtVencimento" type="date">
 					</div>
-					
+
 					<div class="form-group" id="codBarrasDiv"> 
 						<label for="codBarras">codBarras</label>
 						<textarea class="form-control" id="codBarras" name="codBarras" 
 							   placeholder="codBarras"></textarea>
 					</div>
-					
+
 					<div class="form-group" id="valorDiv"> 
 						<label for="valor">valor</label>
 						<input class="form-control" id="valor" name="valor" 
 							   placeholder="valor" type="number">
 					</div>
-					
+
 					<div class="form-group" id="codReceitaPagadoraDiv"> 
 						<label for="codReceitaPagadora">codReceitaPagadora</label>
 						<input class="form-control" id="codReceitaPagadora" name="codReceitaPagadora" 
 							   placeholder="codReceitaPagadora" type="number">
 					</div>
-					
+
 					<div class="form-group" id="codPagadorDiv"> 
 						<label for="codPagador">codPagador</label>
 						<input class="form-control" id="codPagador" name="codPagador" 
 							   placeholder="codPagador" type="number">
 					</div>
-					
+
 					<div class="form-check" id="contaPagaDiv">
 						<input class="form-check-input" type="checkbox" value="true" id="contaPaga" name="contaPaga">
 						<label class="form-check-label" for="contaPaga">
 							contaPaga
 						</label>
 					</div>
-					
+
 					<div class="form-group" id="valorPagoDiv"> 
 						<label for="valorPago">valorPago</label>
 						<input class="form-control" id="valorPago" name="valorPago" 
 							   placeholder="valorPago" type="number">
 					</div>
-					
+
 					<div class="form-group" id="dtPagamentoDiv"> 
 						<label for="dtPagamento">dtPagamento</label>
 						<input class="form-control" id="dtPagamento" name="dtPagamento" 
@@ -165,7 +161,7 @@
 				$("#contaPaga").val(false);
 				$("#valorPago").val(0.0);
 				$("#dtPagamento").val("0001-01-01");
-				
+
 				carregaCombos();
 			}
 
@@ -175,7 +171,7 @@
 
 			function carregaCombos() {
 				var param = "";
-				
+
 				param = encodeURI("cod=" + $("#codTipoConta").val());
 				$("#codTipoContaDiv").attr('param', param);
 				$("#codTipoContaDiv").load("/html/modelos/financeiro/tipoContaCmb.html");
@@ -194,26 +190,26 @@
 			}
 
 			$(document).ready(function () {
-				
+
 				$("#codContaDiv").css("display", "none");
 
 				$(".copiar").on("click", function(){
 					$("#codContaDiv").css("display", "block");
 					$("#codConta").val(0);
 				});
-				
+
 				$(".salvar").on("click", function(){
 					var txt = $(this).html();
 					var frm = $("#contaFrm");
 					var action = "/cgi-bin/financeiro/salvaConta.py";
 					var dados = "";
-					
+
 					if (txt === "Salvar") {
 						dados = frm.serialize();
 					} else if (txt === "Excluir") {
 						dados = frm.serialize() + "&delete=True";
 					}
-					
+
 					$.post(
 						action, 
 						dados, 
@@ -223,25 +219,25 @@
 						}
 					)
 				});
-				
+
 				var searchParams = "";
-				
+
 				if ($("#principal").length > 0) {
 					//url = new URL($("#principal").attr("url"));
 					searchParams = $("#principal").attr("url").split("?")[1];
 				} else {
 					searchParams = window.location.search;
 				}
-				
+
 				searchParams = new URLSearchParams(searchParams);
-				
+
 				if (searchParams.has('cod')) {
 					variavel = searchParams.get("cod");
 					preencheForm();
 				} else {
 					formNull();
 				}
-				
+
 			});
 
 		</script>
