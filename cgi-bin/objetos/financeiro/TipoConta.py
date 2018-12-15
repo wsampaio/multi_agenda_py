@@ -20,8 +20,9 @@ CREATE TABLE tiposContas (
 	codTipoConta INTEGER, 
 	tipoConta TEXT, 
 	codModelo INTEGER, 
+	contaDeCredito BOOLEAN DEFAULT 0, 
+	tipoContaAtivo BOOLEAN DEFAULT 0, 
 	codPagador INTEGER, 
-	tipoContaAtivo BOOLEAN DEFAULT false, 
 	dtInicio TEXT, 
 	dtFinal TEXT
 );
@@ -33,8 +34,9 @@ class TipoConta:
 	__codTipoConta = 0
 	__tipoConta = ""
 	__codModelo = 0
-	__codPagador = 0
+	__contaDeCredito = False
 	__tipoContaAtivo = False
+	__codPagador = 0
 	__dtInicio = FormatData.de_JDate("0001-01-01T00:00")
 	__dtFinal = FormatData.de_JDate("0001-01-01T00:00")
 
@@ -45,10 +47,11 @@ class TipoConta:
 		self.setCodTipoConta(array[0])
 		self.setTipoConta(array[1])
 		self.setCodModelo(array[2])
-		self.setCodPagador(array[3])
+		self.setContaDeCredito(array[3])
 		self.setTipoContaAtivo(array[4])
-		self.setDtInicio(FormatData.de_JDate(array[5]))
-		self.setDtFinal(FormatData.de_JDate(array[6]))
+		self.setCodPagador(array[5])
+		self.setDtInicio(FormatData.de_JDate(array[6]))
+		self.setDtFinal(FormatData.de_JDate(array[7]))
 
 		return self
 
@@ -82,14 +85,14 @@ class TipoConta:
 			self.__codModelo = self.getCodModelo()
 
 
-	def getCodPagador(self):
-		return int(self.__codPagador)
+	def getContaDeCredito(self):
+		return bool(self.__contaDeCredito)
 
-	def setCodPagador(self, codPagador):
+	def setContaDeCredito(self, contaDeCredito):
 		try:
-			self.__codPagador = int(codPagador)
+			self.__contaDeCredito = bool(contaDeCredito)
 		except ValueError:
-			self.__codPagador = self.getCodPagador()
+			self.__contaDeCredito = self.getContaDeCredito()
 
 
 	def getTipoContaAtivo(self):
@@ -100,6 +103,16 @@ class TipoConta:
 			self.__tipoContaAtivo = bool(tipoContaAtivo)
 		except ValueError:
 			self.__tipoContaAtivo = self.getTipoContaAtivo()
+
+
+	def getCodPagador(self):
+		return int(self.__codPagador)
+
+	def setCodPagador(self, codPagador):
+		try:
+			self.__codPagador = int(codPagador)
+		except ValueError:
+			self.__codPagador = self.getCodPagador()
 
 
 	def getDtInicio(self):

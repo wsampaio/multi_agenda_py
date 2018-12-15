@@ -3,15 +3,12 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
 		<title>tipoConta</title>
 		<style>
 			table, td, th {
 				border:solid;
-			}
-
-			.colx {
-				display: none;
 			}
 		</style>
 		<script src="/html/btp/jquery.js"></script>
@@ -23,7 +20,7 @@
 					<h1>Tipo de Conta</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
-				<form>
+				<form id="tipoContaFrm">
 					<div class="form-group" id="codTipoContaDiv"> 
 						<label for="codTipoConta">codTipoConta</label>
 						<input 
@@ -34,209 +31,183 @@
 						<small id="codTipoContaHelp"
 							   class="form-text text-muted">codTipoConta</small>
 					</div>
-					
-					<div class="form-group" id="codTipoContaDiv"> 
-						<label for="codTipoConta">codTipoConta</label>
-						<input class="form-control" id="codTipoConta" name="codTipoConta" 
-							   placeholder="codTipoConta" type="number">
+
+					<div class="form-group" id="tipoContaDiv"> 
+						<label for="tipoConta">tipoConta</label>
+						<input class="form-control" id="tipoConta" name="tipoConta" 
+							   placeholder="tipoConta" type="text">
 					</div>
-					
-					<div class="form-group" id="descricaoDiv"> 
-						<label for="descricao">descricao</label>
-						<textarea class="form-control" id="descricao" name="descricao" 
-							   placeholder="descricao"></textarea>
+
+					<div class="form-group" id="codModeloDiv"> 
+						<label for="codModelo">codModelo</label>
+						<input class="form-control" id="codModelo" name="codModelo" 
+							   placeholder="codModelo" type="number">
 					</div>
-					
-					<div class="form-group" id="mesReferenciaDiv"> 
-						<label for="mesReferencia">mesReferencia</label>
-						<input class="form-control" id="mesReferencia" name="mesReferencia" 
-							   placeholder="mesReferencia" type="month">
+
+					<div class="form-check" id="contaDeCreditoDiv">
+						<input class="form-check-input" type="checkbox" value="true" id="contaDeCredito" name="contaDeCredito">
+						<label class="form-check-label" for="contaDeCredito">
+							contaDeCredito
+						</label>
 					</div>
-					
-					<div class="form-group" id="dtVencimentoDiv"> 
-						<label for="dtVencimento">dtVencimento</label>
-						<input class="form-control" id="dtVencimento" name="dtVencimento" 
-							   placeholder="dtVencimento" type="date">
+
+					<div class="form-check" id="tipoContaAtivoDiv">
+						<input class="form-check-input" type="checkbox" value="true" id="tipoContaAtivo" name="tipoContaAtivo">
+						<label class="form-check-label" for="tipoContaAtivo">
+							tipoContaAtivo
+						</label>
 					</div>
-					
-					<div class="form-group" id="codBarrasDiv"> 
-						<label for="codBarras">codBarras</label>
-						<textarea class="form-control" id="codBarras" name="codBarras" 
-							   placeholder="codBarras"></textarea>
-					</div>
-					
-					<div class="form-group" id="valorDiv"> 
-						<label for="valor">valor</label>
-						<input class="form-control" id="valor" name="valor" 
-							   placeholder="valor" type="number">
-					</div>
-					
-					<div class="form-group" id="codReceitaPagadoraDiv"> 
-						<label for="codReceitaPagadora">codReceitaPagadora</label>
-						<input class="form-control" id="codReceitaPagadora" name="codReceitaPagadora" 
-							   placeholder="codReceitaPagadora" type="number">
-					</div>
-					
+
 					<div class="form-group" id="codPagadorDiv"> 
 						<label for="codPagador">codPagador</label>
 						<input class="form-control" id="codPagador" name="codPagador" 
 							   placeholder="codPagador" type="number">
 					</div>
-					
-					<div class="form-check" id="contaPagaDiv">
-						<input class="form-check-input" type="checkbox" value="true" id="contaPaga" name="contaPaga">
-						<label class="form-check-label" for="contaPaga">
-							contaPaga
-						</label>
+
+					<div class="form-group" id="dtInicioDiv"> 
+						<label for="dtInicio">dtInicio</label>
+						<input class="form-control" id="dtInicio" name="dtInicio" 
+							   placeholder="dtInicio" type="date">
 					</div>
 					
-					<div class="form-group" id="valorPagoDiv"> 
-						<label for="valorPago">valorPago</label>
-						<input class="form-control" id="valorPago" name="valorPago" 
-							   placeholder="valorPago" type="number">
-					</div>
-					
-					<div class="form-group" id="dtPagamentoDiv"> 
-						<label for="dtPagamento">dtPagamento</label>
-						<input class="form-control" id="dtPagamento" name="dtPagamento" 
-							   placeholder="dtPagamento" type="date">
+					<div class="form-group" id="dtFinalDiv"> 
+						<label for="dtFinal">dtFinal</label>
+						<input class="form-control" id="dtFinal" name="dtFinal" 
+							   placeholder="dtFinal" type="date">
 					</div>
 				</form>
 			</div>
-			<div class="row-fluid">
-				<button class="btn btn-primary">Salvar</button> 
-				<button class="btn btn-danger">Excuir</button> 
+			<div class="row-fluid btn-group">
+				<button class="salvar btn btn-primary">Salvar</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-danger">Excluir</button> 
 			</div>
 		</div>
+
+
+		<script>
+
+			var variavel = 0;
+
+			function preencheForm() {
+				var url = "/cgi-bin/financeiro/tipoConta.py";
+
+				if (variavel > 0) {
+					url += "?cod=" + variavel;
+				}
+
+				$.getJSON(url, function (data) {
+					//console.log(data);
+					var obj = data.tipoConta;
+
+					$("#codTipoConta").val(obj[0].codTipoConta);
+					$("#tipoConta").val(obj[0].tipoConta);
+					$("#codModelo").val(obj[0].codModelo);
+
+					if (obj[0].contaDeCredito == "True"){
+						$("#contaDeCredito").attr("checked", "checked")
+					} else {
+						$("#contaDeCredito").prop("checked")
+					}
+
+					if (obj[0].tipoContaAtivo == "True"){
+						$("#tipoContaAtivo").attr("checked", "checked")
+					} else {
+						$("#tipoContaAtivo").prop("checked")
+					}
+
+					$("#codPagador").val(obj[0].codPagador);
+					$("#dtInicio").val(obj[0].dtInicio);
+					$("#dtFinal").val(obj[0].dtFinal);
+				})
+				.done(function( json ) {
+					carregaCombos();
+				});
+
+				//
+			}
+
+			function formNull() {
+				$("#codTipoConta").val(0);
+				$("#tipoConta").val("");
+				$("#codModelo").val(0);				
+				$("#contaDeCredito").val(false);
+				$("#tipoContaAtivo").val(false);
+				$("#codPagador").val(0);
+				$("#dtInicio").val("0001-01-01");
+				$("#dtFinal").val("0001-01-01");
+
+				carregaCombos();
+			}
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+
+			function carregaCombos() {
+				var param = "";
+				
+				param = encodeURI("cod=" + $("#codModelo").val());
+				$("#codModeloDiv").attr('param', param);
+				$("#codModeloDiv").load("/html/modelos/financeiro/tipoContaModeloCmb.html");
+
+				param = encodeURI("cod=" + $("#codPagador").val());
+				$("#codPagadorDiv").attr('param', param);
+				$("#codPagadorDiv").load("/html/modelos/financeiro/pagadorCmb.html");
+			}
+
+			$(document).ready(function () {
+				
+				$("#codTipoContaDiv").css("display", "none");
+
+				$(".copiar").on("click", function(){
+					$("#codTipoContaDiv").css("display", "block");
+					$("#codTipoConta").val(0);
+				});
+				
+				$(".salvar").on("click", function(){
+					var txt = $(this).html();
+					var frm = $("#tipoContaFrm");
+					var action = "/cgi-bin/financeiro/salvaTipoConta.py";
+					var dados = "";
+					
+					if (txt === "Salvar") {
+						dados = frm.serialize();
+					} else if (txt === "Excluir") {
+						dados = frm.serialize() + "&delete=True";
+					}
+					
+					$.post(
+						action, 
+						dados, 
+						function(data) {
+							alert("Dados salvos!");
+							//console.log(data);
+						}
+					)
+				});
+				
+				var searchParams = "";
+				
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('cod')) {
+					variavel = searchParams.get("cod");
+					preencheForm();
+				} else {
+					formNull();
+				}
+				
+			});
+
+		</script>
 	</body>
 </html>
 
-<script>
-
-	var variavel = 0;
-
-	function preencheForm() {
-		var url = "/cgi-bin/financeiro/conta.py";
-
-		if (variavel > 0) {
-			url += "?cod=" + variavel;
-		}
-
-		$.getJSON(url, function (data) {
-
-			console.log(data);
-			var obj = data.conta;
-
-			$("#codConta").val(obj[0].codConta);
-			$("#codTipoConta").val(obj[0].codTipoConta);
-			$("#descricao").val(obj[0].descricao.replace(/%r%n/g, "\n", -1));
-			$("#mesReferencia").val(obj[0].mesReferencia);
-			$("#dtVencimento").val(obj[0].dtVencimento);
-			$("#codBarras").val(obj[0].codBarras);
-			$("#valor").val(obj[0].valor);
-			$("#codReceitaPagadora").val(obj[0].codReceitaPagadora);
-			$("#codPagador").val(obj[0].codPagador);
-
-			if (obj[0].contaPaga){
-				$("#contaPaga").attr("checked", "checked")
-			} else {
-				$("#contaPaga").attr("checked", "")
-			}
-
-			$("#valorPago").val(obj[0].valorPago);
-			$("#dtPagamento").val(obj[0].dtPagamento);
-		});
-	}
-
-	function formNull() {
-		$("#codConta").val(0);
-		$("#codTipoConta").val(0);
-		$("#descricao").val("");
-		$("#mesReferencia").val("0001-01");
-		$("#dtVencimento").val("0001-01-01");
-		$("#codBarras").val("");
-		$("#valor").val(0.0);
-		$("#codReceitaPagadora").val(0);
-		$("#codPagador").val(0);
-		$("#contaPaga").val(false);
-		$("#valorPago").val(0.0);
-		$("#dtPagamento").val("0001-01-01");
-	}
-
-	$("form").submit(function (event) {
-		event.preventDefault();
-	});
-
-	function carregaCombos() {
-		var param = "";
-		
-		param = encodeURI("cod=" + $("#codTipoConta").val());
-		$("#codTipoContaDiv").attr('param', param);
-		$("#codTipoContaDiv").load("/html/modelos/financeiro/tipoContaCmb.html");
-
-		param = encodeURI(
-			"cod=" + $("#codReceitaPagadora").val() +
-			"&lbl=Receita Pagadora&cmp=codReceitaPagadora" +
-			""
-		);
-		$("#codReceitaPagadoraDiv").attr('param', param);
-		$("#codReceitaPagadoraDiv").load("/html/modelos/financeiro/receitaCmb.html");
-
-		param = encodeURI("cod=" + $("#codPagador").val());
-		$("#codPagadorDiv").attr('param', param);
-		$("#codPagadorDiv").load("/html/modelos/financeiro/pagadorCmb.html");
-	}
-
-	$(document).ready(function () {
-		formNull();
-		//$("#codContaDiv").css("display", "none");
-
-		$("button").on("click", function(){
-			var txt = $(this).html();
-			var action = "/cgi-bin/financeiro/salvaConta.py";
-			
-			if (txt === "Salvar") {
-				$.post(
-					action, 
-					$(this).serialize(), 
-					function(data) {
-						alert("Dados salvos!");
-						console.log(data);
-					}
-				);
-			} else if (txt === "Excuir") {
-				alert(2);
-			}
-		});
-		
-		
-		//procura na url da pagina
-		var urlParams = new URLSearchParams(window.location.search);
-
-		if ((urlParams.has('cod'))){
-			variavel = urlParams.get("cod");
-			preencheForm();
-		}
-
-		//procura na div container
-		let params = decodeURI(
-			$("#codContaDiv")
-			.parent()
-			.parent()
-			.parent()
-			.parent()
-			.attr('param')
-		);
-
-		let searchParams = new URLSearchParams(params);
-		
-		if (searchParams.has("cod")){
-			variavel = searchParams.get("cod");
-			preencheForm();
-		}
-		
-		carregaCombos();
-
-	});
-	
-</script>

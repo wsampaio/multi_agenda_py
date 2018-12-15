@@ -45,39 +45,43 @@ tipoContaDAO = TipoContaDAO()
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+
+saida ="""
 {
-	"tipoConta": [""")
+	"tipoConta": ["""
 
 tipoConta = tipoContaDAO.select(codTipoConta)
 
-print(
-"""
+saida += """
 		{}
 			"codTipoConta": "{}",
 			"tipoConta": "{}",
 			"codModelo": "{}",
-			"codPagador": "{}",
+			"contaDeCredito": "{}",
 			"tipoContaAtivo": "{}",
+			"codPagador": "{}",
 			"dtInicio": "{}",
 			"dtFinal": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			tipoConta.getCodTipoConta(),
 			tipoConta.getTipoConta(),
 			tipoConta.getCodModelo(),
-			tipoConta.getCodPagador(),
+			tipoConta.getContaDeCredito(),
 			tipoConta.getTipoContaAtivo(),
+			tipoConta.getCodPagador(),
 			FormatData.para_Data_Serial(tipoConta.getDtInicio()),
 			FormatData.para_Data_Serial(tipoConta.getDtFinal()),
 			"}"
 		)
-	)
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)

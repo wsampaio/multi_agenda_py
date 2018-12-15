@@ -30,10 +30,10 @@ tipoContaDAO = TipoContaDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+
+saida = """
 {
-	"tiposContas": [""")
+	"tiposContas": ["""
 
 i = 0
 lista = tipoContaDAO.getLista()
@@ -42,38 +42,42 @@ contaLista = len(lista) -1
 
 for forTipoConta in lista:
 
-	print(
-"""
+	saida += """
 		{}
 			"codTipoConta": "{}",
 			"tipoConta": "{}",
 			"codModelo": "{}",
-			"codPagador": "{}",
+			"contaDeCredito": "{}",
 			"tipoContaAtivo": "{}",
+			"codPagador": "{}",
 			"dtInicio": "{}",
 			"dtFinal": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			forTipoConta.getCodTipoConta(),
 			forTipoConta.getTipoConta(),
 			forTipoConta.getCodModelo(),
-			forTipoConta.getCodPagador(),
+			forTipoConta.getContaDeCredito(),
 			forTipoConta.getTipoContaAtivo(),
+			forTipoConta.getCodPagador(),
 			forTipoConta.getDtInicio(),
 			forTipoConta.getDtFinal(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
