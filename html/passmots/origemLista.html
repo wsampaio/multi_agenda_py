@@ -14,43 +14,57 @@
 	</head>
 	<body>
 		<a href="/html/modelos/passmots/origemRegistro.html" target="_blank">(novo)</a>
+		<br><br>
 		<div class="container">
 			<table>
 				<thead>
 					<tr>
-						<th>Lista</th>
 					</tr>
+						<th>&nbsp</th>
+						<th>Lista</th>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
 		</div>
+
+		<script>
+			var url = "/cgi-bin/passmots/listaOrigens.py";
+			$.getJSON(url, function (data) {
+				//console.log(data);
+				var lista = data.lista;
+				var saida = "";
+				for (i = 0; i < lista.length; i++) {
+					saida += "<tr><td>" + (i + 1) + "</td>";
+					saida += "<td>" +
+						"<a " +
+							"class='listaOrigemBtn' " +
+							"target='_blank' " +
+							"href='/html/passmots/registrosOrigem.html?cod=" + lista[i].codOrigemRegistro +
+						"'>" +
+							lista[i].origemRegistro +
+						"</a></td></tr>";
+				}
+
+				$("tbody").append(saida);
+			}).done(function(){
+				$(".listaOrigemBtn").on('click', function(event){
+					event.preventDefault();
+					url = $(this).attr("href");
+
+					if ($("#principal").length > 0) {
+						$("#principal").load(url);
+					} else {
+						//$("#principal").load(url);
+						window.open(url);
+					}
+				});
+			});
+
+			$(document).ready(function(){
+				//
+			});
+		</script>
 	</body>
 </html>
-<script>
 
-		var url = "/cgi-bin/passmots/listaOrigens.py";
-		$.getJSON(url, function (data) {
-			console.log(data);
-			var lista = data.lista;
-			var saida = "";
-			for (i = 0; i < lista.length; i++) {
-				saida += "<tr><td><a class='listaOrigemBtn' target='_blank' href='/html/passmots/registrosOrigem.html?cod=" +
-				lista[i].codOrigemRegistro +
-				"'>" +
-				lista[i].origemRegistro +
-				"</a></td></tr>";
-			}
-			
-			$("tbody").append(saida);
-		})
-
-	$(document).ready(function(){
-		
-		$(".listaOrigemBtn").on('click', function(event){
-			event.preventDefault();
-			urlPrincipal = $(this).attr("href")
-			$("#principal").load(urlPrincipal);
-		});
-	});
-</script>
