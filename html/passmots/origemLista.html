@@ -53,6 +53,7 @@
 					url = $(this).attr("href");
 
 					if ($("#principal").length > 0) {
+						$("#principal").attr("url", url);
 						$("#principal").load(url);
 					} else {
 						//$("#principal").load(url);
