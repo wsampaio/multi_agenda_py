@@ -17,6 +17,7 @@
 			<h1 id="titulo">Titulo</h1>
 			<hr>
 			<a class="" target="_blank" id="novoRegistro" href="">(novo)</a>
+			<br><br>
 			<table>
 				<thead>
 					<tr>
@@ -28,47 +29,51 @@
 				</tbody>
 			</table>
 		</div>
-	</body>
-</html>
-<script>
-	$(document).ready(function(){
 
-		var url = "/cgi-bin/passmots/registrosOrigem.py";
+		<script>
+			$(document).ready(function(){
 
-		var urlParams = new URLSearchParams(window.location.search);
+				var searchParams = "";
+				var url = "/cgi-bin/passmots/registrosOrigem.py";
 
-		if ((urlParams.has('cod'))){
-			url += "?cod=" + urlParams.get('cod');
-		}
+				if ($("#principal").length > 0) {
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+
+				searchParams = new URLSearchParams(searchParams);
+
+				if (searchParams.has('cod')) {
+					url += "?cod=" + searchParams.get('cod');
+				}
 
 
-		$.getJSON(url, function (data) {
+				$.getJSON(url, function (data) {
+					//console.log(data);
+
+					var lista = data.registros;
+					var saida = "";
 			
-			//console.log(data);
+					$("#titulo").html(data.origemRegistro);
+					$("#novoRegistro").attr(
+						"href", 
+						"/html/modelos/passmots/registro.html?cod2=" + data.codOrigemRegistro
+					);
+
+					for (i = 0; i < lista.length; i++) {
+						saida += "<tr><td><a href='/html/modelos/passmots/registro.html?cod=" +
+							lista[i].codRegistro +
+							"' target='_blank'>" +
+							lista[i].tipoCampo +
+							"</a></td><td>" +
+							lista[i].registro +
+							"</td></tr>";
+					}
 			
-			var lista = data.registros;
-			var saida = "";
-			
-			$("#titulo").html(data.origemRegistro);
-			$("#novoRegistro").attr(
-				"href", 
-				"/html/modelos/passmots/registro.html?cod2=" + data.codOrigemRegistro
-			);
-			
-			
-			for (i = 0; i < lista.length; i++) {
-				saida += "<tr><td><a href='/html/modelos/passmots/registro.html?cod=" +
-				lista[i].codRegistro +
-				"' target='_blank'>" +
-				lista[i].tipoCampo +
-				"</a></td><td>" +
-				lista[i].registro +
-				"</td></tr>";
-			}
-			
-			$("tbody").append(saida);
-		})
-	});
+					$("tbody").append(saida);
+				})
+			});
 
 
 
@@ -82,6 +87,7 @@
 //console.log(urlParams.toString()); // "?post=1234&action=edit"
 //console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
 
-
-</script>
+		</script>
+	</body>
+</html>
 
