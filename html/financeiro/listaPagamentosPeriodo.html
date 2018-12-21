@@ -89,13 +89,9 @@
 											"href='#' " +
 											"id='detalhes?" + codReceita + "' " +
 											">detalhes</a>" +
-										"<a " + 
-											"class='mais btn btn-success btn-sm' " +
-											"target='_blank' " +
-											"href='/html/financeiro/contasPelaReceita.html?cod=" + codReceita + "' " +
-											"id='contas?" + codReceita + "'>contas</a>" +
 									"</div>" +
 									"<div class='dtlReceita' id='detalhesReceita" + codReceita + "'>" +
+										"<br>" +
 										"total debitos: <span id='ttlDebt" + codReceita + "'>" + ttlContas + "</span><br>" +
 										"total Saldo geral: <span id='sldGeral" + codReceita + "'>" + sldGeral + "</span><br>" +
 										"total Saldo no banco: " + sldBanco + "<br>" +
@@ -131,15 +127,9 @@
 						if (id == "detalhes") {
 							if ($("#detalhesReceita" + cod).css("display") == 'none'){
 								$("#detalhesReceita" + cod).css("display", 'block')
-							} else {
-								$("#detalhesReceita" + cod).css("display", 'none')
-							}
-						}
-
-						if (id == "contas") {
-							if ($("#panelReceita" + cod).css("display") == 'none'){
 								$("#panelReceita" + cod).css("display", 'block')
 							} else {
+								$("#detalhesReceita" + cod).css("display", 'none')
 								$("#panelReceita" + cod).css("display", 'none')
 							}
 						}
