@@ -25,76 +25,65 @@ cgitb.enable()
 
 from objetos.dbConn.FormatData import FormatData
 
-from objetos.financeiro.Conta import Conta
-from objetos.financeiro.ContaDAO import ContaDAO
+from objetos.financeiro.TipoConta import TipoConta
+from objetos.financeiro.TipoContaDAO import TipoContaDAO
 
 
-codConta = 0
+codTipoConta = 0
 
 form = cgi.FieldStorage()
 
-conta = Conta()
-contaDAO = ContaDAO()
+obj = TipoConta()
+dao = TipoContaDAO()
 
 
 print("Content-type: text/html\n")
 
 
 if str(form) != "FieldStorage(None, None, '')":
-	codConta = int(form.getvalue("codConta"))
-
-	if form.getvalue("codConta"):
-		conta.setCodConta(int(form.getvalue("codConta")))
+	codTipoConta = int(form.getvalue("codTipoConta"))
 
 	if form.getvalue("codTipoConta"):
-		conta.setCodTipoConta(int(form.getvalue("codTipoConta")))
+		obj.setCodTipoConta(int(form.getvalue("codTipoConta")))
 
-	if form.getvalue("descricao"):
-		conta.setDescricao(str(form.getvalue("descricao")))
-	
-	if form.getvalue("mesReferencia"):
-		conta.setMesReferencia(
-			FormatData.de_JDate(form.getvalue("mesReferencia") + "-01T00:00")
-		)
+	if form.getvalue("tipoConta"):
+		obj.setTipoConta(str(form.getvalue("tipoConta")))
 
-	if form.getvalue("dtVencimento"):
-		conta.setDtVencimento(
-			FormatData.de_JDate(form.getvalue("dtVencimento") + "T00:00")
-		)
-	
-	if form.getvalue("codBarras"):
-		conta.setCodBarras(str(form.getvalue("codBarras")))
+	if form.getvalue("codModelo"):
+		obj.setCodModelo(int(form.getvalue("codModelo")))
 
-	if form.getvalue("valor"):
-		conta.setValor(float(form.getvalue("valor")))
+	if form.getvalue("contaDeCredito"):
+		obj.setContaDeCredito(True)
+	else:
+		obj.setContaDeCredito(False)
 
-	if form.getvalue("codReceitaPagadora"):
-		conta.setCodReceitaPagadora(int(form.getvalue("codReceitaPagadora")))
+	if form.getvalue("tipoContaAtivo"):
+		obj.setTipoContaAtivo(True)
+	else:
+		obj.setTipoContaAtivo(False)
 
 	if form.getvalue("codPagador"):
-		conta.setCodPagador(int(form.getvalue("codPagador")))
-	
-	if form.getvalue("contaPaga"):
-		conta.setContaPaga(True)
-	else:
-		conta.setContaPaga(False)
-	
-	if form.getvalue("valorPago"):
-		conta.setValorPago(float(form.getvalue("valorPago")))
-	
-	if form.getvalue("dtPagamento"):
-		conta.setDtPagamento(
-			FormatData.de_JDate(form.getvalue("dtPagamento") + "T00:00")
+		obj.setCodPagador(int(form.getvalue("codPagador")))
+
+	if form.getvalue("dtInicio"):
+		obj.setDtInicio(
+			FormatData.de_JDate(form.getvalue("dtInicio") + "T00:00")
+		)
+
+	if form.getvalue("dtFinal"):
+		obj.setDtFinal(
+			FormatData.de_JDate(form.getvalue("dtFinal") + "T00:00")
 		)
 
 
-	if codConta > 0:
+
+	if codTipoConta > 0:
 		if form.getvalue("delete"):
-			contaDAO.delete(conta.getCodConta())
+			dao.delete(obj.getCodTipoConta())
 		else:
-			contaDAO.update(conta)
+			dao.update(obj)
 	else:
-		contaDAO.insert(conta)
+		dao.insert(obj)
 
 else:
 	#tentando enviar status de erro
@@ -103,7 +92,7 @@ else:
 	#print "Content-Type: text/html\r\n\r\n"
 	
 	#print "Status: 400 Bad Request\r\n"
-	pass
+        pass
 
 
 #print("Content-type: application/json\n")
