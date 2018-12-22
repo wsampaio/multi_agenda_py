@@ -37,7 +37,7 @@ class Tarefa:
 		self.setInicio(FormatData.de_JDate(array[3]))
 		self.setFim(FormatData.de_JDate(array[4]))
 		self.setPrazo(FormatData.de_JDate(array[5]))
-		self.setTerminado(array[6])
+		self.setTerminado(bool(array[6]))
 		self.setOrdem(array[7])
 		self.setCodPrioridade(array[8])
 		return self
