@@ -135,7 +135,7 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					terminado = 'false' AND
+					terminado = 0 AND
 					codTarefaPai < 1
 				ORDER BY
 					codPrioridade,
