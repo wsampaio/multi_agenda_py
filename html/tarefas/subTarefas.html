@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
+		<script src="/html/btp/jquery.js"></script>
+		<title>tarefa</title>
+		<style>
+			table, td, th {
+				
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row-fluid">
+
+
+<table class="
+table 
+table-condensed 
+table-hover 
+table-responsive 
+"
+>
+<thead>
+<tr>
+<th>O</th>
+<th>Tarefa</th>
+<th>Opções</th>
+</tr>
+</thead>
+
+<tbody id="subTarefasTbl">
+</table>
+
+
+
+
+
+
+
+			</div> 
+		</div>
+
+		<script>
+
+			var variavel = 0;
+
+			function preencheTabela(cod) {
+				var url = "/cgi-bin/tarefas/subTarefas.py";
+
+				if (cod > 0) {
+					url += "?cod=" + cod;
+				}
+
+				$.getJSON(url, function (data) {
+					//console.log(data);
+					var saida = ""
+					var lista = data.subTarefas;
+
+					for (i in lista) {
+						saida +=
+							"<tr class='"
+
+							if (lista[i].terminado == "True"){
+								saida += "success"
+							}
+
+							saida += "'>" +
+								"<td>" + lista[i].ordem + "</td>" +
+								"<td>" +
+									"<a " +
+										"class='' " +
+										"target='_blank' " +
+										"href='/html/tarefas/tarefa.html" +
+											"?cod=" + lista[i].codTarefa + "'" +
+									">" + 
+										lista[i].tarefa + 
+									"</a>" +
+								"</td>" +
+								"<td>" +
+									"<a class='btn'>+</a>"
+								"</td>" +
+							"</tr>";
+					}
+
+					//for (){
+					//}
+
+
+
+					$("#subTarefasTbl").append(saida);
+
+
+
+
+
+
+
+
+
+
+					//$("#codTarefa").val(obj[0].codTarefa);
+				})
+				.done(function( json ) {
+					//carregaCombos();
+				});
+			}
+
+			$(document).ready(function () {
+
+				var searchParams = "";
+				var cod = 0;
+
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+
+				searchParams = new URLSearchParams(searchParams);
+
+				if (searchParams.has('cod')) {
+					cod = searchParams.get("cod");
+				}
+
+				preencheTabela(cod);
+
+			});
+
+		</script>
+	</body>
+</html>

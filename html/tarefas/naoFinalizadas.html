@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<script src="/html/btp/jquery.js"></script>
+		<title>naoFinalizadas</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="page-header jumbotron">
+			<h1>
+				Tarefas não finalizadas
+			</h1>
+		</div>
+
+		<div id="listaNaoFinalizadas"></div>
+
+		<script>
+
+			function preencheTabela (){
+			
+				
+				var urlJSON = "/cgi-bin/tarefas/naoFinalizadas.py";
+				
+				$.getJSON(urlJSON, function(data) {
+
+					var saida = "";
+					var lista = data.naoFinalizadas
+					
+					for (i in lista){
+						saida += "<a " +
+							"class='' " +
+							"target='_blank' " +
+							"href='/html/tarefas/tarefa.html?cod=" + 
+								lista[i].codTarefa + 
+							"'>" + 
+								(parseInt(i) + 1) + 
+						"</a>" +
+						"<br>";
+
+						saida += lista[i].tarefa
+							.replace(/%r%n/g, "<br>", -1) + "<br>";
+						
+						saida += "<hr>";
+					}
+					
+					
+					//saida = saida.replace("%r", "<br>");
+					//saida = saida.replace("%n", "<br>");
+					
+					$("#listaNaoFinalizadas").append(saida);
+					
+				}).success(function(){});
+				
+				
+			}
+
+			// Shorthand for $( document ).ready()
+			$(function() {
+				preencheTabela ();
+			});
+		</script>
+	</body>
+</html>
+
