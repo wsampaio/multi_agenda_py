@@ -34,7 +34,7 @@
 
 						saida += "<option value='" + prioridades[i].codPrioridade + "'";
 
-						if (prioridades[i].prioridade == cod){
+						if (prioridades[i].codPrioridade == cod){
 							saida += " selected";
 						}
 
@@ -68,6 +68,7 @@
 				if (searchParams.has("cmp")){
 					$("#prioridadeCmb").attr("name", searchParams.get("cmp"));
 				}
+
 				preenchePrioridadeCmb(variavel);
 			});
 		</script>
