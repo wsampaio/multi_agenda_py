@@ -23,6 +23,9 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.tarefas.Historico import Historico
 from objetos.tarefas.HistoricoDAO import HistoricoDAO
 
@@ -36,34 +39,32 @@ if form:
 
 
 
-historico = Historico()
-historicoDAO = HistoricoDAO()
+obj = Historico()
+dao = HistoricoDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = ""
+
+saida += """
 {
-	"historico": [""")
+	"historico": ["""
 
-historico = historicoDAO.select(codHistorico)
+obj = dao.select(codHistorico)
 
 
-
-print(
-"""
+saida += """
 		{}
 			"codHistorico": "{}",
 			"codTarefa": "{}",
 			"data": "{}",
 			"obs": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			historico.getCodHistorico(),
-			historico.getCodTarefa(),
-			historico.getData(),
-			historico.getObs()
+			obj.getCodHistorico(),
+			obj.getCodTarefa(),
+			FormatData.para_JDate(obj.getData()),
+			obj.getObs()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
@@ -71,11 +72,15 @@ print(
 				.replace("\"", "\\\""),
 			"}"
 		)
-	)
 
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
