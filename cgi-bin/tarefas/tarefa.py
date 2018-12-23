@@ -23,6 +23,9 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.tarefas.Tarefa import Tarefa
 from objetos.tarefas.TarefaDAO import TarefaDAO
 
@@ -38,56 +41,59 @@ if form:
 
 
 
-tarefa = Tarefa()
-tarefaDAO = TarefaDAO()
+obj = Tarefa()
+dao = TarefaDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = ""
+
+saida += """
 {
-	"tarefa": [""")
+	"tarefa": ["""
 
-tarefa = tarefaDAO.select(codTarefa)
+obj = dao.select(codTarefa)
 
 
-
-print(
-"""
+saida += """
 		{}
-			"codTarefa": "{}",
-			"codTarefaPai": "{}",
+			"codTarefa": {},
+			"codTarefaPai": {},
 			"tarefa": "{}",
 			"inicio": "{}",
 			"fim": "{}",
 			"prazo": "{}",
 			"terminado": "{}",
-			"ordem": "{}",
-			"codPrioridade": "{}"
-		{}""".
-		format(
+			"ordem": {},
+			"codPrioridade": {}
+		{}""".format(
 			"{",
-			tarefa.getCodTarefa(),
-			tarefa.getCodTarefaPai(),
-			tarefa.getTarefa()
+			obj.getCodTarefa(),
+			obj.getCodTarefaPai(),
+			obj.getTarefa()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			tarefa.getInicio(),
-			tarefa.getFim(),
-			tarefa.getPrazo(),
-			tarefa.getTerminado(),
-			tarefa.getOrdem(),
-			tarefa.getCodPrioridade(),
+			FormatData.para_JDate(obj.getInicio()),
+			FormatData.para_JDate(obj.getFim()),
+			FormatData.para_JDate(obj.getPrazo()),
+			obj.getTerminado(),
+			obj.getOrdem(),
+			obj.getCodPrioridade(),
 			"}"
 		)
-	)
 
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
+
