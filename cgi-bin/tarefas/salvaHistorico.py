@@ -23,6 +23,8 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.tarefas.Historico import Historico
 from objetos.tarefas.HistoricoDAO import HistoricoDAO
 
@@ -31,26 +33,36 @@ codHistorico = 0
 
 form = cgi.FieldStorage()
 
-historico = Historico()
-historicoDAO = HistoricoDAO()
+obj = Historico()
+dao = HistoricoDAO()
 
 
 if str(form) != "FieldStorage(None, None, '')":
 	codHistorico = int(form.getvalue("codHistorico"))
 
-	historico.setCodHistorico(form.getvalue("codHistorico"))
-	historico.setCodTarefa(form.getvalue("codTarefa"))
-	historico.setData(form.getvalue("data"))
-	historico.setObs(form.getvalue("obs"))
-	
+
+	if form.getvalue("codHistorico"):
+		obj.setCodHistorico(int(form.getvalue("codHistorico")))
+
+	if form.getvalue("codTarefa"):
+		obj.setCodTarefa(int(form.getvalue("codTarefa")))
+
+	if form.getvalue("data"):
+		obj.setData(
+			FormatData.de_JDate(form.getvalue("data"))
+	)
+
+	if form.getvalue("obs"):
+		obj.setObs(str(form.getvalue("obs")))
+
 
 	if codHistorico > 0:
 		if form.getvalue("delete"):
-			historicoDAO.delete(historico.getCodHistorico())
+			dao.delete(obj.getCodHistorico())
 		else:
-			historicoDAO.update(historico)
+			dao.update(obj)
 	else:
-		historicoDAO.insert(historico)
+		dao.insert(obj)
 
 else:
 	#tentando enviar status de erro
