@@ -178,6 +178,20 @@ class TarefaDAO(CRUD.CRUD):
 			"""
 		return self.__getList(sql)
 
+	def getListaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tarefas
+				WHERE
+					codTarefaPai < 1
+				ORDER BY
+					codTarefa DESC
+			;
+			"""
+		return super().getList(sql)
 
 
 
