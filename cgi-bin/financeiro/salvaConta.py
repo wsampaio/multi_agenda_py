@@ -33,8 +33,8 @@ codConta = 0
 
 form = cgi.FieldStorage()
 
-conta = Conta()
-contaDAO = ContaDAO()
+obj = Conta()
+dao = ContaDAO()
 
 
 print("Content-type: text/html\n")
@@ -44,57 +44,57 @@ if str(form) != "FieldStorage(None, None, '')":
 	codConta = int(form.getvalue("codConta"))
 
 	if form.getvalue("codConta"):
-		conta.setCodConta(int(form.getvalue("codConta")))
+		obj.setCodConta(int(form.getvalue("codConta")))
 
 	if form.getvalue("codTipoConta"):
-		conta.setCodTipoConta(int(form.getvalue("codTipoConta")))
+		obj.setCodTipoConta(int(form.getvalue("codTipoConta")))
 
 	if form.getvalue("descricao"):
-		conta.setDescricao(str(form.getvalue("descricao")))
+		obj.setDescricao(str(form.getvalue("descricao")))
 	
 	if form.getvalue("mesReferencia"):
-		conta.setMesReferencia(
+		obj.setMesReferencia(
 			FormatData.de_JDate(form.getvalue("mesReferencia") + "-01T00:00")
 		)
 
 	if form.getvalue("dtVencimento"):
-		conta.setDtVencimento(
+		obj.setDtVencimento(
 			FormatData.de_JDate(form.getvalue("dtVencimento") + "T00:00")
 		)
 	
 	if form.getvalue("codBarras"):
-		conta.setCodBarras(str(form.getvalue("codBarras")))
+		obj.setCodBarras(str(form.getvalue("codBarras")))
 
 	if form.getvalue("valor"):
-		conta.setValor(float(form.getvalue("valor")))
+		obj.setValor(float(form.getvalue("valor")))
 
 	if form.getvalue("codReceitaPagadora"):
-		conta.setCodReceitaPagadora(int(form.getvalue("codReceitaPagadora")))
+		obj.setCodReceitaPagadora(int(form.getvalue("codReceitaPagadora")))
 
 	if form.getvalue("codPagador"):
-		conta.setCodPagador(int(form.getvalue("codPagador")))
+		obj.setCodPagador(int(form.getvalue("codPagador")))
 	
 	if form.getvalue("contaPaga"):
-		conta.setContaPaga(True)
+		obj.setContaPaga(True)
 	else:
-		conta.setContaPaga(False)
+		obj.setContaPaga(False)
 	
 	if form.getvalue("valorPago"):
-		conta.setValorPago(float(form.getvalue("valorPago")))
+		obj.setValorPago(float(form.getvalue("valorPago")))
 	
 	if form.getvalue("dtPagamento"):
-		conta.setDtPagamento(
+		obj.setDtPagamento(
 			FormatData.de_JDate(form.getvalue("dtPagamento") + "T00:00")
 		)
 
 
 	if codConta > 0:
 		if form.getvalue("delete"):
-			contaDAO.delete(conta.getCodConta())
+			dao.delete(obj.getCodConta())
 		else:
-			contaDAO.update(conta)
+			dao.update(obj)
 	else:
-		contaDAO.insert(conta)
+		dao.insert(dao)
 
 else:
 	#tentando enviar status de erro
