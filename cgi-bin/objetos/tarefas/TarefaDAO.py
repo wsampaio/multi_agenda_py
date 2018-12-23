@@ -169,14 +169,15 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					cod_tarefa_pai = """ + str(codTarefa) + """
+					codTarefaPai = """ + str(codTarefa) + """
 				ORDER BY
 					terminado,
 					inicio,
 					fim
 			;
 			"""
-		return self.__getList(sql)
+
+		return super().getList(sql)
 
 	def getListaCmb(self):
 		sql = \
