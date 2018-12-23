@@ -74,3 +74,21 @@ class HistoricoDAO(CRUD.CRUD):
 		"""
 		return super().getList(sql)
 
+	def listaPelaTarefa(self, codTarefa):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					historicos
+				WHERE codTarefa = {}
+				ORDER BY
+					data
+			;
+		""".format(codTarefa)
+
+		return super().getList(sql)
+
+
+
+
