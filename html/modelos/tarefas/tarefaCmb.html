@@ -5,13 +5,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>tarefaCmb</title>
 		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="codTarefa">
+				<span id="tarefaLbl">
+					Tarefa
+				</span>
+			</label>
+			<select class="form-control" id="tarefaCmb" name="codTarefa">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadTarefaCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
 
 		<script>
-
 			function preencheTarefaCmb(cod){
 				var saida = "";
+				var url = "/cgi-bin/tarefas/tarefaCmb.py";
 
-				$.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
+				$.getJSON(url, function(data) {
 
 					console.log(data);
 					var tarefas = data.tarefas;
@@ -19,18 +34,18 @@
 					for (i = 0; i < tarefas.length; i++) {
 
 						saida += "<option value='" + tarefas[i].codTarefa + "'";
-					
+
 						if (tarefas[i].codTarefa == cod){
 							saida += " selected";
 						}
-						
+
 						saida += ">";
-						saida += 
-							tarefas[i].tarefa.substring(0, 30) + 
-							"</option>";
 
-						//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+						var str = tarefas[i].tarefa;
+						str = str.replace(/%r%n/g, " ", -1);
+						str = str.substring(0, 30);
 
+						saida += str + "</option>";
 					}
 					
 					$("#tarefaCmb").append(saida);
@@ -39,47 +54,27 @@
 			}
 			
 			$(document).ready(function () {
-				
+
 				var variavel = 0;
-				
+
 				let params = decodeURI($("#tarefaCmb").parent().parent().attr('param'));
 				let searchParams = new URLSearchParams(params);
-				
+
 				if (searchParams.has("cod")){
 					variavel = searchParams.get("cod");
 				}
-				
+
 				if (searchParams.has("lbl")){
 					$("#tarefaLbl").html(searchParams.get("lbl"));
 				}
-				
+
 				if (searchParams.has("cmp")){
 					$("#tarefaCmb").attr("name", searchParams.get("cmp"));
 				}
-				
-				preencheTarefaCmb(variavel);
-				
-			});
-		
-		</script>
 
-	</head>
-	<body>
-		<div class="container">
-			<label for="codTarefa">
-				<span id="tarefaLbl">
-					Tarefa
-				</span>
-			</label>
-			<select id="tarefaCmb" name="codTarefa">
-				<option value='0'>Selecione:</option>
-			</select>
-			<div id='loadTarefaCmb'>
-				<img src="/html/img/load21.gif" height="10">
-			</div>
-		</div>
+				preencheTarefaCmb(variavel);
+			});
+		</script>
 	</body>
 </html>
-
-
 
