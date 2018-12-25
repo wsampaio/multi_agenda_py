@@ -28,57 +28,22 @@
 		</div>
 
 		<div id="listaNaoFinalizadas"></div>
-		<ul class="pagination"></ul>
 
 		<script>
 
-			function preencheTabela (paginaAtual){
-
+			function preencheTabela (){
+			
+				
 				var urlJSON = "/cgi-bin/tarefas/naoFinalizadas.py";
-
+				
 				$.getJSON(urlJSON, function(data) {
 
 					var saida = "";
 					var lista = data.naoFinalizadas
-
-					//define paginacao
-					itensPorPagina = 10;
-					numPaginas = Math.floor(lista.length / itensPorPagina);
-					if (lista.length % itensPorPagina > 0) {
-						numPaginas++;
-					}
-
-					inicio = itensPorPagina * paginaAtual;
-					final = inicio + itensPorPagina;
-					if (final > lista.length) {
-						final = lista.length;
-					}
-
-					//incrementa botoes de paginacao
-					for (var i = 0; i < numPaginas; i++){
-						pagStr = "<li class='";
-
-						if (i == paginaAtual){
-							pagStr += "active";
-						}
-
-						pagStr += "'><a class='paginaBtn' href='";
-
-						if (i != paginaAtual){
-							pagStr += "/html/tarefas/naoFinalizadas.html?pag=" + i;
-						}
-
-						pagStr += "'>" + (i + 1)  + "</a></li>"
-
-						$(".pagination").append(pagStr);
-					}
-
-
-
-					//carrega dados na pagina
-					for (var i = inicio; i < final; i++){
+					
+					for (i in lista){
 						saida += "<a " +
-							"class='naoFinalizada' " +
+							"class='' " +
 							"target='_blank' " +
 							"href='/html/tarefas/tarefa.html?cod=" + 
 								lista[i].codTarefa + 
@@ -98,46 +63,15 @@
 					//saida = saida.replace("%n", "<br>");
 					
 					$("#listaNaoFinalizadas").append(saida);
-
 					
-				}).success(function(){
-					$(".naoFinalizada, .paginaBtn").on("click", function(){
-						event.preventDefault();
-
-						if ($(this).attr("href") != ""){
-							if ($("#principal").length > 0){
-								$("#principal").load($(this).attr("href"));
-								$("#principal").attr("nextUrl", $("#principal").attr("url"));
-								$("#principal").attr("url", $(this).attr("href"));
-							} else {
-								window.open($(this).attr("href"));
-							}
-						}
-					});
-				});
+				}).success(function(){});
+				
+				
 			}
-
-
 
 			// Shorthand for $( document ).ready()
 			$(function() {
-				paginaAtual = 0;
-				var searchParams = "";
-
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-
-				searchParams = new URLSearchParams(searchParams);
-
-				if (searchParams.has('pag')) {
-					paginaAtual = searchParams.get("pag");
-				}
-
-				preencheTabela(paginaAtual);
+				preencheTabela ();
 			});
 		</script>
 	</body>
