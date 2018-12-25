@@ -179,6 +179,22 @@ class TarefaDAO(CRUD.CRUD):
 
 		return super().getList(sql)
 
+	def subTarefasParaCopiar(self, codTarefa):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tarefas
+				WHERE
+					codTarefaPai = """ + str(codTarefa) + """
+				ORDER BY
+					ordem
+			;
+			"""
+
+		return super().getList(sql)
+
 	def getListaCmb(self):
 		sql = \
 			"""
@@ -192,6 +208,34 @@ class TarefaDAO(CRUD.CRUD):
 					codTarefa DESC
 			;
 			"""
+
+		return super().getList(sql)
+
+	def buscaTarefa(self, qryArray):
+
+		strBusca = ""
+
+		for x in qryArray:
+			strBusca += \
+				" AND lower(tarefa || ' ' || " + \
+				"strftime('%d/%m/%Y', inicio) || ' ' || " + \
+				"strftime('%d/%m/%Y', fim)) " + \
+				"LIKE lower('%" + x + "%')"
+
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tarefas
+				WHERE
+					codTarefaPai < 1 AND
+					({})
+				ORDER BY
+					inicio DESC
+			;
+			""".format(strBusca[5:])
+
 		return super().getList(sql)
 
 
