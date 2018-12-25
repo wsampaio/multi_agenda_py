@@ -2,9 +2,9 @@
 <html lang="pt-br">
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--<link rel="stylesheet" href="/html/btp/bootstrap.min.css">-->
 		<title>tarefa</title>
 		<style>
 			table, td, th {
@@ -260,8 +260,12 @@
 
 
 			$(".copiar").on("click", function(){
-				$("#codTarefaDiv").css("display", "block");
-				$("#codTarefa").val(0);
+				//$("#codTarefaDiv").css("display", "block");
+				//$("#codTarefa").val(0);
+				window.open(
+					"/cgi-bin/tarefas/copiarTodaTarefa.py" +
+					"?cod=" + $("#codTarefa").val()
+				)
 			});
 
 			$(".salvar").on("click", function(){
@@ -282,6 +286,13 @@
 					function(data) {
 						alert("Dados salvos!");
 						//console.log(data);
+						if ($("#principal").length > 0) {
+							$("#principal").attr("url", $("#principal").attr("nextUrl"))
+							$("#principal").attr("nextUrl", "")
+							$("#principal").load($("#principal").attr("url"));
+						} else {
+							
+						}
 					}
 				)
 			});
