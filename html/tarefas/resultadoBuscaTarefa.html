@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<script src="/html/btp/jquery.js"></script>
+		<title>naoFinalizadas</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+
+		<div id="listaTarefas"></div>
+
+		<script>
+
+			function preencheTabela (qry){
+
+				var urlJSON = "/cgi-bin/tarefas/buscaTarefa.py" +
+					"?qry=" + qry;
+
+				$.getJSON(urlJSON, function(data) {
+
+					var saida = "";
+					var lista = data.tarefas
+
+					//carrega dados na pagina
+					for (var i = 0; i < lista.length; i++){
+						saida += "<a " +
+							"class='tarefa' " +
+							"target='_blank' " +
+							"href='/html/tarefas/tarefa.html?cod=" + 
+								lista[i].codTarefa + 
+							"'>" + 
+								(parseInt(i) + 1) + 
+						"</a>" +
+						"<br>";
+
+						saida += lista[i].tarefa
+							.replace(/%r%n/g, "<br>", -1) + "<br>";
+						
+						saida += "<hr>";
+					}
+					
+					
+					//saida = saida.replace("%r", "<br>");
+					//saida = saida.replace("%n", "<br>");
+					
+					$("#listaTarefas").append(saida);
+
+					
+				}).success(function(){
+					$(".tarefa").on("click", function(){
+						event.preventDefault();
+
+						if ($(this).attr("href") != ""){
+							if ($("#principal").length > 0){
+								$("#principal").load($(this).attr("href"));
+								$("#principal").attr("nextUrl", $("#principal").attr("url"));
+								$("#principal").attr("url", $(this).attr("href"));
+							} else {
+								window.open($(this).attr("href"));
+							}
+						}
+					});
+				});
+			}
+
+
+
+			// Shorthand for $( document ).ready()
+			$(function() {
+				var searchParams = "";
+				var qry = "";
+
+				if ($("#resultadoBuscaTarefa").length > 0) {
+					searchParams = $("#resultadoBuscaTarefa").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+
+				searchParams = new URLSearchParams(searchParams);
+
+				if (searchParams.has('qry')) {
+					qry = searchParams.get("qry");
+				}
+
+				preencheTabela(qry);
+
+			});
+		</script>
+	</body>
+</html>
+

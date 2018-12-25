@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<script src="/html/btp/jquery.js"></script>
+		<title>naoFinalizadas</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="">
+			<input id="buscaTarefaStr">
+			<a class="buscaTarefaBtn btn">buscar</a>
+		</div>
+
+		<div id="resultadoBuscaTarefa"></div>
+
+		<script>
+
+			$(".buscaTarefaBtn").on("click", function(){
+				event.preventDefault();
+				buscaStr = encodeURI($("#buscaTarefaStr").val())
+				url = 
+					"/html/tarefas/resultadoBuscaTarefa.html" +
+					"?qry=" + buscaStr;
+
+				$("#resultadoBuscaTarefa").attr("url", url)
+				$("#resultadoBuscaTarefa").load(url);
+			});
+
+			// Shorthand for $( document ).ready()
+			$(function() {
+				//
+			});
+		</script>
+	</body>
+</html>
+
