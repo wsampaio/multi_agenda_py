@@ -2,9 +2,9 @@
 <html lang="pt-br">
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--<link rel="stylesheet" href="/html/btp/bootstrap.min.css">-->
 		<title>tarefa</title>
 		<style>
 			table, td, th {
@@ -127,8 +127,9 @@
 			</div>
 			<div class="row-fluid btn-group">
 				<button class="salvar btn btn-primary">Salvar</button> 
-				<button class="copiar btn btn-success">Copiar</button> 
 				<button class="salvar btn btn-danger">Excluir</button> 
+				<button class="salvar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
 
@@ -253,15 +254,20 @@
 			});
 
 
+			$("#terminado").on("change", function(){
+				if ($(this).is(':checked')) {
+					var dt = new Date();
+					var time =
+						dt.getFullYear() + "-" +
+						String("0" + (dt.getMonth() + 1)).substr(-2) + "-" +
+						String("0" + (dt.getDate() + 1)).substr(-2) + "T" +
+						String("0" + (dt.getHours() + 1)).substr(-2) + ":" +
+						String("0" + (dt.getMinutes() + 1)).substr(-2);
 
-
-
-
-
-
-			$(".copiar").on("click", function(){
-				$("#codTarefaDiv").css("display", "block");
-				$("#codTarefa").val(0);
+					$("#fim").val(time);
+				} else {
+					$("#fim").val("0001-01-01T00:00");
+				}
 			});
 
 			$(".salvar").on("click", function(){
@@ -273,18 +279,57 @@
 				if (txt === "Salvar") {
 					dados = frm.serialize();
 				} else if (txt === "Excluir") {
-					dados = frm.serialize() + "&delete=True";
+					var conf = confirm("Deseja mesmo excluir o registro?");
+
+					if (conf){
+						dados = frm.serialize() + "&delete=True";
+					} else {
+						return 0;
+					}
+				} else if (txt === "Copiar") {
+					var conf = confirm("Deseja copiar TODA tarefa?");
+
+					if (conf){
+						dados = "cod=" + $("#codTarefa").val();
+						action = "/cgi-bin/tarefas/copiarTodaTarefa.py";
+					} else {
+						return 0;
+					}
 				}
 
-				$.post(
-					action, 
-					dados, 
-					function(data) {
+				//posta dados SE não for o botao voltar
+				if (txt !== "Voltar"){
+					$.post(
+						action, 
+						dados, 
+						function(data) {
+							//console.log(data);
+						}
+					)
+					.done(function(){
 						alert("Dados salvos!");
-						//console.log(data);
-					}
-				)
+						fecharJanela();
+					});
+				} else {
+					fecharJanela();
+				}
+
 			});
+
+			function fecharJanela(){
+				//fecha janela ou volta a tela antiga
+				if ($("#principal").length > 0){
+					$("#principal").attr(
+						"url", $("#principal").attr("nextUrl")
+					);
+					$("#principal").attr("nextUrl", "");
+					$("#principal").load($("#principal").attr("url"));
+				} else {
+					self.close();
+				}
+			}
+
+
 
 
 			$(document).ready(function () {
