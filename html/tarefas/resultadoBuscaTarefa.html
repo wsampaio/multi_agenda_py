@@ -3,11 +3,12 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<script src="/html/btp/jquery.js"></script>
-		<title>naoFinalizadas</title>
+		<title>resultadoBuscaTarefa</title>
 
 		<style>
 			table, td, th {
-				
+				border: 1px solid black;
+				border-collapse: collapse;
 			}
 
 			.col {
@@ -24,6 +25,14 @@
 
 		<div id="listaTarefas"></div>
 
+		<div id="listaNaoFinalizadas">
+			<table style='width:100%;'>
+				<thead>
+				</thead>
+				<tbody id="buscaTarefaTbl"></tbody>
+			</table>
+		</div>
+
 		<script>
 
 			function preencheTabela (qry){
@@ -36,30 +45,68 @@
 					var saida = "";
 					var lista = data.tarefas
 
-					//carrega dados na pagina
+					//carrega dados na tabela
 					for (var i = 0; i < lista.length; i++){
-						saida += "<a " +
-							"class='tarefa' " +
-							"target='_blank' " +
-							"href='/html/tarefas/tarefa.html?cod=" + 
-								lista[i].codTarefa + 
-							"'>" + 
-								(parseInt(i) + 1) + 
-						"</a>" +
-						"<br>";
 
-						saida += lista[i].tarefa
-							.replace(/%r%n/g, "<br>", -1) + "<br>";
-						
-						saida += "<hr>";
+						saida = 
+						"<tr>" +
+							"<td>" +
+								"<img " +
+									"src='/html/img/tarefas/0" + 
+										lista[i].codPrioridade + ".png' " + 
+									"width='10px' " +
+									"title='" + lista[i].prioridade + "'>" +
+							"</td>" +
+							"<td>" +
+								"<a " +
+									"class='abreTarefaBtn' " +
+									"target='_blank' " +
+									"href='/html/tarefas/tarefa.html?cod=" + 
+										lista[i].codTarefa + 
+								"'>" + 
+									lista[i].tarefa
+										.replace(/%r%n/g, "<br>", -1) +
+								"</a>" +
+							"</td>" +
+							"<td>" +
+								"Desde: " + 
+									dataFormatada(new Date(lista[i].inicio)) + "<br>" +
+								"<i>" +
+									"<small>" + 
+										diffDatasFormatada(new Date(), new Date(lista[i].inicio)) +
+									"</small>" + 
+								"</i>" +
+							"</td>" +
+							"<td rowspan='2'>" +
+								"<img " 
+
+								if (lista[i].terminado == "True") {
+									saida +=
+										"src='/html/img/tarefas/checkbox12.png' " +
+										"width='20px' " +
+										"title='Finalizado'>"
+								} else {
+									saida +=
+										"src='/html/img/tarefas/checkbox02.png' " +
+										"width='20px' " +
+										"title='NAO finalizado'>"
+								}
+
+								saida +=
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='3'>" +
+								"<div " + 
+									"style='height:5px; " + 
+									"width:" + lista[i].porcentagemTerminada + "%; " + 
+									"background-color:green;'></div>" +
+							"</td>" +
+						"</tr>"; 
+
+
+						$("#buscaTarefaTbl").append(saida);
 					}
-					
-					
-					//saida = saida.replace("%r", "<br>");
-					//saida = saida.replace("%n", "<br>");
-					
-					$("#listaTarefas").append(saida);
-
 					
 				}).success(function(){
 					$(".tarefa").on("click", function(){
@@ -78,6 +125,57 @@
 				});
 			}
 
+			function dataFormatada(dt){
+				var str = 
+					String("0" + dt.getDate()).substr(-2) + "/" +
+					String("0" + (dt.getMonth()+1)).substr(-2) + "/" +
+					dt.getFullYear();
+				return str;
+			}
+
+			function diffDatasFormatada(dt1, dt2){
+				var str = "";
+				var ttlDiff = dt1 - dt2;
+
+				ttlDiff = ttlDiff/1000;
+
+				ttlDiff = Math.floor(ttlDiff/60);//ttlMinutos
+				if (ttlDiff > 0){
+					str = ttlDiff % 60 + "min." + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/60);//ttlHoras
+				if (ttlDiff > 0){
+					str = ttlDiff % 24 + "H " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/24);//ttlDias
+				if (ttlDiff > 0){
+					str = ttlDiff % 30 + "D " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/30);//ttlMeses
+				if (ttlDiff > 0){
+					str = ttlDiff % 12 + "M " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/12);//ttlAnos
+				if (ttlDiff > 0){
+					str = ttlDiff + "A " + str;
+				} else {
+					return str;
+				}
+
+				return str;
+			}
 
 
 			// Shorthand for $( document ).ready()
