@@ -68,7 +68,7 @@ if str(form) != "FieldStorage(None, None, '')":
 			FormatData.de_JDate(form.getvalue("prazo"))
 		)
 
-	if form.getvalue("contaPaga"):
+	if form.getvalue("terminado"):
 		obj.setTerminado(True)
 	else:
 		obj.setTerminado(False)
