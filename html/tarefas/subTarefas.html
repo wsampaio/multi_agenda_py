@@ -16,32 +16,18 @@
 	<body>
 		<div class="container">
 			<div class="row-fluid">
-
-
-<table class="
-table 
-table-condensed 
-table-hover 
-table-responsive 
-"
->
-<thead>
-<tr>
-<th>O</th>
-<th>Tarefa</th>
-<th>Opções</th>
-</tr>
-</thead>
-
-<tbody id="subTarefasTbl">
-</table>
-
-
-
-
-
-
-
+				<table 
+					class="table table-condensed table-hover table-responsive"
+				>
+					<thead>
+						<tr>
+							<th>&nbsp</th>
+							<th>Tarefa</th>
+							<th>Opções</th>
+						</tr>
+					</thead>
+					<tbody id="subTarefasTbl"></tbody>
+				</table>
 			</div> 
 		</div>
 
@@ -58,11 +44,10 @@ table-responsive
 
 				$.getJSON(url, function (data) {
 					//console.log(data);
-					var saida = ""
 					var lista = data.subTarefas;
 
 					for (i in lista) {
-						saida +=
+						var saida =
 							"<tr class='"
 
 							if (lista[i].terminado == "True"){
@@ -81,33 +66,76 @@ table-responsive
 										lista[i].tarefa + 
 									"</a>" +
 								"</td>" +
-								"<td>" +
-									"<a class='btn'>+</a>"
+								"<td>" 
+
+							if (lista[i].inicio === "0001-01-01T00:00"){
+								//se não tiver sido iniciada
+								saida +=
+									"<a " +
+										"class='btn itTarefa'" +
+										"href='?cod=" + lista[i].codTarefa + 
+										"&oper=ini" +
+										"'" +
+									">I</a>" 
+							} else if (
+								lista[i].fim === "0001-01-01T00:00" &&
+								lista[i].inicio !== "0001-01-01T00:00"
+							){
+								//se iniciada e não terminada
+								saida +=
+									"<a " +
+										"class='btn itTarefa'" +
+										"href='?cod=" + lista[i].codTarefa + 
+										"&oper=fim" +
+										"'" +
+									">T</a>" 
+							}
+
+							saida += 
 								"</td>" +
 							"</tr>";
+
+						$("#subTarefasTbl").append(saida);
 					}
-
-					//for (){
-					//}
-
-
-
-					$("#subTarefasTbl").append(saida);
-
-
-
-
-
-
-
-
-
 
 					//$("#codTarefa").val(obj[0].codTarefa);
 				})
 				.done(function( json ) {
-					//carregaCombos();
+					$(".itTarefa").on("click", function(){
+						event.preventDefault();
+						var action = "/cgi-bin/tarefas/itTarefa.py";
+						var dados = String($(this).attr("href")).substr(1);
+
+						$.post(
+							action, 
+							dados, 
+							function(data) {
+								//console.log(data);
+							}
+						)
+						.done(function(){
+							alert("Dados salvos!");
+							if ($("#principal").length > 0){
+								$("#principal").load($("#principal").attr("url"));
+							} else {
+								location.reload();
+							}
+						});
+					});
 				});
+			}
+
+			function fecharJanela(){
+				//fecha janela ou volta a tela antiga
+				if ($("#principal").length > 0){
+					$("#principal").attr(
+						"url", $("#principal").attr("nextUrl")
+					);
+					$("#principal").attr("nextUrl", "");
+					$("#principal").load($("#principal").attr("url"));
+				} else {
+					self.close();
+				}
 			}
 
 			$(document).ready(function () {
