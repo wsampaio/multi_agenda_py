@@ -109,19 +109,28 @@
 					}
 					
 				}).success(function(){
-					$(".tarefa").on("click", function(){
-						event.preventDefault();
 
-						if ($(this).attr("href") != ""){
+					$(".abreTarefaBtn, .paginacaoBtn").on(
+						"click", 
+						function(){
+							event.preventDefault();
+
+							var url = $(this).attr("href");
+
 							if ($("#principal").length > 0){
-								$("#principal").load($(this).attr("href"));
-								$("#principal").attr("nextUrl", $("#principal").attr("url"));
-								$("#principal").attr("url", $(this).attr("href"));
+								$("#principal").attr("nextUrl",
+									//"/html/tarefas/naoFinalizadas.html"
+									$("#principal").attr("url")
+								);
+
+								$("#principal").attr("url", url);
+								$("#principal").load(url);
 							} else {
-								window.open($(this).attr("href"));
+								window.open(url);
 							}
 						}
-					});
+					);
+
 				});
 			}
 
