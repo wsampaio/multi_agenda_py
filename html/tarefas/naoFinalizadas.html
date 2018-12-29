@@ -7,7 +7,7 @@
 
 		<style>
 			table, td, th {
-				
+				border: solid thin;
 			}
 
 			.col {
@@ -27,51 +27,210 @@
 			</h1>
 		</div>
 
-		<div id="listaNaoFinalizadas"></div>
+		<div id="listaNaoFinalizadas">
+			<table style='width:100%;'>
+				<thead>
+				</thead>
+				<tbody id="naoFinalizadaTbl"></tbody>
+			</table>
+		</div>
+
+		<ul class="pagination"></ul>
 
 		<script>
 
-			function preencheTabela (){
-			
-				
+			function preencheTabelaNaoFinalizadas(paginaAtual){
+
 				var urlJSON = "/cgi-bin/tarefas/naoFinalizadas.py";
-				
+
 				$.getJSON(urlJSON, function(data) {
 
 					var saida = "";
-					var lista = data.naoFinalizadas
-					
-					for (i in lista){
-						saida += "<a " +
-							"class='' " +
-							"target='_blank' " +
-							"href='/html/tarefas/tarefa.html?cod=" + 
-								lista[i].codTarefa + 
-							"'>" + 
-								(parseInt(i) + 1) + 
-						"</a>" +
-						"<br>";
+					var lista = data.naoFinalizadas;
 
-						saida += lista[i].tarefa
-							.replace(/%r%n/g, "<br>", -1) + "<br>";
-						
-						saida += "<hr>";
+					//variaveis para pagonacao
+					var itensPorPagina = 10;
+					var numPaginas = Math.floor(lista.length / itensPorPagina);
+
+					if (lista.length % itensPorPagina > 0){
+						numPaginas++;
 					}
-					
-					
+
+					inicio = itensPorPagina * paginaAtual;
+					final = inicio + itensPorPagina;
+
+					if (final > lista.length){
+						final = lista.length;
+					}
+
+					//incrementa botoes de paginas
+					for(i = 0; i < numPaginas; i++){
+						var saida = "<li class='";
+
+						if (paginaAtual == i){
+							saida += "active'><a";
+						} else {
+							saida += "'><a class='paginacaoBtn' " +
+								"href='/html/tarefas/naoFinalizadas.html" +
+								"?pag=" + i + "'";
+						}
+
+						saida += ">" + (i+1) + "</a></li>";
+
+						$(".pagination").append(saida);
+					}
+
+					for (i = inicio; i < final; i++){
+						saida = 
+						"<tr>" +
+							"<td>" +
+								"<img " +
+									"src='/html/img/tarefas/0" + 
+										lista[i].codPrioridade + ".png' " + 
+									"width='10px' " +
+									"title='" + lista[i].prioridade + "'>" +
+							"</td>" +
+							"<td>" +
+								"<a " +
+									"class='abreTarefaBtn' " +
+									"target='_blank' " +
+									"href='/html/tarefas/tarefa.html?cod=" + 
+										lista[i].codTarefa + 
+								"'>" + 
+									lista[i].tarefa
+										.replace(/%r%n/g, "<br>", -1) +
+								"</a>" +
+							"</td>" +
+							"<td>" +
+								"Desde: " + 
+									dataFormatada(new Date(lista[i].inicio)) + "<br>" +
+								"<i>" +
+									"<small>" + 
+										diffDatasFormatada(new Date(), new Date(lista[i].inicio)) +
+									"</small>" + 
+								"</i>" +
+							"</td>" +
+							"<td rowspan='2'>" +
+								"<img " +
+									"src='/html/img/tarefas/checkbox02.png' " +
+									"width='20px' " +
+									"title='NAO finalizado'>" +
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td colspan='3'>" +
+								"<div style='height:5px; width:" + lista[i].porcentagemTerminada + "%; background-color:green;'></div>" +
+							"</td>" +
+						"</tr>"; 
+
+
+						$("#naoFinalizadaTbl").append(saida);
+					}
+
+
 					//saida = saida.replace("%r", "<br>");
 					//saida = saida.replace("%n", "<br>");
-					
-					$("#listaNaoFinalizadas").append(saida);
-					
-				}).success(function(){});
-				
-				
+
+
+				}).success(function(){
+
+					$(".abreTarefaBtn, .paginacaoBtn").on(
+						"click", 
+						function(){
+							event.preventDefault();
+
+							var url = $(this).attr("href");
+
+							if ($("#principal").length > 0){
+								$("#principal").attr("nextUrl",
+									//"/html/tarefas/naoFinalizadas.html"
+									$("#principal").attr("url")
+								);
+
+								$("#principal").attr("url", url);
+								$("#principal").load(url);
+							} else {
+								window.open(url);
+							}
+						}
+					);
+				});
 			}
+
+
+			function dataFormatada(dt){
+				var str = 
+					String("0" + dt.getDate()).substr(-2) + "/" +
+					String("0" + (dt.getMonth()+1)).substr(-2) + "/" +
+					dt.getFullYear();
+				return str;
+			}
+
+			function diffDatasFormatada(dt1, dt2){
+				var str = "";
+				var ttlDiff = dt1 - dt2;
+
+				ttlDiff = ttlDiff/1000;
+
+				ttlDiff = Math.floor(ttlDiff/60);//ttlMinutos
+				if (ttlDiff > 0){
+					str = ttlDiff % 60 + "min." + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/60);//ttlHoras
+				if (ttlDiff > 0){
+					str = ttlDiff % 24 + "H " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/24);//ttlDias
+				if (ttlDiff > 0){
+					str = ttlDiff % 30 + "D " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/30);//ttlMeses
+				if (ttlDiff > 0){
+					str = ttlDiff % 12 + "M " + str;
+				} else {
+					return str;
+				}
+
+				ttlDiff = Math.floor(ttlDiff/12);//ttlAnos
+				if (ttlDiff > 0){
+					str = ttlDiff + "A " + str;
+				} else {
+					return str;
+				}
+
+				return str;
+			}
+
+
 
 			// Shorthand for $( document ).ready()
 			$(function() {
-				preencheTabela ();
+
+				var paginaAtual = 0;
+				var searchParams = "";
+
+				if ($("#principal").length > 0) {
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+
+				searchParams = new URLSearchParams(searchParams);
+
+				if (searchParams.has("pag")){
+					paginaAtual = searchParams.get("pag");
+				}
+
+				preencheTabelaNaoFinalizadas(paginaAtual);
 			});
 		</script>
 	</body>
