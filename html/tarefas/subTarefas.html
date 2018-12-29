@@ -63,7 +63,7 @@
 										"href='/html/tarefas/tarefa.html" +
 											"?cod=" + lista[i].codTarefa + "'" +
 									">" + 
-										lista[i].tarefa + 
+										lista[i].tarefa.replace("%r%n", "<br>") + 
 									"</a>" +
 								"</td>" +
 								"<td>" 
