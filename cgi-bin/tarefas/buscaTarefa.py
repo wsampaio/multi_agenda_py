@@ -28,8 +28,12 @@ cgitb.enable()
 from objetos.tarefas.Tarefa import Tarefa
 from objetos.tarefas.TarefaDAO import TarefaDAO
 
+from objetos.tarefas.PrioridadeDAO import PrioridadeDAO
+
 obj = Tarefa()
 dao = TarefaDAO()
+
+prioridadeDAO = PrioridadeDAO()
 
 print("Content-type: application/json\n")
 
@@ -57,6 +61,7 @@ lista = dao.buscaTarefa(qry)
 contaLista = len(lista) -1
 
 for forObj in lista:
+	prioridade = prioridadeDAO.select(forObj.getCodPrioridade())
 
 	saida += """
 		{}
@@ -68,7 +73,9 @@ for forObj in lista:
 			"prazo": "{}",
 			"terminado": "{}",
 			"ordem": {},
-			"codPrioridade": {}
+			"codPrioridade": {},
+			"prioridade": "{}",
+			"porcentagemTerminada": {} 
 		{}""".format(
 			"{",
 			forObj.getCodTarefa(),
@@ -85,6 +92,8 @@ for forObj in lista:
 			forObj.getTerminado(),
 			forObj.getOrdem(),
 			forObj.getCodPrioridade(),
+			prioridade.getPrioridade(),
+			dao.porcentagemTerminada(forObj.getCodTarefa()),
 			"}"
 		)
 
