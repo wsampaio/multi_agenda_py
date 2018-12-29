@@ -149,6 +149,8 @@ class CRUD():
 
 		if value == None:
 			return val
+		elif value[0] == None:
+			return val
 		else:
 			return value[0]
 
