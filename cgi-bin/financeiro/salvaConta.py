@@ -94,7 +94,7 @@ if str(form) != "FieldStorage(None, None, '')":
 		else:
 			dao.update(obj)
 	else:
-		dao.insert(dao)
+		dao.insert(obj)
 
 else:
 	#tentando enviar status de erro
