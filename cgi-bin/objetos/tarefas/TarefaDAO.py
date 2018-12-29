@@ -173,7 +173,8 @@ class TarefaDAO(CRUD.CRUD):
 				ORDER BY
 					terminado,
 					inicio,
-					fim
+					fim,
+					ordem
 			;
 			"""
 
@@ -238,6 +239,35 @@ class TarefaDAO(CRUD.CRUD):
 
 		return super().getList(sql)
 
+
+	def porcentagemTerminada(self, codTarefaPai):
+		sql = \
+			"""
+SELECT
+		(term*100)/ttl
+	FROM
+(
+	SELECT
+			count(codTarefa) as ttl
+		FROM
+			tarefas
+		WHERE
+			codTarefaPai = {}
+) as tarefas,
+(
+	SELECT
+			count(codTarefa) as term
+		FROM
+			tarefas
+		WHERE
+			codTarefaPai = {}
+		AND terminado = 1
+) as terminadas
+;
+ 
+		""".format(codTarefaPai, codTarefaPai)
+		
+		return "{0:.0f}".format(super().getValue(sql, 0.0))
 
 
 
