@@ -23,6 +23,9 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.tarefas.Tarefa import Tarefa
 from objetos.tarefas.TarefaDAO import TarefaDAO
 
@@ -74,8 +77,8 @@ for obj in lista:
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			obj.getInicio(),
-			obj.getFim(),
+			FormatData.para_JDate(obj.getInicio()),
+			FormatData.para_JDate(obj.getFim()),
 			obj.getPrazo(),
 			obj.getTerminado(),
 			obj.getOrdem(),
