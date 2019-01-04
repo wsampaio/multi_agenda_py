@@ -30,7 +30,7 @@
 					<thead>
 						<tr>
 							<th>Conta</th>
-							<th>Vencimento/Pagamento</th>
+							<th>Data Venc - Pgto</th>
 							<th>Valor</th>
 							<th>Receita Pagadora</th>
 						</tr>
@@ -66,21 +66,28 @@
 							saida += "<tr>"
 						}
 						
-							saida += "<td class='col0'>"
+							saida += "<td class='col0'>";
 								saida += "<a class='conta' target='_blank' href='/html/modelos/financeiro/conta.html?cod=" + 
 									lista[i].codConta + 
 									"' onclick='abreForm(" + 
 									lista[i].codConta + 
 									");'>";
 									saida += lista[i].tipoConta;
-								saida += "</a>"
-							saida += "</td>"
+								saida += "</a>";
+							saida += "</td>";
 							
+							saida += "<td class='col1'>" + lista[i].vencimento;
+
 							if (lista[i].contaPaga == "True") {
-								saida += "<td class='col1'>" + lista[i].dtPagamento + "</td>"
+								saida +=  " - " + lista[i].dtPagamento;
+							}
+
+							saida += "</td>"
+
+
+							if (lista[i].contaPaga == "True") {
 								saida += "<td class='col2'>" + lista[i].valorPago + "</td>"
 							} else {
-								saida += "<td class='col1'>" + lista[i].vencimento + "</td>"
 								saida += "<td class='col2'>" + lista[i].valor + "</td>"
 							}
 							
