@@ -86,7 +86,11 @@ saida+= """
 				.replace("\\", "$b"),
 			FormatData.mesRefSerial(conta.getMesReferencia()),
 			FormatData.para_Data_Serial(conta.getDtVencimento()),
-			conta.getCodBarras(),
+			conta.getCodBarras()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b"),
 			conta.getValor(),
 			conta.getCodReceitaPagadora(),
 			conta.getCodPagador(),
