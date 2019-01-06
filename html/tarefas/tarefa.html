@@ -224,8 +224,18 @@
 			});
 
 			$("#maisSubTarefasBtn").on("click", function(){
+				var cod = $("#codTarefa").val();
+				$("#subTarefas").html(
+					"<img src='/html/img/load21.gif' width='25px'>"
+				);
+
 				if ($("#subTarefas").css("display") == "none"){
 					$("#subTarefas").css("display", "block");
+					$("#subTarefas").load(
+						"/html/tarefas/subTarefas.html" +
+						"?cod=" + cod
+					);
+
 				} else {
 					$("#subTarefas").css("display", "none");
 				}
@@ -239,8 +249,18 @@
 			});
 
 			$("#maisHistoricoBtn").on("click", function(){
+				var cod = $("#codTarefa").val();
+				$("#historico").html(
+					"<img src='/html/img/load21.gif' width='25px'>"
+				);
+
 				if ($("#historico").css("display") == "none"){
 					$("#historico").css("display", "block");
+					$("#historico").load(
+						"/html/tarefas/historicoPelaTarefa.html" +
+						"?cod=" + cod
+					);
+
 				} else {
 					$("#historico").css("display", "none");
 				}
@@ -355,16 +375,6 @@
 
 					preencheForm(cod);
 
-					$("#subTarefas").load(
-						"/html/tarefas/subTarefas.html" +
-						"?cod=" + cod
-					);
-
-					$("#historico").load(
-						"/html/tarefas/historicoPelaTarefa.html" +
-						"?cod=" + cod
-					);
-					
 				} else {
 					formNull();
 					
