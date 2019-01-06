@@ -75,7 +75,8 @@ for forObj in lista:
 			"ordem": {},
 			"codPrioridade": {},
 			"prioridade": "{}",
-			"porcentagemTerminada": {} 
+			"subTarefas": {},
+			"subTarefasTerminadas": {}
 		{}""".format(
 			"{",
 			forObj.getCodTarefa(),
@@ -93,7 +94,8 @@ for forObj in lista:
 			forObj.getOrdem(),
 			forObj.getCodPrioridade(),
 			prioridade.getPrioridade(),
-			dao.porcentagemTerminada(forObj.getCodTarefa()),
+			dao.ttlSubTarefas(forObj.getCodTarefa()),
+			dao.subTarefasTerminadas(forObj.getCodTarefa()),
 			"}"
 		)
 

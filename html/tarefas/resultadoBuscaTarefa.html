@@ -97,10 +97,20 @@
 						"</tr>" +
 						"<tr>" +
 							"<td colspan='3'>" +
-								"<div " + 
+								"<div" +
 									"style='height:5px; " + 
-									"width:" + lista[i].porcentagemTerminada + "%; " + 
-									"background-color:green;'></div>" +
+									"background-color:gray;' " +
+									"title='" +
+										lista[i].subTarefasTerminadas + "/" +
+										lista[i].subTarefas + 
+								"'>" +
+									"<div " + 
+										"style='height:5px; " + 
+										"width:" + 
+										((lista[i].subTarefasTerminadas * 100) / lista[i].subTarefas) +
+										"%; " +
+										"background-color:green;'></div>" +
+								"</div>" +
 							"</td>" +
 						"</tr>"; 
 

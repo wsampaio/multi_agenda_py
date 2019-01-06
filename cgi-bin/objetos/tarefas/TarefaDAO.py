@@ -239,36 +239,36 @@ class TarefaDAO(CRUD.CRUD):
 
 		return super().getList(sql)
 
-
-	def porcentagemTerminada(self, codTarefaPai):
+	def ttlSubTarefas(self, codTarefaPai):
 		sql = \
 			"""
-SELECT
-		(term*100)/ttl
-	FROM
-(
 	SELECT
 			count(codTarefa) as ttl
 		FROM
 			tarefas
 		WHERE
 			codTarefaPai = {}
-) as tarefas,
-(
+;
+ 
+		""".format(codTarefaPai)
+		
+		return super().getValue(sql, 0)
+
+	def subTarefasTerminadas(self, codTarefaPai):
+		sql = \
+			"""
 	SELECT
-			count(codTarefa) as term
+			count(codTarefa) as ttl
 		FROM
 			tarefas
 		WHERE
 			codTarefaPai = {}
 		AND terminado = 1
-) as terminadas
 ;
  
-		""".format(codTarefaPai, codTarefaPai)
+		""".format(codTarefaPai)
 		
-		return "{0:.0f}".format(super().getValue(sql, 0.0))
-
+		return super().getValue(sql, 0)
 
 
 
