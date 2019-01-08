@@ -280,9 +280,9 @@
 					var time =
 						dt.getFullYear() + "-" +
 						String("0" + (dt.getMonth() + 1)).substr(-2) + "-" +
-						String("0" + (dt.getDate() + 1)).substr(-2) + "T" +
-						String("0" + (dt.getHours() + 1)).substr(-2) + ":" +
-						String("0" + (dt.getMinutes() + 1)).substr(-2);
+						String("0" + (dt.getDate())).substr(-2) + "T" +
+						String("0" + (dt.getHours())).substr(-2) + ":" +
+						String("0" + (dt.getMinutes())).substr(-2);
 
 					$("#fim").val(time);
 				} else {
