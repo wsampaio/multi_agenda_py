@@ -22,7 +22,7 @@ class RegistroDAO(CRUD.CRUD):
 	def __init__(self):
 
 		schema = "passmots"
-		tabela = "REGISTROS"
+		tabela = "registros"
 		pk = "codRegistro"
 
 		super().__init__(schema, tabela, pk)
