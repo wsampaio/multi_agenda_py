@@ -15,17 +15,33 @@
 			}
 		</style>
 
-
 		<script src="/html/btp/jquery.js"></script>
+	</head>
 
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/financeiro/tipoGastoLista.html" target="_blank">
+				<h1>Tipo de gasto - Lista</h1>
+			</a>
 
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codTipoGasto</th>
+						<th class="col1">tipoGaato</th>
+						<th class="col2">descricao</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<script>
-
-
 			function preencheTabela (){
-				$.getJSON("/cgi-bin/financeiro/tipoGastoLista.py", function(data) {
+				var url = "/cgi-bin/financeiro/tipoGastoLista.py";
 
+				$.getJSON(url, function(data) {
 					//console.log(data);
 					var lista = data.tiposGastos;
 
@@ -51,50 +67,34 @@
 
 					}
 
-
 					saida = saida.replace("%r", "<br>");
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".tipoGasto").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/financeiro/tipoGastoLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
 			}
 
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/financeiro/tipoGasto.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
 			$(document).ready(function() {
-
 				preencheTabela();
-
 			});
 		</script>
-
-	</head>
-
-	<body>
-
-		<div class="row-fluid">
-				<a href="/html/modelos/financeiro/tipoGastoLista.html" target="_blank">
-					<h1>Tipo de gasto - Lista</h1>
-				</a>
-
-				<table>
-					<thead>
-						<tr>
-							<th class="col0">codTipoGasto</th>
-							<th class="col1">tipoGaato</th>
-							<th class="col2">descricao</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-		</div>
-
 	</body>
 </html>

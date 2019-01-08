@@ -14,18 +14,39 @@
 				display: none;
 			}
 		</style>
-
-
 		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/financeiro/receitaLista.html" target="_blank">
+				<h1>Receita - Lista</h1>
+			</a>
 
-
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codReceita</th>
+						<th class="col1">codPagador</th>
+						<th class="col2">codFavorecido</th>
+						<th class="col3">descricao</th>
+						<th class="col4">padrao</th>
+						<th class="col5">acrescimos</th>
+						<th class="col6">valor</th>
+						<th class="col7">mesReferencia</th>
+						<th class="col8">dtCredito</th>
+						<th class="col9">obs</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<script>
-
-
 			function preencheTabela (){
+				var url = "/cgi-bin/financeiro/receitaLista.py";
 
-				$.getJSON("/cgi-bin/financeiro/receitaLista.py", function(data) {
+				$.getJSON(url, function(data) {
 					//console.log(data);
 					var lista = data.receitas;
 
@@ -63,48 +84,30 @@
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".receita").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/financeiro/receitaLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
-			}
-
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/financeiro/receita.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
 			}
 
 			$(document).ready(function() {
 				preencheTabela();
 			});
 		</script>
-
-	</head>
-
-	<body>
-		<div class="row-fluid">
-			<a href="/html/modelos/financeiro/receitaLista.html" target="_blank">
-				<h1>Receita - Lista</h1>
-			</a>
-
-			<table>
-				<thead>
-					<tr>
-						<th class="col0">codReceita</th>
-						<th class="col1">codPagador</th>
-						<th class="col2">codFavorecido</th>
-						<th class="col3">descricao</th>
-						<th class="col4">padrao</th>
-						<th class="col5">acrescimos</th>
-						<th class="col6">valor</th>
-						<th class="col7">mesReferencia</th>
-						<th class="col8">dtCredito</th>
-						<th class="col9">obs</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
 	</body>
 </html>

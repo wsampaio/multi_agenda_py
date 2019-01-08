@@ -39,7 +39,9 @@
 
 		<script>
 			function preencheTabela (){
-				$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
+				var url = "/cgi-bin/financeiro/categoriaContaLista.py";
+
+				$.getJSON(url, function(data) {
 
 					//console.log(data);
 					var lista = data.categoriasContas;
@@ -68,25 +70,29 @@
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".categoriaConta").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/financeiro/categoriaContaLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
 			}
 
-			function abreForm(cod){
-				try {
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/financeiro/categoriaConta.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-				} catch {
-
-				}
-			}
-
 			$(document).ready(function() {
-
 				preencheTabela();
-
 			});
 		</script>
 	</body>

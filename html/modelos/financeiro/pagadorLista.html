@@ -15,16 +15,31 @@
 			}
 		</style>
 
-
 		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/financeiro/pagadorLista.html" target="_blank">
+				<h1>Pagadores - Lista</h1>
+			</a>
 
-
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codPagador</th>
+						<th class="col1">pagador</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<script>
-
-
 			function preencheTabela (){
-				$.getJSON("/cgi-bin/financeiro/pagadorLista.py", function(data) {
+				var url = "/cgi-bin/financeiro/pagadorLista.py";
+
+				$.getJSON(url, function(data) {
 
 					console.log(data);
 					var lista = data.pagadores;
@@ -35,7 +50,7 @@
 
 						saida += "<tr>"
 							saida += "<td class='col0'>"
-								saida += "<a class='categoriaConta btn' href='/html/modelos/financeiro/pagador.html?cod=" + 
+								saida += "<a class='pagador btn' href='/html/modelos/financeiro/pagador.html?cod=" + 
 									lista[i].codPagador + 
 									"' onclick='abreForm(" + 
 									lista[i].codPagador + 
@@ -53,44 +68,30 @@
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".pagador").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/financeiro/pagadorLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
 			}
 
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/financeiro/pagador.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
 			$(document).ready(function() {
-
 				preencheTabela();
-
 			});
 		</script>
-
-	</head>
-
-	<body>
-
-		<div class="row-fluid">
-				<a href="/html/modelos/financeiro/pagadorLista.html" target="_blank">
-					<h1>Pagadores - Lista</h1>
-				</a>
-
-				<table>
-					<thead>
-						<tr>
-							<th class="col0">codPagador</th>
-							<th class="col1">pagador</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-		</div>
-
 	</body>
 </html>
