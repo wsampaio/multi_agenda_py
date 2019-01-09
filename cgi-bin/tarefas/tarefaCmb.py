@@ -47,7 +47,7 @@ for obj in lista:
 	saida += """
 		{}
 			"codTarefa": {},
-                        "tarefa": "{}"
+			"tarefa": "{}"
 		{}""".format(
 			"{",
 			obj.getCodTarefa(),
