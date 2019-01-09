@@ -12,6 +12,12 @@
 				<span id="prioridadeLbl">
 					Prioridade
 				</span>
+				<a 
+					class="" 
+					target= "_blank" 
+					id="prioridadeInfo" 
+					href="/html/modelos/tarefas/prioridade.html"
+				>(?)</a>
 			</label>
 			<select class="form-control" id="prioridadeCmb" name="codPrioridade">
 				<option value='0'>Selecione:</option>
@@ -25,7 +31,7 @@
 			function preenchePrioridadeCmb(cod){
 				var saida = "";
 
-				$.getJSON("/cgi-bin/tarefas/prioridades.py", function(data) {
+				$.getJSON("/cgi-bin/tarefas/prioridadeCmb.py", function(data) {
 
 					console.log(data);
 					var prioridades = data.prioridades;
@@ -49,6 +55,14 @@
 					$("#loadPrioridadeCmb").css("display", "none");
 				});
 			}
+
+			$("#prioridadeInfo").on("click", function(){
+				event.preventDefault();
+				window.open(
+					$(this).attr("href") + "?cod=" +
+					$("#prioridadeCmb").val()
+				);
+			});
 
 			$(document).ready(function () {
 

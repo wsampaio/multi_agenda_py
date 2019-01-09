@@ -22,36 +22,42 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
-from objetos.tarefas.Tarefa import Tarefa
-from objetos.tarefas.TarefaDAO import TarefaDAO
+from objetos.tarefas.Prioridade import Prioridade
+from objetos.tarefas.PrioridadeDAO import PrioridadeDAO
 
-tarefa = Tarefa()
-tarefaDAO = TarefaDAO()
+prioridade = Prioridade()
+prioridadeDAO = PrioridadeDAO()
 
 print("Content-type: application/json\n")
 
-saida = ""
-
-saida += """
+saida = """
 {
-	"tarefas": ["""
+	"prioridades": ["""
 
 i = 0
-#lista = tarefaDAO.listaPrincipaisEmAberto()
-lista = tarefaDAO.getListaCmb()
+lista = prioridadeDAO.getLista()
 
 contaLista = len(lista) -1
 
-for obj in lista:
+for forPrioridade in lista:
 
 	saida += """
 		{}
-			"codTarefa": {},
-                        "tarefa": "{}"
+			"codPrioridade": "{}",
+			"ordem": "{}",
+			"prioridade": "{}",
+			"descricao": "{}"
 		{}""".format(
 			"{",
-			obj.getCodTarefa(),
-			obj.getTarefa()
+			forPrioridade.getCodPrioridade(),
+			forPrioridade.getOrdem(),
+			forPrioridade.getPrioridade()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			forPrioridade.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
@@ -60,22 +66,22 @@ for obj in lista:
 			"}"
 		)
 
-
 	if i < contaLista:
 		saida += ","
 		i += 1
 	else:
 		break
 
-saida += """
+saida +="""
 	]
 }
 """
 
-
 print(
-	saida
-		.replace("\n", "")
-		.replace("\t", "")
+saida
+	.replace("\n", "")
+	.replace("\t", "")
 )
+
+
 
