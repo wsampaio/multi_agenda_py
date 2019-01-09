@@ -58,6 +58,10 @@
 
 			$("#prioridadeInfo").on("click", function(){
 				event.preventDefault();
+			});
+
+			$("#prioridadeInfo").on("dblclick", function(){
+				event.preventDefault();
 				window.open(
 					$(this).attr("href") + "?cod=" +
 					$("#prioridadeCmb").val()
