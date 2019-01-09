@@ -15,17 +15,40 @@
 			}
 		</style>
 
-
 		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/tarefas/tarefaLista.html" target="_blank">
+				<h1>Tarefas</h1>
+			</a>
 
-
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codTarefa</th>
+						<th class="col1">codTarefaPai</th>
+						<th class="col2">tarefa</th>
+						<th class="col3">inicio</th>
+						<th class="col4">fim</th>
+						<th class="col5">prazo</th>
+						<th class="col6">terminado</th>
+						<th class="col7">ordem</th>
+						<th class="col8">codPrioridade</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<script>
 
 
 			function preencheTabela (){
+				var url = "/cgi-bin/tarefas/tarefaLista.py";
 
-				$.getJSON("/cgi-bin/tarefas/tarefas.py", function(data) {
+				$.getJSON(url, function(data) {
 
 					console.log(data);
 					var tarefas = data.tarefas;
@@ -61,51 +84,30 @@
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".tarefa").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/tarefas/tarefaLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
 			}
 
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/tarefas/tarefa.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
 			$(document).ready(function() {
-
 				preencheTabela();
-
 			});
 		</script>
-
-	</head>
-
-	<body>
-
-		<div class="row-fluid">
-				<a href="/html/modelos/tarefas/tarefaLista.html" target="_blank">
-					<h1>Tarefas</h1>
-				</a>
-
-				<table>
-					<thead>
-						<tr>
-							<th class="col0">codTarefa</th>
-							<th class="col1">codTarefaPai</th>
-							<th class="col2">tarefa</th>
-							<th class="col3">inicio</th>
-							<th class="col4">fim</th>
-							<th class="col5">prazo</th>
-							<th class="col6">terminado</th>
-							<th class="col7">ordem</th>
-							<th class="col8">codPrioridade</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-		</div>
-
 	</body>
 </html>

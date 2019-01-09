@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 #
 # Este arquivo é parte do programa multi_agenda
@@ -22,41 +22,42 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
-from objetos.tarefas.Historico import Historico
-from objetos.tarefas.HistoricoDAO import HistoricoDAO
+from objetos.tarefas.Prioridade import Prioridade
+from objetos.tarefas.PrioridadeDAO import PrioridadeDAO
 
-historico = Historico()
-historicoDAO = HistoricoDAO()
+prioridade = Prioridade()
+prioridadeDAO = PrioridadeDAO()
 
 print("Content-type: application/json\n")
 
-
-print(
-"""
+saida = """
 {
-	"historicos": [""")
+	"prioridades": ["""
 
 i = 0
-lista = historicoDAO.getLista()
+lista = prioridadeDAO.getLista()
 
 contaLista = len(lista) -1
 
-for forHistorico in lista:
+for forPrioridade in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codHistorico": "{}",
-			"codTarefa": "{}",
-			"data": "{}",
-			"obs": "{}"
-		{}""".
-		format(
+			"codPrioridade": "{}",
+			"ordem": "{}",
+			"prioridade": "{}",
+			"descricao": "{}"
+		{}""".format(
 			"{",
-			forHistorico.getCodHistorico(),
-			forHistorico.getCodTarefa(),
-			forHistorico.getData(),
-			forHistorico.getObs()
+			forPrioridade.getCodPrioridade(),
+			forPrioridade.getOrdem(),
+			forPrioridade.getPrioridade()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b")
+				.replace("\"", "\\\""),
+			forPrioridade.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
@@ -64,16 +65,23 @@ for forHistorico in lista:
 				.replace("\"", "\\\""),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida +="""
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+
+
+

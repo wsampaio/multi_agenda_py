@@ -22,62 +22,70 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
-from objetos.tarefas.Prioridade import Prioridade
-from objetos.tarefas.PrioridadeDAO import PrioridadeDAO
+from objetos.tarefas.Tarefa import Tarefa
+from objetos.tarefas.TarefaDAO import TarefaDAO
 
-prioridade = Prioridade()
-prioridadeDAO = PrioridadeDAO()
+tarefa = Tarefa()
+tarefaDAO = TarefaDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"prioridades": [""")
+	"tarefas": ["""
 
 i = 0
-lista = prioridadeDAO.getLista()
+#lista = tarefaDAO.listaPrincipaisEmAberto()
+lista = tarefaDAO.getLista()
 
 contaLista = len(lista) -1
 
-for forPrioridade in lista:
+for forTarefa in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codPrioridade": "{}",
+			"codTarefa": "{}",
+			"codTarefaPai": "{}",
+			"tarefa": "{}",
+			"inicio": "{}",
+			"fim": "{}",
+			"prazo": "{}",
+			"terminado": "{}",
 			"ordem": "{}",
-			"prioridade": "{}",
-			"descricao": "{}"
-		{}""".
-		format(
+			"codPrioridade": "{}"
+		{}""".format(
 			"{",
-			forPrioridade.getCodPrioridade(),
-			forPrioridade.getOrdem(),
-			forPrioridade.getPrioridade()
+			forTarefa.getCodTarefa(),
+			forTarefa.getCodTarefaPai(),
+			forTarefa.getTarefa()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			forPrioridade.getDescricao()
-				.replace("\r", "%r")
-				.replace("\n", "%n")
-				.replace("\t", "$t")
-				.replace("\\", "$b")
-				.replace("\"", "\\\""),
+			forTarefa.getInicio(),
+			forTarefa.getFim(),
+			forTarefa.getPrazo(),
+			forTarefa.getTerminado(),
+			forTarefa.getOrdem(),
+			forTarefa.getCodPrioridade(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

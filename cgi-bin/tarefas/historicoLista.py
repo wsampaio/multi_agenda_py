@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 #
 # Este arquivo é parte do programa multi_agenda
@@ -22,68 +22,59 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
-from objetos.tarefas.Tarefa import Tarefa
-from objetos.tarefas.TarefaDAO import TarefaDAO
+from objetos.tarefas.Historico import Historico
+from objetos.tarefas.HistoricoDAO import HistoricoDAO
 
-tarefa = Tarefa()
-tarefaDAO = TarefaDAO()
+historico = Historico()
+historicoDAO = HistoricoDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"tarefas": [""")
+	"historicos": ["""
 
 i = 0
-#lista = tarefaDAO.listaPrincipaisEmAberto()
-lista = tarefaDAO.getLista()
+lista = historicoDAO.getLista()
 
 contaLista = len(lista) -1
 
-for forTarefa in lista:
+for forHistorico in lista:
 
-	print(
-"""
+	saida += """
 		{}
+			"codHistorico": "{}",
 			"codTarefa": "{}",
-			"codTarefaPai": "{}",
-			"tarefa": "{}",
-			"inicio": "{}",
-			"fim": "{}",
-			"prazo": "{}",
-			"terminado": "{}",
-			"ordem": "{}",
-			"codPrioridade": "{}"
-		{}""".
-		format(
+			"data": "{}",
+			"obs": "{}"
+		{}""".format(
 			"{",
-			forTarefa.getCodTarefa(),
-			forTarefa.getCodTarefaPai(),
-			forTarefa.getTarefa()
+			forHistorico.getCodHistorico(),
+			forHistorico.getCodTarefa(),
+			forHistorico.getData(),
+			forHistorico.getObs()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			forTarefa.getInicio(),
-			forTarefa.getFim(),
-			forTarefa.getPrazo(),
-			forTarefa.getTerminado(),
-			forTarefa.getOrdem(),
-			forTarefa.getCodPrioridade(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

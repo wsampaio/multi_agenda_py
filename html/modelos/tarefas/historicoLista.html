@@ -15,20 +15,35 @@
 			}
 		</style>
 
-
 		<script src="/html/btp/jquery.js"></script>
 
+	</head>
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/tarefas/historicoLista.html" target="_blank">
+				<h1>Historicos</h1>
+			</a>
 
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codHistorico</th>
+						<th class="col1">codTarefa</th>
+						<th class="col2">data</th>
+						<th class="col3">obs</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<script>
-
-
-
 			function preencheTabela (){
+				var url = "/cgi-bin/tarefas/historicoLista.py";
 
-				$.getJSON("/cgi-bin/tarefas/historicos.py", function(data) {
-
-					console.log(data);
+				$.getJSON(url, function(data) {
+					//console.log(data);
 					var historicos = data.historicos;
 
 					var saida = "";
@@ -52,55 +67,34 @@
 
 					}
 
-
 					saida = saida.replace("%r", "<br>");
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".tarefa").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/tarefas/tarefaLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
 				});
 			}
 
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/tarefas/historico.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-				
 			$(document).ready(function() {
-
 				preencheTabela();
-
-				$(".historico").on("click", function(event){
-					event.preventDefault();
-				});
-
 			});
 		</script>
-
-	</head>
-
-	<body>
-
-		<div class="row-fluid">
-				<a href="/html/modelos/tarefas/historicoLista.html" target="_blank">
-					<h1>Historicos</h1>
-				</a>
-
-				<table>
-					<thead>
-						<tr>
-							<th class="col0">codHistorico</th>
-							<th class="col1">codTarefa</th>
-							<th class="col2">data</th>
-							<th class="col3">obs</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-		</div>
-
 	</body>
 </html>
