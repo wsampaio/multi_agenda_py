@@ -41,9 +41,16 @@ form = cgi.FieldStorage()
 
 qry = []
 
+
+
+lista = 0
+
 if form:
 	uri = urlparse(form.getvalue("qry"))
 	qry = uri.path.split(" ")
+	lista = dao.buscaTarefa(qry)
+else:
+	lista = dao.listaPrincipaisEmAberto()
 
 
 
@@ -56,7 +63,6 @@ saida = """
 
 i = 0
 #lista = tarefaDAO.listaPrincipaisEmAberto()
-lista = dao.buscaTarefa(qry)
 
 contaLista = len(lista) -1
 

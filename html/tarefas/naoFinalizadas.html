@@ -27,6 +27,9 @@
 			</h1>
 		</div>
 
+		<div id="resultadoBuscaTarefa"></div>
+
+
 		<div id="listaNaoFinalizadas">
 			<table style='width:100%;'>
 				<thead>
@@ -41,12 +44,12 @@
 
 			function preencheTabelaNaoFinalizadas(paginaAtual){
 
-				var urlJSON = "/cgi-bin/tarefas/naoFinalizadas.py";
+				var urlJSON = "/cgi-bin/tarefas/buscaTarefa.py";
 
 				$.getJSON(urlJSON, function(data) {
 
 					var saida = "";
-					var lista = data.naoFinalizadas;
+					var lista = data.tarefas;
 
 					//variaveis para pagonacao
 					var itensPorPagina = 10;
@@ -230,7 +233,12 @@
 					paginaAtual = searchParams.get("pag");
 				}
 
-				preencheTabelaNaoFinalizadas(paginaAtual);
+				url = "/html/tarefas/resultadoBuscaTarefa.html";
+
+				$("#resultadoBuscaTarefa").attr("url", url)
+				$("#resultadoBuscaTarefa").load(url);
+
+				//preencheTabelaNaoFinalizadas(paginaAtual);
 			});
 		</script>
 	</body>
