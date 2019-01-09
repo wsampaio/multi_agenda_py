@@ -43,24 +43,20 @@ prioridadeDAO = PrioridadeDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"prioridade": [""")
+	"prioridade": ["""
 
 prioridade = prioridadeDAO.select(codPrioridade)
 
 
-
-print(
-"""
+saida += """
 		{}
 			"codPrioridade": "{}",
 			"ordem": "{}",
 			"prioridade": "{}",
 			"descricao": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
 			prioridade.getCodPrioridade(),
 			prioridade.getOrdem(),
@@ -78,11 +74,14 @@ print(
 				.replace("\"", "\\\""),
 			"}"
 		)
-	)
 
-
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+
