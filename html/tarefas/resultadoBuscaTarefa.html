@@ -96,22 +96,29 @@
 							"</td>" +
 						"</tr>" +
 						"<tr>" +
-							"<td colspan='3'>" +
-								"<div" +
-									"style='height:5px; " + 
-									"background-color:gray;' " +
+							"<td colspan='3'>";
+
+							if (lista[i].subTarefas > 0) {
+
+								saida += "<div " +
+									"style='height:5px; " +
+									"background-color:#ccc;' " +
 									"title='" +
 										lista[i].subTarefasTerminadas + "/" +
 										lista[i].subTarefas + 
 								"'>" +
 									"<div " + 
 										"style='height:5px; " + 
-										"width:" + 
-										((lista[i].subTarefasTerminadas * 100) / lista[i].subTarefas) +
-										"%; " +
+										"width:";
+
+										saida += (lista[i].subTarefasTerminadas * 100) / lista[i].subTarefas;
+
+										saida += "%; " +
 										"background-color:green;'></div>" +
-								"</div>" +
-							"</td>" +
+								"</div>";
+							}
+
+							saida += "</td>" +
 						"</tr>"; 
 
 
