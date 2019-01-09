@@ -45,13 +45,26 @@
 				$.getJSON(url, function (data) {
 					//console.log(data);
 					var lista = data.subTarefas;
+					var lastSubTarefa = 0;
 
 					for (i in lista) {
 						var saida =
 							"<tr class='"
 
-							if (lista[i].terminado == "True"){
-								saida += "success"
+							if (
+								lista[i].terminado == "False" &&
+								lista[i].inicio == "0001-01-01T00:00"
+							){
+								saida += "success";
+
+							} else if (
+								lista[i].terminado == "False" &&
+								lista[i].inicio != "0001-01-01T00:00"
+							){
+								saida += "warning";
+
+							} else {
+								saida += "active";
 							}
 
 							saida += "'>" +
@@ -96,9 +109,25 @@
 							"</tr>";
 
 						$("#subTarefasTbl").append(saida);
+
+						if (lista[i].ordem > lastSubTarefa){
+							lastSubTarefa = lista[i].ordem;
+						}
 					}
 
-					//$("#codTarefa").val(obj[0].codTarefa);
+					$("#subTarefasTbl").append(
+						"<tr><td colspan='3'>" +
+							"<a " +
+								"class='addSubtarefaBtn btn btn-success' " +
+								"target='_blank' " +
+								"href='/html/tarefas/tarefa.html?" +
+									"cod2=" + cod + "&" +
+									"last=" + lastSubTarefa +
+								"'" +
+							">add</a>" +
+						"</td></tr>"
+					);
+
 				})
 				.done(function( json ) {
 					$(".itTarefa").on("click", function(){
@@ -122,6 +151,13 @@
 							}
 						});
 					});
+
+					$("#addSubTarefaBtn").on("click", function(){
+						event.preventDefault();
+						var url = $(this).attr(href);
+						window.open(url);
+					});
+
 				});
 			}
 

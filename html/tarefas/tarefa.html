@@ -95,12 +95,9 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 									SubTarefas
-									<a class="btn" id="addSubTarefaBtn">add</a>
 									<a class="btn" id="maisSubTarefasBtn">mais</a>
 							</div>
-							<div class="panel-body" id="subTarefas">
-								há!!!
-							</div>
+							<div class="panel-body" id="subTarefas"></div>
 						</div>
 					</div>
 
@@ -112,16 +109,9 @@
 									<a class="btn" id="addHistoricoBtn">add</a>
 									<a class="btn" id="maisHistoricoBtn">mais</a>
 							</div>
-							<div class="panel-body" id="historico">
-								há!!!
-							</div>
+							<div class="panel-body" id="historico"></div>
 						</div>
 					</div>
-
-
-
-
-
 
 				</form>
 			</div>
@@ -161,6 +151,8 @@
 
 					$("#ordem").val(obj[0].ordem);
 					$("#codPrioridade").val(obj[0].codPrioridade);
+
+					$("#lastSubTarefa").val(obj[0].lastSubTarefa);
 
 				})
 				.done(function( json ) {
@@ -239,13 +231,6 @@
 				} else {
 					$("#subTarefas").css("display", "none");
 				}
-			});
-
-			$("#addSubTarefaBtn").on("click", function(){
-				var url = "/html/tarefas/tarefa.html" +
-					"?cod2=" + $("#codTarefa").val();
-
-				window.open(url);
 			});
 
 			$("#maisHistoricoBtn").on("click", function(){
@@ -381,6 +366,7 @@
 					//verificacao de outros dados enviados
 					if (searchParams.has("cod2")){
 						$("#codTarefaPai").val(searchParams.get("cod2"));
+						$("#ordem").val(parseInt(searchParams.get("last")) + 1);
 					}
 
 					carregaCombos();
