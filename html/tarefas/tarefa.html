@@ -93,7 +93,7 @@
 
 					<div class="panel-group" id="panelSubTarefas">
 						<div class="panel panel-default">
-							<div class="panel-heading">
+							<div class="panel-heading" id="subTarefasHead">
 									SubTarefas
 									<a class="btn" id="maisSubTarefasBtn">mais</a>
 							</div>
@@ -153,6 +153,30 @@
 					$("#codPrioridade").val(obj[0].codPrioridade);
 
 					$("#lastSubTarefa").val(obj[0].lastSubTarefa);
+
+					if (obj[0].subTarefas > 0){
+						var saida = 
+							"<div " +
+								"id='progressContainer' " +
+								"style='height:5px; " +
+									"background-color:#ccc;' " +
+									"title='" +
+										obj[0].subTarefasTerminadas + "/" +
+										obj[0].subTarefas +
+									"'>" +
+								"<div " +
+									"id='progressBar' " +
+									"style='" +
+										"height:5px;" +
+										"width:" + 
+											((obj[0].subTarefasTerminadas * 100) / obj[0].subTarefas) +
+										"%;" +
+										"background-color:green;'>" +
+								"</div>" +
+							"</div>";
+
+						$("#subTarefasHead").append(saida);
+					}
 
 				})
 				.done(function( json ) {

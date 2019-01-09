@@ -65,7 +65,9 @@ saida += """
 			"prazo": "{}",
 			"terminado": "{}",
 			"ordem": {},
-			"codPrioridade": {}
+			"codPrioridade": {},
+			"subTarefas": {},
+			"subTarefasTerminadas": {}
 		{}""".format(
 			"{",
 			obj.getCodTarefa(),
@@ -82,6 +84,8 @@ saida += """
 			obj.getTerminado(),
 			obj.getOrdem(),
 			obj.getCodPrioridade(),
+			dao.ttlSubTarefas(obj.getCodTarefa()),
+			dao.subTarefasTerminadas(obj.getCodTarefa()),
 			"}"
 		)
 
