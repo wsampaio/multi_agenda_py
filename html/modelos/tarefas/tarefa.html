@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 		<title>tarefa</title>
 		<style>
 			table, td, th {
@@ -84,61 +85,13 @@
 			</div>
 			<div class="row-fluid btn-group">
 				<button class="salvar btn btn-primary">Salvar</button> 
-				<button class="copiar btn btn-success">Copiar</button> 
 				<button class="salvar btn btn-danger">Excluir</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
 
 		<script>
-
-			var variavel = 0;
-
-			function preencheForm() {
-				var url = "/cgi-bin/tarefas/tarefa.py";
-
-				if (variavel > 0) {
-					url += "?cod=" + variavel;
-				}
-
-				$.getJSON(url, function (data) {
-					//console.log(data);
-					var obj = data.tarefa;
-
-					$("#codTarefa").val(obj[0].codTarefa);
-					$("#codTarefaPai").val(obj[0].codTarefaPai);
-					$("#tarefa").val(obj[0].tarefa.replace(/%r%n/g, "\n", -1));
-					$("#inicio").val(obj[0].inicio);
-					$("#fim").val(obj[0].fim);
-					$("#prazo").val(obj[0].prazo);
-
-					if (obj[0].terminado == "True"){
-						$("#terminado").attr("checked", "checked")
-					} else {
-						$("#terminado").prop("checked")
-					}
-
-					$("#ordem").val(obj[0].ordem);
-					$("#codPrioridade").val(obj[0].codPrioridade);
-				})
-				.done(function( json ) {
-					carregaCombos();
-				});
-				
-				//
-			}
-
-			function formNull() {
-				$("#codTarefa").val(0);
-				$("#codTarefaPai").val(0);
-				$("#tarefa").val("");
-				$("#inicio").val("0001-01-01T00:00");
-				$("#fim").val("0001-01-01T00:00");
-				$("#prazo").val("0001-01-01T00:00");
-				$("#ordem").val(0);
-				$("#codPrioridade").val(0);
-
-				carregaCombos();
-			}
 
 			$("form").submit(function (event) {
 				event.preventDefault();
@@ -160,54 +113,36 @@
 				$("#codPrioridadeDiv").load("/html/modelos/tarefas/prioridadeCmb.html");
 			}
 
-			$(".copiar").on("click", function(){
-				$("#codTarefaDiv").css("display", "block");
-				$("#codTarefa").val(0);
-			});
-
-			$(".salvar").on("click", function(){
-				var txt = $(this).html();
-				var frm = $("#tarefaFrm");
-				var action = "/cgi-bin/tarefas/salvaTarefa.py";
-				var dados = "";
-
-				if (txt === "Salvar") {
-					dados = frm.serialize();
-				} else if (txt === "Excluir") {
-					dados = frm.serialize() + "&delete=True";
-				}
-
-				$.post(
-					action, 
-					dados, 
-					function(data) {
-						alert("Dados salvos!");
-						//console.log(data);
-					}
-				)
-			});
-
 			$(document).ready(function () {
 
-				$("#codTarefaDiv").css("display", "none");
+				var form = "#tarefaFrm";
+				var nmPK = "codTarefa";
+				var urlJSON = "/cgi-bin/tarefas/tarefa.py";
+				var action = "/cgi-bin/tarefas/salvaTarefa.py";
+				var searchParams = procurarURLParameters();
+				var idDados = "tarefa";
+				var dadosNull =
+					{
+						"CodTarefa": 0,
+						"codTarefaPai": 0,
+						"tarefa": "",
+						"inicio": "0001-01-01T00:00",
+						"fim": "0001-01-01T00:00",
+						"prazo": "0001-01-01T00:00",
+						"terminado": "False",
+						"ordem": 0,
+						"codPrioridade": 0
+					};
 
-				var searchParams = "";
-
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-
-				searchParams = new URLSearchParams(searchParams);
 
 				if (searchParams.has('cod')) {
-					variavel = searchParams.get("cod");
-					preencheForm();
+					var cod = searchParams.get("cod");
+					preencheForm(cod, form, urlJSON, idDados);
 				} else {
-					formNull();
+					formNull(dadosNull, form);
 				}
+
+				setBotoesDeAcao(nmPK, form, action);
 
 			});
 
