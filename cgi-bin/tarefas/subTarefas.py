@@ -79,7 +79,7 @@ for obj in lista:
 				.replace("\"", "\\\""),
 			FormatData.para_JDate(obj.getInicio()),
 			FormatData.para_JDate(obj.getFim()),
-			obj.getPrazo(),
+			FormatData.para_JDate(obj.getPrazo()),
 			obj.getTerminado(),
 			obj.getOrdem(),
 			obj.getCodPrioridade(),
