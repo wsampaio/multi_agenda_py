@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>marcaCmb</title>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="codMarca">
+				<span id="marcaLbl">
+					Marca
+				</span>
+			</label>
+			<select class="form-control" id="marcaCmb" name="codMarca">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadMarcaCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
+
+		<script>
+			function preencheMarcaCmb(cod){
+				var saida = "";
+
+				$.getJSON("/cgi-bin/patrimonio/marcaCmb.py", function(data) {
+
+					console.log(data);
+					var lista = data.marcaCmb;
+					var obj = "";
+
+					for (i = 0; i < lista.length; i++) {
+						
+						obj = lista[i];
+
+						saida += "<option value='" + obj.codMarca + "'";
+
+						if (obj.codMarca == cod){
+							saida += " selected";
+						}
+
+						saida += ">";
+						saida += 
+							obj.lbl.substring(0, 30) + 
+							"</option>";
+
+					}
+
+					$("#marcaCmb").append(saida);
+					$("#loadMarcaCmb").css("display", "none");
+				});
+			}
+
+			$(document).ready(function () {
+
+				var variavel = 0;
+
+				let params = decodeURI($("#marcaCmb").parent().parent().attr('param'));
+				let searchParams = new URLSearchParams(params);
+
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+
+				if (searchParams.has("lbl")){
+					$("#marcaLbl").html(searchParams.get("lbl"));
+				}
+
+				if (searchParams.has("cmp")){
+					$("#marcaCmb").attr("name", searchParams.get("cmp"));
+				}
+
+				preencheMarcaCmb(variavel);
+			});
+		</script>
+	</body>
+</html>
+

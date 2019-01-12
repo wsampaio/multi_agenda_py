@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>modeloCmb</title>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="codModelo">
+				<span id="modeloLbl">
+					Modelo
+				</span>
+			</label>
+			<select class="form-control" id="modeloCmb" name="codModelo">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadModeloCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
+
+		<script>
+			function preencheModeloCmb(cod){
+				var saida = "";
+
+				$.getJSON("/cgi-bin/patrimonio/modeloCmb.py", function(data) {
+
+					console.log(data);
+					var lista = data.modeloCmb;
+					var obj = "";
+
+					for (i = 0; i < lista.length; i++) {
+						
+						obj = lista[i];
+
+						saida += "<option value='" + obj.codModelo + "'";
+
+						if (obj.codModelo == cod){
+							saida += " selected";
+						}
+
+						saida += ">";
+						saida += 
+							obj.lbl.substring(0, 30) + 
+							"</option>";
+
+					}
+
+					$("#modeloCmb").append(saida);
+					$("#loadModeloCmb").css("display", "none");
+				});
+			}
+
+			$(document).ready(function () {
+
+				var variavel = 0;
+
+				let params = decodeURI($("#modeloCmb").parent().parent().attr('param'));
+				let searchParams = new URLSearchParams(params);
+
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+
+				if (searchParams.has("lbl")){
+					$("#modeloLbl").html(searchParams.get("lbl"));
+				}
+
+				if (searchParams.has("cmp")){
+					$("#modeloCmb").attr("name", searchParams.get("cmp"));
+				}
+
+				preencheModeloCmb(variavel);
+			});
+		</script>
+	</body>
+</html>
+

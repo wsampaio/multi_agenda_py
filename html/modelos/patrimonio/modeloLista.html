@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>modeloLista</title>
+		<script src="/html/btp/jquery.js"></script>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/patrimonio/modeloLista.html" target="_blank">
+				<h1>Modelo - Lista</h1>
+			</a>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codModelo</th>
+						<th class="col1">codMarca</th>
+						<th class="col2">modelo</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			function preencheTabela (){
+				var url = "/cgi-bin/patrimonio/modeloLista.py";
+
+				$.getJSON(url, function(data) {
+					//console.log(data);
+					var lista = data.modeloLista;
+
+					var saida = "";
+					var obj = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='modelo btn' target='_blank' href='/html/modelos/patrimonio/modelo.html?cod=" + 
+									obj.codModelo + 
+									"'>";
+									saida += obj.codModelo;
+								saida += "</a>"
+							saida += "</td>"
+
+							saida += "<td class='col1'>" + obj.codMarca + "</td>"
+							saida += "<td class='col1'>" + obj.modelo + "</td>"
+
+						saida += "</tr>"
+
+					}
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".modelo").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/patrimonio/modeloLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
+				});
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
+	</body>
+</html>

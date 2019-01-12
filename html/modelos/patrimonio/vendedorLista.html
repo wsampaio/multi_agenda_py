@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>vendedorLista</title>
+		<script src="/html/btp/jquery.js"></script>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/patrimonio/vendedorLista.html" target="_blank">
+				<h1>Vendedor - Lista</h1>
+			</a>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">codVendedor</th>
+						<th class="col1">vendedor</th>
+						<th class="col2">endereco</th>
+						<th class="col3">contato</th>
+						<th class="col4">obs</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			function preencheTabela (){
+				var url = "/cgi-bin/patrimonio/vendedorLista.py";
+
+				$.getJSON(url, function(data) {
+					//console.log(data);
+					var lista = data.vendedorLista;
+
+					var saida = "";
+					var obj = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='vendedor btn' target='_blank' href='/html/modelos/patrimonio/vendedor.html?cod=" + 
+									obj.codVendedor + 
+									"'>";
+									saida += obj.codVendedor;
+								saida += "</a>"
+							saida += "</td>"
+
+							saida += "<td class='col1'>" + obj.vendedor + "</td>"
+							saida += "<td class='col2'>" + obj.endereco + "</td>"
+							saida += "<td class='col3'>" + obj.contato + "</td>"
+							saida += "<td class='col4'>" + obj.obs + "</td>"
+
+						saida += "</tr>"
+
+					}
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".vendedor").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/patrimonio/vendedorLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
+				});
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
+	</body>
+</html>
