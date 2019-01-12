@@ -113,7 +113,7 @@ class Tarefa:
 
 	def setOrdem(self, ordem):
 		try:
-			self.__ordem = ordem
+			self.__ordem = int(ordem)
 		except ValueError:
 			self.__ordem = self.getOrdem()
 
