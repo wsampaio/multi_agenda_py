@@ -51,30 +51,33 @@
 				$.getJSON(url, function(data) {
 
 					console.log(data);
-					var tarefas = data.tarefas;
+					var lista = data.tarefas;
+					var obj = "";
 
 					var saida = "";
 
-					for (i = 0; i < tarefas.length; i++) {
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
 
 						saida += "<tr>"
 							saida += "<td class='col0'>"
-								saida += "<a class='terafa btn' href='/html/modelos/tarefas/tarefa.html?cod=" + 
-					tarefas[i].codTarefa + 
-					"' onclick='abreForm(" + 
-					tarefas[i].codTarefa + 
-					");'>";
-									saida += tarefas[i].codTarefa
+								saida += "<a class='tarefa btn' target='_blank' href='/html/modelos/tarefas/tarefa.html?cod=" + 
+									obj.codTarefa + 
+										"' onclick='abreForm(" + 
+											obj.codTarefa + 
+										");'>";
+									saida += obj.codTarefa
 								saida += "</a>"
 							saida += "</td>"
-							saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
-							saida += "<td class='col2'>" + tarefas[i].tarefa.replace(/%r%n/g, "<br>", -1) + "</td>"
-							saida += "<td class='col3'>" + tarefas[i].inicio + "</td>"
-							saida += "<td class='col4'>" + tarefas[i].fim + "</td>"
-							saida += "<td class='col5'>" + tarefas[i].prazo + "</td>"
-							saida += "<td class='col6'>" + tarefas[i].terminado + "</td>"
-							saida += "<td class='col7'>" + tarefas[i].ordem + "</td>"
-							saida += "<td class='col8'>" + tarefas[i].codPrioridade + "</td>"
+							saida += "<td class='col1'>" + obj.codTarefaPai + "</td>"
+							saida += "<td class='col2'>" + obj.tarefa.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col3'>" + obj.inicio + "</td>"
+							saida += "<td class='col4'>" + obj.fim + "</td>"
+							saida += "<td class='col5'>" + obj.prazo + "</td>"
+							saida += "<td class='col6'>" + obj.terminado + "</td>"
+							saida += "<td class='col7'>" + obj.ordem + "</td>"
+							saida += "<td class='col8'>" + obj.codPrioridade + "</td>"
 						saida += "</tr>"
 
 					}
