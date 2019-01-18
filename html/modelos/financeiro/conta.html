@@ -127,7 +127,7 @@
 					$("#descricao").val(obj[0].descricao.replace(/%r%n/g, "\n", -1));
 					$("#mesReferencia").val(obj[0].mesReferencia);
 					$("#dtVencimento").val(obj[0].dtVencimento);
-					$("#codBarras").val(obj[0].codBarras);
+					$("#codBarras").val(obj[0].codBarras.replace(/%r%n/g, "\n", -1));
 					$("#valor").val(obj[0].valor);
 					$("#codReceitaPagadora").val(obj[0].codReceitaPagadora);
 					$("#codPagador").val(obj[0].codPagador);
