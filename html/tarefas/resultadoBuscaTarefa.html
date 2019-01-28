@@ -47,40 +47,70 @@
 
 					//carrega dados na tabela
 					for (var i = 0; i < lista.length; i++){
+						let obj = lista[i];
 
 						saida = 
 						"<tr>" +
 							"<td>" +
 								"<img " +
 									"src='/html/img/tarefas/0" + 
-										lista[i].codPrioridade + ".png' " + 
+										obj.codPrioridade + ".png' " + 
 									"width='10px' " +
-									"title='" + lista[i].prioridade + "'>" +
+									"title='" + obj.prioridade + "'>" +
 							"</td>" +
 							"<td>" +
 								"<a " +
 									"class='abreTarefaBtn' " +
 									"target='_blank' " +
 									"href='/html/tarefas/tarefa.html?cod=" + 
-										lista[i].codTarefa + 
+										obj.codTarefa + 
 								"'>" + 
-									lista[i].tarefa
+									obj.tarefa
 										.replace(/%r%n/g, "<br>", -1) +
-								"</a>" +
+								"</a>"
+
+							if (obj.subTarefas > obj.subTarefasTerminadas) {
+
+								saida +=
+								"<br><br>" +
+								obj.proximaSubTarefa[0].tarefa
+
+								if (obj.inicio === "0001-01-01T00:00"){
+									//se não tiver sido iniciada
+									saida +=
+										" (<a " +
+											"class='btn itTarefa'" +
+											"href='?cod=" + lista[i].codTarefa + 
+											"&oper=ini" +
+											"'" +
+										">I</a>)";
+								} else {
+									//se iniciada e não terminada
+									saida +=
+										" (<a " +
+											"class='btn itTarefa'" +
+											"href='?cod=" + lista[i].codTarefa + 
+											"&oper=fim" +
+											"'" +
+										">T</a>)";
+								}
+							}
+
+							saida +=
 							"</td>" +
 							"<td>" +
 								"Desde: " + 
-									dataFormatada(new Date(lista[i].inicio)) + "<br>" +
+									dataFormatada(new Date(obj.inicio)) + "<br>" +
 								"<i>" +
 									"<small>" + 
-										diffDatasFormatada(new Date(), new Date(lista[i].inicio)) +
+										diffDatasFormatada(new Date(), new Date(obj.inicio)) +
 									"</small>" + 
 								"</i>" +
 							"</td>" +
 							"<td rowspan='2'>" +
 								"<img " 
 
-								if (lista[i].terminado == "True") {
+								if (obj.terminado == "True") {
 									saida +=
 										"src='/html/img/tarefas/checkbox12.png' " +
 										"width='20px' " +
@@ -98,20 +128,20 @@
 						"<tr>" +
 							"<td colspan='3'>";
 
-							if (lista[i].subTarefas > 0) {
+							if (obj.subTarefas > 0) {
 
 								saida += "<div " +
 									"style='height:5px; " +
 									"background-color:#ccc;' " +
 									"title='" +
-										lista[i].subTarefasTerminadas + "/" +
-										lista[i].subTarefas + 
+										obj.subTarefasTerminadas + "/" +
+										obj.subTarefas + 
 								"'>" +
 									"<div " + 
 										"style='height:5px; " + 
 										"width:";
 
-										saida += (lista[i].subTarefasTerminadas * 100) / lista[i].subTarefas;
+										saida += (obj.subTarefasTerminadas * 100) / obj.subTarefas;
 
 										saida += "%; " +
 										"background-color:green;'></div>" +
@@ -147,6 +177,32 @@
 							}
 						}
 					);
+
+
+
+					$(".itTarefa").on("click", function(){
+						event.preventDefault();
+						var action = "/cgi-bin/tarefas/itTarefa.py";
+						var dados = String($(this).attr("href")).substr(1);
+
+						$.post(
+							action, 
+							dados, 
+							function(data) {
+								//console.log(data);
+							}
+						)
+						.done(function(){
+							alert("Dados salvos!");
+							if ($("#principal").length > 0){
+								$("#principal").load($("#principal").attr("url"));
+							} else {
+								location.reload();
+							}
+						});
+					});
+
+
 
 				});
 			}

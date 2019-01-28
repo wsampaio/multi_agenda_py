@@ -270,6 +270,40 @@ class TarefaDAO(CRUD.CRUD):
 		
 		return super().getValue(sql, 0)
 
+	def getProximaSubTarefa(self, codTarefaPai):
+		sql = \
+			"""
+SELECT
+		codTarefa
+	FROM (
+		SELECT
+			*,
+				CASE
+					WHEN inicio = '0001-01-01T00:00' THEN
+						1
+					ELSE
+						0
+				END
+			as foo
+			FROM
+				tarefas
+			WHERE
+				codTarefaPai = {} AND
+				terminado = 0
+			ORDER BY
+				foo,
+				inicio,
+				fim,
+				ordem
+			LIMIT 1
+	)
+;
+
+		""".format(codTarefaPai)
+
+		#return super().getList(sql)
+		return super().getValue(sql, 0)
+
 
 
 

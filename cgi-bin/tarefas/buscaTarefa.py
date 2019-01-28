@@ -68,6 +68,7 @@ contaLista = len(lista) -1
 
 for forObj in lista:
 	prioridade = prioridadeDAO.select(forObj.getCodPrioridade())
+	proximaSubTarefa = dao.select(dao.getProximaSubTarefa(forObj.getCodTarefa()))
 
 	saida += """
 		{}
@@ -81,6 +82,11 @@ for forObj in lista:
 			"ordem": {},
 			"codPrioridade": {},
 			"prioridade": "{}",
+			"proximaSubTarefa": [{}
+				"codSubTarefa": {},
+				"tarefa": "{}", 
+				"inicio": "{}"
+			{}],
 			"subTarefas": {},
 			"subTarefasTerminadas": {}
 		{}""".format(
@@ -100,6 +106,16 @@ for forObj in lista:
 			forObj.getOrdem(),
 			forObj.getCodPrioridade(),
 			prioridade.getPrioridade(),
+				"{",
+					proximaSubTarefa.getCodTarefa(),
+					proximaSubTarefa.getTarefa()
+						.replace("\r", "%r")
+						.replace("\n", "%n")
+						.replace("\t", "$t")
+						.replace("\\", "$b")
+						.replace("\"", "\\\""),
+					proximaSubTarefa.getInicio(),
+				"}",
 			dao.ttlSubTarefas(forObj.getCodTarefa()),
 			dao.subTarefasTerminadas(forObj.getCodTarefa()),
 			"}"
