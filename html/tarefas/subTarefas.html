@@ -76,7 +76,7 @@
 										"href='/html/tarefas/tarefa.html" +
 											"?cod=" + lista[i].codTarefa + "'" +
 									">" + 
-										lista[i].tarefa.replace("%r%n", "<br>") + 
+										lista[i].tarefa.replace(/%r%n/g, "<br>", -1) +
 									"</a>" +
 								"</td>" +
 								"<td>" 
@@ -107,6 +107,9 @@
 							saida += 
 								"</td>" +
 							"</tr>";
+
+						//saida = saida.replace("%r", "<br>");
+						//saida = saida.replace("%n", "<br>");
 
 						$("#subTarefasTbl").append(saida);
 
