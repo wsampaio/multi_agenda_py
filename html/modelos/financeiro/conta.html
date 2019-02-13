@@ -56,47 +56,64 @@
 							   placeholder="dtVencimento" type="date">
 					</div>
 
-					<div class="form-group" id="codBarrasDiv"> 
-						<label for="codBarras">codBarras</label>
-						<textarea class="form-control" id="codBarras" name="codBarras" 
-							   placeholder="codBarras"></textarea>
-					</div>
-
 					<div class="form-group" id="valorDiv"> 
 						<label for="valor">valor</label>
 						<input class="form-control" id="valor" name="valor" 
 							   placeholder="valor" type="number">
 					</div>
 
-					<div class="form-group" id="codReceitaPagadoraDiv"> 
-						<label for="codReceitaPagadora">codReceitaPagadora</label>
-						<input class="form-control" id="codReceitaPagadora" name="codReceitaPagadora" 
-							   placeholder="codReceitaPagadora" type="number">
+
+					<div class="row-fluid btn-group">
+						<a class="btn pagamentoBtn btn-primary">PG em Crédito</a>
+						<a class="btn pagamentoBtn btn-primary">PG à Vista</a>
 					</div>
 
-					<div class="form-group" id="codPagadorDiv"> 
-						<label for="codPagador">codPagador</label>
-						<input class="form-control" id="codPagador" name="codPagador" 
-							   placeholder="codPagador" type="number">
+
+					<div id="pgCredito">
+						<div class="form-group" id="codContaPagadoraDiv"> 
+							<label for="codContaPagadora">codContaPagadora</label>
+							<input class="form-control" id="codContaPagadora" name="codContaPagadora" 
+								   placeholder="codContaPagadora" type="number">
+						</div>
 					</div>
 
-					<div class="form-check" id="contaPagaDiv">
-						<input class="form-check-input" type="checkbox" value="true" id="contaPaga" name="contaPaga">
-						<label class="form-check-label" for="contaPaga">
-							contaPaga
-						</label>
-					</div>
+					<div id="pgCredito">
+						<div class="form-group" id="codReceitaPagadoraDiv"> 
+							<label for="codReceitaPagadora">codReceitaPagadora</label>
+							<input class="form-control" id="codReceitaPagadora" name="codReceitaPagadora" 
+								   placeholder="codReceitaPagadora" type="number">
+						</div>
 
-					<div class="form-group" id="valorPagoDiv"> 
-						<label for="valorPago">valorPago</label>
-						<input class="form-control" id="valorPago" name="valorPago" 
-							   placeholder="valorPago" type="number">
-					</div>
+						<div class="form-group" id="codBarrasDiv"> 
+							<label for="codBarras">codBarras</label>
+							<textarea class="form-control" id="codBarras" name="codBarras" 
+								   placeholder="codBarras"></textarea>
+						</div>
 
-					<div class="form-group" id="dtPagamentoDiv"> 
-						<label for="dtPagamento">dtPagamento</label>
-						<input class="form-control" id="dtPagamento" name="dtPagamento" 
-							   placeholder="dtPagamento" type="date">
+						<div class="form-group" id="codPagadorDiv"> 
+							<label for="codPagador">codPagador</label>
+							<input class="form-control" id="codPagador" name="codPagador" 
+								   placeholder="codPagador" type="number">
+						</div>
+
+						<div class="form-check" id="contaPagaDiv">
+							<input class="form-check-input" type="checkbox" value="true" id="contaPaga" name="contaPaga">
+							<label class="form-check-label" for="contaPaga">
+								contaPaga
+							</label>
+						</div>
+
+						<div class="form-group" id="valorPagoDiv"> 
+							<label for="valorPago">valorPago</label>
+							<input class="form-control" id="valorPago" name="valorPago" 
+								   placeholder="valorPago" type="number">
+						</div>
+
+						<div class="form-group" id="dtPagamentoDiv"> 
+							<label for="dtPagamento">dtPagamento</label>
+							<input class="form-control" id="dtPagamento" name="dtPagamento" 
+								   placeholder="dtPagamento" type="date">
+						</div>
 					</div>
 				</form>
 			</div>
@@ -120,26 +137,28 @@
 
 				$.getJSON(url, function (data) {
 					//console.log(data);
-					var obj = data.conta;
+					var obj = data.conta[0];
 
-					$("#codConta").val(obj[0].codConta);
-					$("#codTipoConta").val(obj[0].codTipoConta);
-					$("#descricao").val(obj[0].descricao.replace(/%r%n/g, "\n", -1));
-					$("#mesReferencia").val(obj[0].mesReferencia);
-					$("#dtVencimento").val(obj[0].dtVencimento);
-					$("#codBarras").val(obj[0].codBarras.replace(/%r%n/g, "\n", -1));
-					$("#valor").val(obj[0].valor);
-					$("#codReceitaPagadora").val(obj[0].codReceitaPagadora);
-					$("#codPagador").val(obj[0].codPagador);
+					$("#codConta").val(obj.codConta);
+					$("#codTipoConta").val(obj.codTipoConta);
+					$("#descricao").val(obj.descricao.replace(/%r%n/g, "\n", -1));
+					$("#mesReferencia").val(obj.mesReferencia);
+					$("#dtVencimento").val(obj.dtVencimento);
+					$("#codBarras").val(obj.codBarras.replace(/%r%n/g, "\n", -1));
+					$("#valor").val(obj.valor);
+					$("#codContaPagadora").val(obj.codContaPagadora);
+					$("#codReceitaPagadora").val(obj.codReceitaPagadora);
+					$("#codReceitaPagadora").val(obj.codReceitaPagadora);
+					$("#codPagador").val(obj.codPagador);
 
-					if (obj[0].contaPaga == "True"){
+					if (obj.contaPaga == "True"){
 						$("#contaPaga").attr("checked", "checked")
 					} else {
 						$("#contaPaga").prop("checked")
 					}
 
-					$("#valorPago").val(obj[0].valorPago);
-					$("#dtPagamento").val(obj[0].dtPagamento);
+					$("#valorPago").val(obj.valorPago);
+					$("#dtPagamento").val(obj.dtPagamento);
 				})
 				.done(function( json ) {
 					carregaCombos();
@@ -156,6 +175,7 @@
 				$("#dtVencimento").val("0001-01-01");
 				$("#codBarras").val("");
 				$("#valor").val(0.0);
+				$("#codContaPagadora").val(0);
 				$("#codReceitaPagadora").val(0);
 				$("#codPagador").val(0);
 				$("#contaPaga").val(false);
@@ -177,6 +197,14 @@
 				$("#codTipoContaDiv").load("/html/modelos/financeiro/tipoContaCmb.html");
 
 				param = encodeURI(
+					"cod=" + $("#codContaPagadora").val() +
+					"&lbl=Conta Pagadora&cmp=codContaPagadora" +
+					""
+				);
+				$("#codContaPagadoraDiv").attr('param', param);
+				$("#codContaPagadoraDiv").load("/html/modelos/financeiro/contaCmb.html");
+
+				param = encodeURI(
 					"cod=" + $("#codReceitaPagadora").val() +
 					"&lbl=Receita Pagadora&cmp=codReceitaPagadora" +
 					""
@@ -188,6 +216,24 @@
 				$("#codPagadorDiv").attr('param', param);
 				$("#codPagadorDiv").load("/html/modelos/financeiro/pagadorCmb.html");
 			}
+
+			$("#contaPaga").on("change", function(){
+				if ($(this).prop("checked")){
+					$("#valorPago").val($("#valor").val());
+					let dt = new Date();
+					var time = 
+						dt.getFullYear() + "-" + 
+						("00" + (dt.getMonth() + 1)).slice(-2) + "-" + 
+						("0" + dt.getDate()).slice(-2);
+					$("#dtPagamento").val(time);
+
+				} else {
+					$("#valorPago").val("0.00");
+					$("#dtPagamento").val("0001-01-01");
+				}
+			});
+
+
 
 			$(document).ready(function () {
 
