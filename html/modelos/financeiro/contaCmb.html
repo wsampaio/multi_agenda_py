@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>contarCmb</title>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="codConta">
+				<span id="contaLbl">
+					Conta
+				</span>
+			</label>
+			<select class="form-control" id="contaCmb" name="codConta">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadContaCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
+	</body>
+</html>
+
+
+<script>
+
+	function preencheContaCmb(cod){
+		var saida = "";
+
+		$.getJSON("/cgi-bin/financeiro/contaCmb.py", function(data) {
+			var lista = data.contas;
+
+			for (i = 0; i < lista.length; i++) {
+
+				obj = lista[i];
+
+				saida += "<option value='" + obj.codConta + "'";
+			
+				if (obj.codConta == cod){
+					saida += " selected";
+				}
+				
+				saida += ">";
+				saida += 
+					obj.lbl.substring(0, 31) + 
+					"</option>";
+
+				//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+
+			}
+			
+			$("#contaCmb").append(saida);
+			$("#loadContaCmb").css("display", "none");
+		});
+	}
+	
+	$(document).ready(function () {
+		
+		var variavel = 0;
+		
+		let params = decodeURI($("#contaCmb").parent().parent().attr('param'));
+		let searchParams = new URLSearchParams(params);
+		
+		if (searchParams.has("cod")){
+			variavel = searchParams.get("cod");
+		}
+		
+		if (searchParams.has("lbl")){
+			$("#contaLbl").html(searchParams.get("lbl"));
+		}
+		
+		if (searchParams.has("cmp")){
+			$("#contaCmb").attr("name", searchParams.get("cmp"));
+		}
+		
+		preencheContaCmb(variavel);
+		
+	});
+
+</script>
+

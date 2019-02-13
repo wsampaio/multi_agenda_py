@@ -68,6 +68,9 @@ if str(form) != "FieldStorage(None, None, '')":
 	if form.getvalue("valor"):
 		obj.setValor(float(form.getvalue("valor")))
 
+	if form.getvalue("codContaPagadora"):
+		obj.setCodContaPagadora(int(form.getvalue("codContaPagadora")))
+
 	if form.getvalue("codReceitaPagadora"):
 		obj.setCodReceitaPagadora(int(form.getvalue("codReceitaPagadora")))
 

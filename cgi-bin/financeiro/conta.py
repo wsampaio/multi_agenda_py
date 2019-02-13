@@ -70,6 +70,7 @@ saida+= """
 			"dtVencimento": "{}",
 			"codBarras": "{}",
 			"valor": "{}",
+			"codContaPagadora": "{}",
 			"codReceitaPagadora": "{}",
 			"codPagador": "{}",
 			"contaPaga": "{}",
@@ -92,6 +93,7 @@ saida+= """
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
 			conta.getValor(),
+			conta.getCodContaPagadora(),
 			conta.getCodReceitaPagadora(),
 			conta.getCodPagador(),
 			contaPaga,

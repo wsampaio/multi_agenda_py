@@ -34,11 +34,12 @@
 						<th class="col4">dtVencimento</th>
 						<th class="col5">codBarras</th>
 						<th class="col6">valor</th>
-						<th class="col7">codReceitaPagadora</th>
-						<th class="col8">codPagador</th>
-						<th class="col9">contaPaga</th>
-						<th class="col10">valorPago</th>
-						<th class="col11">dtPagamento</th>
+						<th class="col7">codContaPagadora</th>
+						<th class="col8">codReceitaPagadora</th>
+						<th class="col9">codPagador</th>
+						<th class="col10">contaPaga</th>
+						<th class="col11">valorPago</th>
+						<th class="col12">dtPagamento</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -75,11 +76,12 @@
 							saida += "<td class='col4'>" + lista[i].dtVencimento + "</td>"
 							saida += "<td class='col5'>" + lista[i].codBarras.replace(/%r%n/g, "<br>", -1) + "</td>"
 							saida += "<td class='col6'>" + lista[i].valor + "</td>"
-							saida += "<td class='col7'>" + lista[i].codReceitaPagadora + "</td>"
-							saida += "<td class='col8'>" + lista[i].codPagador + "</td>"
-							saida += "<td class='col9'>" + lista[i].contaPaga + "</td>"
-							saida += "<td class='col10'>" + lista[i].valorPago + "</td>"
-							saida += "<td class='col11'>" + lista[i].dtPagamento + "</td>"
+							saida += "<td class='col7'>" + lista[i].codContaPagadora + "</td>"
+							saida += "<td class='col8'>" + lista[i].codReceitaPagadora + "</td>"
+							saida += "<td class='col9'>" + lista[i].codPagador + "</td>"
+							saida += "<td class='col10'>" + lista[i].contaPaga + "</td>"
+							saida += "<td class='col11'>" + lista[i].valorPago + "</td>"
+							saida += "<td class='col12'>" + lista[i].dtPagamento + "</td>"
 
 						saida += "</tr>"
 

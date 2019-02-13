@@ -173,6 +173,25 @@ SELECT AVG(valor) FROM (
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
 
+	def listaContasDeCredito(self):
+		sql = \
+			"""
+
+			SELECT
+					contas.*
+				FROM
+					contas
+						LEFT JOIN tiposContas
+							USING (codTipoConta)
+				WHERE
+					contaDeCredito = 1
+				ORDER BY
+					dtVencimento DESC
+			;
+		"""
+		
+		return super().getList(sql)
+
 
 
 

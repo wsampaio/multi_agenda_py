@@ -127,6 +127,6 @@ saida += """
 
 
 print(saida
-#.replace("\n", "")
-#.replace("\t", "")
+.replace("\n", "")
+.replace("\t", "")
 )

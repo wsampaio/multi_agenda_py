@@ -23,7 +23,8 @@ CREATE TABLE contas (
 	mesReferencia TEXT, 
 	dtVencimento TEXT, 
 	codBarras TEXT, 
-	valor REAL, 
+	valor REAL,
+	codContaPagadora INTEGER, 
 	codReceitaPagadora INTEGER, 
 	codPagador INTEGER, 
 	contaPaga BOOLEAN, 
@@ -41,6 +42,7 @@ class Conta:
 	__dtVencimento = FormatData.de_JDate("0001-01-01T00:00")
 	__codBarras = ""
 	__valor = 0.0
+	__codContaPagadora = 0
 	__codReceitaPagadora = 0
 	__codPagador = 0
 	__contaPaga = False
@@ -58,11 +60,12 @@ class Conta:
 		self.setDtVencimento(FormatData.de_JDate(array[4]))
 		self.setCodBarras(array[5])
 		self.setValor(array[6])
-		self.setCodReceitaPagadora(array[7])
-		self.setCodPagador(array[8])
-		self.setContaPaga(bool(array[9]))
-		self.setValorPago(array[10])
-		self.setDtPagamento(FormatData.de_JDate(array[11]))
+		self.setCodContaPagadora(array[7])
+		self.setCodReceitaPagadora(array[8])
+		self.setCodPagador(array[9])
+		self.setContaPaga(bool(array[10]))
+		self.setValorPago(array[11])
+		self.setDtPagamento(FormatData.de_JDate(array[12]))
 
 		return self
 
@@ -130,6 +133,15 @@ class Conta:
 			self.__valor = float(valor)
 		except ValueError:
 			self.__valor = self.getValor()
+
+	def getCodContaPagadora(self):
+		return self.__codContaPagadora
+
+	def setCodContaPagadora(self, codContaPagadora):
+		try:
+			self.__codContaPagadora = int(codContaPagadora)
+		except ValueError:
+			self.__codContaPagadora = self.getCodContaPagadora()
 
 	def getCodReceitaPagadora(self):
 		return self.__codReceitaPagadora

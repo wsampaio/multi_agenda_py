@@ -64,8 +64,8 @@
 
 
 					<div class="row-fluid btn-group">
-						<a class="btn pagamentoBtn btn-primary">PG em Crédito</a>
 						<a class="btn pagamentoBtn btn-primary">PG à Vista</a>
+						<a class="btn pagamentoBtn btn-primary">PG em Crédito</a>
 					</div>
 
 
@@ -77,7 +77,7 @@
 						</div>
 					</div>
 
-					<div id="pgCredito">
+					<div id="pgVista">
 						<div class="form-group" id="codReceitaPagadoraDiv"> 
 							<label for="codReceitaPagadora">codReceitaPagadora</label>
 							<input class="form-control" id="codReceitaPagadora" name="codReceitaPagadora" 
@@ -103,16 +103,18 @@
 							</label>
 						</div>
 
-						<div class="form-group" id="valorPagoDiv"> 
-							<label for="valorPago">valorPago</label>
-							<input class="form-control" id="valorPago" name="valorPago" 
-								   placeholder="valorPago" type="number">
-						</div>
+						<div id="dadosContaPagaDiv">
+							<div class="form-group" id="valorPagoDiv"> 
+								<label for="valorPago">valorPago</label>
+								<input class="form-control" id="valorPago" name="valorPago" 
+									   placeholder="valorPago" type="number">
+							</div>
 
-						<div class="form-group" id="dtPagamentoDiv"> 
-							<label for="dtPagamento">dtPagamento</label>
-							<input class="form-control" id="dtPagamento" name="dtPagamento" 
-								   placeholder="dtPagamento" type="date">
+							<div class="form-group" id="dtPagamentoDiv"> 
+								<label for="dtPagamento">dtPagamento</label>
+								<input class="form-control" id="dtPagamento" name="dtPagamento" 
+									   placeholder="dtPagamento" type="date">
+							</div>
 						</div>
 					</div>
 				</form>
@@ -159,6 +161,16 @@
 
 					$("#valorPago").val(obj.valorPago);
 					$("#dtPagamento").val(obj.dtPagamento);
+
+					if (obj.codContaPagadora > 0){
+						$("#pgCredito").css("display", "block");
+					}
+
+					if (obj.codReceitaPagadora > 0){
+						$("#pgVista").css("display", "block");
+					}
+
+
 				})
 				.done(function( json ) {
 					carregaCombos();
@@ -226,18 +238,40 @@
 						("00" + (dt.getMonth() + 1)).slice(-2) + "-" + 
 						("0" + dt.getDate()).slice(-2);
 					$("#dtPagamento").val(time);
+					$("#dadosContaPagaDiv").css("display", "block");
 
 				} else {
 					$("#valorPago").val("0.00");
 					$("#dtPagamento").val("0001-01-01");
+					$("#dadosContaPagaDiv").css("display", "none");
 				}
 			});
 
+			$(".pagamentoBtn").on("click", function(){
+				if ($(this).html() == "PG à Vista"){
+					$("#pgCredito").css("display", "none");
+					$("#pgVista").css("display", "block");
+					$("[name=codReceitaPagadora]").val(0);
+					$("#codBarras").val("");
+					$("[name=codPagador]").val(0);
+					$("[name=contaPaga]").val(0);
+					$("#valorPago").val(0.00);
+					$("#dtPagamento").val("0001-01-01");
+					$("#dadosContaPagaDiv").css("display", "none");
+				} else {
+					$("#pgCredito").css("display", "block");
+					$("#pgVista").css("display", "none");
+					$("[name=codContaPagadora]").val(0);
+				}
+			});
 
 
 			$(document).ready(function () {
 
 				$("#codContaDiv").css("display", "none");
+				$("#pgCredito").css("display", "none");
+				$("#pgVista").css("display", "none");
+				$("#dadosContaPagaDiv").css("display", "none");
 
 				$(".copiar").on("click", function(){
 					$("#codContaDiv").css("display", "block");

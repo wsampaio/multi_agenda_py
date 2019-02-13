@@ -22,66 +22,48 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
+from objetos.dbConn.FormatData import FormatData
+
 from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
 
+from objetos.financeiro.TipoConta import TipoConta
+from objetos.financeiro.TipoContaDAO import TipoContaDAO
+
 conta = Conta()
 contaDAO = ContaDAO()
+
+tipoConta = TipoConta()
+tipoContaDAO = TipoContaDAO()
+
 
 print("Content-type: application/json\n")
 
 saida = ""
 
-
 saida += """
 {
 	"contas": ["""
 
+
 i = 0
-lista = contaDAO.getLista()
+lista = contaDAO.listaContasDeCredito()
 
 contaLista = len(lista) -1
 
 for forConta in lista:
+	tipoConta = tipoContaDAO.select(forConta.getCodTipoConta())
 
 	saida += """
 		{}
 			"codConta": {},
-			"codTipoConta": {},
-			"descricao": "{}",
-			"mesReferencia": "{}",
-			"dtVencimento": "{}",
-			"codBarras": "{}",
-			"valor": {},
-			"codContaPagadora": {},
-			"codReceitaPagadora": {},
-			"codPagador": {},
-			"contaPaga": "{}",
-			"valorPago": {},
-			"dtPagamento": "{}"
+			"lbl": "{}"
 		{}""".format(
 			"{",
 			forConta.getCodConta(),
-			forConta.getCodTipoConta(),
-			forConta.getDescricao()
-				.replace("\r", "%r")
-				.replace("\n", "%n")
-				.replace("\t", "$t")
-				.replace("\\", "$b"),
-			forConta.getMesReferencia(),
-			forConta.getDtVencimento(),
-			forConta.getCodBarras()
-				.replace("\r", "%r")
-				.replace("\n", "%n")
-				.replace("\t", "$t")
-				.replace("\\", "$b"),
-			forConta.getValor(),
-			forConta.getCodContaPagadora(),
-			forConta.getCodReceitaPagadora(),
-			forConta.getCodPagador(),
-			forConta.getContaPaga(),
-			forConta.getValorPago(),
-			forConta.getDtPagamento(),
+			tipoConta.getTipoConta() + " ref: " +
+			FormatData.mesRef(forConta.getMesReferencia()) + " em: " +
+			FormatData.dataSimples(forConta.getDtVencimento()),
 			"}"
 		)
 
@@ -95,7 +77,6 @@ saida += """
 	]
 }
 """
-
 print(
 saida
 	.replace("\n", "")
