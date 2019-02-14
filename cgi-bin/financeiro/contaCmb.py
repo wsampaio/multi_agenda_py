@@ -61,9 +61,9 @@ for forConta in lista:
 		{}""".format(
 			"{",
 			forConta.getCodConta(),
+			FormatData.dataSimplesMin(forConta.getDtVencimento()) + " - " +
 			tipoConta.getTipoConta() + " ref: " +
-			FormatData.mesRef(forConta.getMesReferencia()) + " em: " +
-			FormatData.dataSimples(forConta.getDtVencimento()),
+			FormatData.mesRef(forConta.getMesReferencia()),
 			"}"
 		)
 
