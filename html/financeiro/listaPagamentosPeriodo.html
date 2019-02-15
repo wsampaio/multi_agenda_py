@@ -105,10 +105,6 @@
 
 						$("#listaReceitas").append(saida);
 
-						$("#panelReceita" + codReceita).load(
-							"/html/financeiro/contasPelaReceita.html?cod=" + codReceita
-						);
-						
 						$("#panelReceita" + codReceita).css("display", "none");
 						$(".dtlReceita").css("display", "none");
 
@@ -128,6 +124,9 @@
 							if ($("#detalhesReceita" + cod).css("display") == 'none'){
 								$("#detalhesReceita" + cod).css("display", 'block')
 								$("#panelReceita" + cod).css("display", 'block')
+								$("#panelReceita" + cod).load(
+									"/html/financeiro/contasPelaReceita.html?cod=" + cod
+								);
 							} else {
 								$("#detalhesReceita" + cod).css("display", 'none')
 								$("#panelReceita" + cod).css("display", 'none')
