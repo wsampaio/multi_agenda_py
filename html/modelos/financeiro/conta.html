@@ -157,7 +157,7 @@
 						$("#contaPaga").attr("checked", "checked")
 						$("#dadosContaPagaDiv").css("display", "block");
 					} else {
-						$("#contaPaga").prop("checked")
+						$("#contaPaga").prop("checked", false)
 					}
 
 					$("#valorPago").val(obj.valorPago);
@@ -191,7 +191,7 @@
 				$("#codContaPagadora").val(0);
 				$("#codReceitaPagadora").val(0);
 				$("#codPagador").val(0);
-				$("#contaPaga").val(false);
+				//$("#contaPaga").val(false);
 				$("#valorPago").val(0.0);
 				$("#dtPagamento").val("0001-01-01");
 
@@ -249,20 +249,25 @@
 			});
 
 			$(".pagamentoBtn").on("click", function(){
+				event.stopPropagation();
+
 				if ($(this).html() == "PG à Vista"){
 					$("#pgCredito").css("display", "none");
 					$("#pgVista").css("display", "block");
+
+					$("[name=codContaPagadora]").val(0);
+				} else {
+					$("#pgCredito").css("display", "block");
+					$("#pgVista").css("display", "none");
+
 					$("[name=codReceitaPagadora]").val(0);
 					$("#codBarras").val("");
 					$("[name=codPagador]").val(0);
 					$("[name=contaPaga]").val(0);
+					$("#contaPaga").prop("checked", false)
 					$("#valorPago").val(0.00);
 					$("#dtPagamento").val("0001-01-01");
 					$("#dadosContaPagaDiv").css("display", "none");
-				} else {
-					$("#pgCredito").css("display", "block");
-					$("#pgVista").css("display", "none");
-					$("[name=codContaPagadora]").val(0);
 				}
 			});
 
