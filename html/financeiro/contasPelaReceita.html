@@ -28,7 +28,7 @@
 						<tr>
 							<th>&nbsp</th>
 							<th>Conta</th>
-							<th>Dt Venc/Pag</th>
+							<th>Dt Venc - Pgto</th>
 							<th>Valor</th>
 						</tr>
 					</thead>
@@ -40,8 +40,9 @@
 		
 		<script>
 		
-			function preencheContasPelaReceitaTbl (cod){
+			function preencheContasPelaReceitaTbl (codReceita){
 			
+				cod = codReceita;
 				url = "/cgi-bin/financeiro/contasPelaReceita.py";
 				url += "?cod=" + cod;
 
@@ -93,15 +94,18 @@
 							saida += "</td>"
 							
 							if (lista[i].contaPaga == "True") {
-								data = lista[i].dtPagamento;
+								data = lista[i].vencimento + " - " +
+									lista[i].dtPagamento;
 								valor = lista[i].valorPago;
 							} else {
 								data = lista[i].vencimento;
 								valor = lista[i].valor;
 							}
 							
-							saida += "<td class='col4'>" + data + "</td>"
-							saida += "<td class='col2' id='valorConta" + codConta + "'>" + valor + "</td>"
+							saida += "<td class='col2'>" + 
+								data + 
+								"</td>";
+							saida += "<td class='col3' id='valorConta" + codConta + "'>" + valor + "</td>"
 							
 						saida += "</tr>"
 
