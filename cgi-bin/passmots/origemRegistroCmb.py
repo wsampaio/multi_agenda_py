@@ -35,7 +35,7 @@ saida = """
 	"origemRegistros": ["""
 
 i = 0
-lista = dao.getLista()
+lista = dao.getListaCmb()
 
 contaLista = len(lista) -1
 

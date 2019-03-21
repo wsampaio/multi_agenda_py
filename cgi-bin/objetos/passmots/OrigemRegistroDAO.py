@@ -87,3 +87,20 @@ class OrigemRegistroDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+	def getListaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					origensRegistro
+				ORDER BY
+					lower(origemRegistro)
+			;
+		"""
+		return super().getList(sql)
+
+
+
+
