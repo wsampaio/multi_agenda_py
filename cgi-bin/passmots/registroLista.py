@@ -25,25 +25,23 @@ cgitb.enable()
 from objetos.passmots.Registro import Registro
 from objetos.passmots.RegistroDAO import RegistroDAO
 
-registro = Registro()
-registroDAO = RegistroDAO()
+obj = Registro()
+dao = RegistroDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"registros": [""")
+	"registros": ["""
 
 i = 0
-lista = registroDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forRegistro in lista:
+for forObj in lista:
 
-	print(
-"""
+	saida += """
 		{}
 			"codRegistro": "{}",
 			"codOrigemRegistro": "{}",
@@ -51,32 +49,35 @@ for forRegistro in lista:
 			"ordem": "{}",
 			"registro": "{}",
 			"dtAtualizacao": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forRegistro.getCodRegistro(),
-			forRegistro.getCodOrigemRegistro(),
-			forRegistro.getCodTipoCampo(),
-			forRegistro.getOrdem(),
-			forRegistro.getRegistro()
+			forObj.getCodRegistro(),
+			forObj.getCodOrigemRegistro(),
+			forObj.getCodTipoCampo(),
+			forObj.getOrdem(),
+			forObj.getRegistro()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b")
 				.replace("\"", "\\\""),
-			forRegistro.getDtAtualizacao(),
+			forObj.getDtAtualizacao(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)

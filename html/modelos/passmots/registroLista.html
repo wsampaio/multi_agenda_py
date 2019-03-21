@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>Registro - Lista</title>
+		<title>registroLista</title>
 
 		<style>
 			table, td, th {
@@ -14,67 +14,7 @@
 				display: none;
 			}
 		</style>
-
-
 		<script src="/html/btp/jquery.js"></script>
-
-
-
-		<script>
-
-
-			function preencheTabela (){
-
-				$.getJSON("/cgi-bin/passmots/registroLista.py", function(data) {
-
-					console.log(data);
-					var registros = data.registros;
-
-					var saida = "";
-
-					for (i = 0; i < registros.length; i++) {
-
-						saida += "<tr>"
-							saida += "<td class='col0'>"
-								saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/registro.html?cod=" + 
-					registros[i].codRegistro + 
-					"' onclick='abreForm(" + 
-					registros[i].codRegistro + 
-					");'>";
-									saida += registros[i].codRegistro
-								saida += "</a>"
-							saida += "</td>"
-							saida += "<td class='col1'>" + registros[i].codOrigemRegistro + "</td>"
-							saida += "<td class='col2'>" + registros[i].codTipoCampo + "</td>"
-							saida += "<td class='col3'>" + registros[i].ordem + "</td>"
-							saida += "<td class='col4'>" + registros[i].registro.replace(/%r%n/g, "<br>", -1) + "</td>"
-							saida += "<td class='col5'>" + registros[i].dtAtualizacao + "</td>"
-						saida += "</tr>"
-
-					}
-
-
-					saida = saida.replace("%r", "<br>");
-					saida = saida.replace("%n", "<br>");
-
-					$("tbody").append(saida);
-				});
-			}
-
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/passmots/registro.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
-			$(document).ready(function() {
-
-				preencheTabela();
-
-			});
-		</script>
 
 	</head>
 
@@ -93,7 +33,7 @@
 							<th class="col2">codTipoCampo</th>
 							<th class="col3">ordem</th>
 							<th class="col4">registro</th>
-							<th class="col5">stAtualizacao</th>
+							<th class="col5">dtAtualizacao</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -101,5 +41,72 @@
 				</table>
 		</div>
 
+		<script>
+			function preencheTabela (){
+				var url = "/cgi-bin/passmots/registroLista.py";
+
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.registros;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='registro btn' href='/html/modelos/passmots/registro.html?cod=" + 
+									obj.codRegistro + 
+									"' onclick='abreForm(" + 
+									obj.codRegistro + 
+									");'>";
+									saida += obj.codRegistro;
+								saida += "</a>";
+							saida += "</td>";
+
+							saida += "<td class='col1'>" + obj.codOrigemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>";
+							saida += "<td class='col2'>" + obj.codTipoCampo.replace(/%r%n/g, "<br>", -1) + "</td>";
+							saida += "<td class='col3'>" + obj.ordem.replace(/%r%n/g, "<br>", -1) + "</td>";
+							saida += "<td class='col4'>" + obj.registro.replace(/%r%n/g, "<br>", -1) + "</td>";
+							saida += "<td class='col5'>" + obj.dtAtualizacao.replace(/%r%n/g, "<br>", -1) + "</td>";
+
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".registro").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/passmots/registroLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
+				});
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
 	</body>
 </html>
+
