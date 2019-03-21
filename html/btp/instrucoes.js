@@ -162,6 +162,9 @@ function procurarURLParameters(){
 
 function fecharJanela(){
 	//fecha janela ou volta a tela antiga
+
+	//verifica se está dentro da div pricipal
+	//na homepage
 	if ($("#principal").length > 0){
 		$("#principal").attr(
 			"url", $("#principal").attr("nextUrl")
@@ -169,7 +172,18 @@ function fecharJanela(){
 		$("#principal").attr("nextUrl", "");
 		$("#principal").load($("#principal").attr("url"));
 	} else {
+
+		//verifica se a janela pai contem a
+		//div pricipal da homepage para recarregar
+		if (window.opener.$("#principal").length > 0){
+			var principal = window.opener.$("#principal");
+			principal.load(principal.attr("url"));
+		} else {
+			window.opener.document.location.reload()
+		}
+
 		self.close();
+
 	}
 }
 
