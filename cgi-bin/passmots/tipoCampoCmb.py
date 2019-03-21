@@ -38,7 +38,7 @@ saida += """
 	"tiposCampos": ["""
 
 i = 0
-lista = tipoCampoDAO.getLista()
+lista = tipoCampoDAO.getListaCmb()
 
 contaLista = len(lista) -1
 

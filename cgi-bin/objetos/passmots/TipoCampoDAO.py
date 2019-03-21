@@ -73,3 +73,16 @@ class TipoCampoDAO(CRUD.CRUD):
 		"""
 		return super().getList(sql)
 
+	def getListaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tiposCampos
+				ORDER BY
+					lower(tipoCampo)
+			;
+		"""
+		return super().getList(sql)
+
