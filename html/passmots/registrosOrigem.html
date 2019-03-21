@@ -62,12 +62,16 @@
 					);
 
 					for (i = 0; i < lista.length; i++) {
-						saida += "<tr><td><a href='/html/modelos/passmots/registro.html?cod=" +
-							lista[i].codRegistro +
+
+						obj = lista[i];
+
+						saida += "<tr><td>" +
+							"<a href='/html/modelos/passmots/registro.html?cod=" +
+							obj.codRegistro +
 							"' target='_blank'>" +
-							lista[i].tipoCampo +
+								obj.ordem + " - " + obj.tipoCampo +
 							"</a></td><td>" +
-							lista[i].registro +
+							obj.registro +
 							"</td></tr>";
 					}
 			

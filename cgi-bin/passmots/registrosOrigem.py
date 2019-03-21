@@ -89,12 +89,14 @@ for forRegistro in lista:
 		{}
 			"tipoCampo": "{}",
 			"codRegistro": {},
-			"registro": "{}"
+			"registro": "{}",
+			"ordem": {}
 		{}""".format(
 			"{",
 			tipoCampo.getTipoCampo(),
 			forRegistro.getCodRegistro(),
 			forRegistro.getRegistro(),
+			forRegistro.getOrdem(),
 			"}"
 		)
 
