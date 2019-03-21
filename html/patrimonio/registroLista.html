@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>registroLista</title>
+		<script src="/html/btp/jquery.js"></script>
+
+		<style>
+			table, td, th {
+				border:solid;
+			}
+
+			.col {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row-fluid">
+			<a href="/html/modelos/patrimonio/registroLista.html" target="_blank">
+				<h1>Registro - Lista</h1>
+			</a>
+
+			<a href="/html/modelos/patrimonio/registro.html" target="_blank">
+				NOVO
+			</a>
+
+			<br><br>
+
+			<table>
+				<thead>
+					<tr>
+						<th class="col0">registro</th>
+						<th class="col1">aquisicao</th>
+						<th class="col2">Desuso</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			function preencheTabela (){
+				var url = "/cgi-bin/patrimonio/registroPrincipal.py";
+
+				$.getJSON(url, function(data) {
+					//console.log(data);
+					var lista = data.registroLista;
+
+					var saida = "";
+					var obj = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='' target='_blank' href='/html/modelos/patrimonio/registro.html?cod=" + 
+									obj.codRegistro + 
+									"'>";
+									saida += obj.registro;
+								saida += "</a>"
+							saida += "</td>"
+
+
+							d = new Date(obj.dtAquisicao)
+							saida += "<td class='col1'>" + 
+									("0" + (d.getDate())).substr(-2) + "/" +
+									("0" + (d.getMonth() + 1)).substr(-2) + "/" +
+									("0000" + d.getFullYear()).substr(-4) +
+								"</td>";
+
+
+							if ("0001-01-01T00:00" === obj.dtDesuso){
+								saida += "<td class='col2'>&nbsp</td>"
+							} else {
+								saida += "<td class='col2'>X</td>"
+							}
+
+
+
+						saida += "</tr>"
+
+					}
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".registro").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/patrimonio/registroLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
+				});
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
+	</body>
+</html>
