@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-		<title>tarefas</title>
+		<title>origemRegistroLista</title>
 
 		<style>
 			table, td, th {
@@ -14,62 +14,7 @@
 				display: none;
 			}
 		</style>
-
-
 		<script src="/html/btp/jquery.js"></script>
-
-
-
-		<script>
-
-
-			function preencheTabela (){
-				$.getJSON("/cgi-bin/passmots/origemRegistroLista.py", function(data) {
-
-					//console.log(data);
-					var origemRegistros = data.origemRegistros;
-
-					var saida = "";
-
-					for (i = 0; i < origemRegistros.length; i++) {
-
-						saida += "<tr>"
-							saida += "<td class='col0'>"
-								saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/origemRegistro.html?cod=" + 
-					origemRegistros[i].codOrigemRegistro + 
-					"' onclick='abreForm(" + 
-					origemRegistros[i].codOrigemRegistro + 
-					");'>";
-									saida += origemRegistros[i].codOrigemRegistro
-								saida += "</a>"
-							saida += "</td>"
-							saida += "<td class='col1'>" + origemRegistros[i].origemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>"
-						saida += "</tr>"
-
-					}
-
-
-					saida = saida.replace("%r", "<br>");
-					saida = saida.replace("%n", "<br>");
-
-					$("tbody").append(saida);
-				});
-			}
-
-			function abreForm(cod){
-				event.preventDefault();
-
-				var urlForm = "/html/modelos/passmots/origemRegistro.html";
-				var param = 'cod=' + cod;
-				abreNoPrincipal(urlForm, cod, param);
-			}
-
-			$(document).ready(function() {
-
-				preencheTabela();
-
-			});
-		</script>
 
 	</head>
 
@@ -77,7 +22,7 @@
 
 		<div class="row-fluid">
 				<a href="/html/modelos/passmots/origemRegistroLista.html" target="_blank">
-					<h1>Origem Registro - Lista</h1>
+					<h1>Origem do Registro - Lista</h1>
 				</a>
 
 				<table>
@@ -92,5 +37,66 @@
 				</table>
 		</div>
 
+		<script>
+			function preencheTabela (){
+				var url = "/cgi-bin/passmots/origemRegistroLista.py";
+
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.origemRegistros;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						saida += "<tr>"
+							saida += "<td class='col0'>"
+								saida += "<a class='origemRegistro btn' href='/html/modelos/passmots/origemRegistro.html?cod=" + 
+									obj.codOrigemRegistro + 
+									"' onclick='abreForm(" + 
+									obj.codOrigemRegistro + 
+									");'>";
+									saida += obj.codOrigemRegistro;
+								saida += "</a>"
+							saida += "</td>"
+							saida += "<td class='col1'>" + obj.origemRegistro.replace(/%r%n/g, "<br>", -1) + "</td>"
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("tbody").append(saida);
+				})
+				.success(function(){
+					$(".origemRegistro").on("click", function(){
+						event.preventDefault();
+
+						var url = $(this).attr("href");
+
+						if($("#principal").length > 0){
+							$("#principal").attr("url", url);
+							$("#principal").attr(
+								"nextUrl", 
+								"/html/modelos/passmots/origemRegistroLista.html"
+							);
+							$("#principal").load(url);
+						} else {
+							window.open(url);
+						}
+					});
+				});
+			}
+
+			$(document).ready(function() {
+				preencheTabela();
+			});
+		</script>
 	</body>
 </html>
+

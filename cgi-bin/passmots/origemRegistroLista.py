@@ -25,45 +25,48 @@ cgitb.enable()
 from objetos.passmots.OrigemRegistro import OrigemRegistro
 from objetos.passmots.OrigemRegistroDAO import OrigemRegistroDAO
 
-origemRegistro = OrigemRegistro()
-origemRegistroDAO = OrigemRegistroDAO()
+obj = OrigemRegistro()
+dao = OrigemRegistroDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"origemRegistros": [""")
+	"origemRegistros": ["""
 
 i = 0
-lista = origemRegistroDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forOrigemRegistro in lista:
+for forObj in lista:
 
-	print(
-"""
+	saida += """
 		{}
 			"codOrigemRegistro": "{}",
 			"origemRegistro": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forOrigemRegistro.getCodOrigemRegistro(),
-			forOrigemRegistro.getOrigemRegistro(),
+			forObj.getCodOrigemRegistro(),
+			forObj.getOrigemRegistro(),
 			"}"
 		)
-	)
+
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
