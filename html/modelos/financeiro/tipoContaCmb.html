@@ -7,7 +7,7 @@
 		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
-<div class="form-group">
+		<div class="form-group">
 			<label for="codTipoConta">
 				<span id="tipoContaLbl">
 					Tipo de conta
@@ -19,57 +19,57 @@
 			<div id='loadTipoContaCmb'>
 				<img src="/html/img/load21.gif" height="10">
 			</div>
-</div>
+		</div>
+
+
+		<script>
+
+			function preencheTipoContaCmb(cod){
+				var saida = "";
+
+				$.getJSON("/cgi-bin/financeiro/tipoContaLista.py", function(data) {
+					//console.log(data);
+					var lista = data.tiposContas;
+
+					for (i = 0; i < lista.length; i++) {
+						saida += "<option value='" + lista[i].codTipoConta + "'";
+						if (lista[i].codTipoConta == cod){
+							saida += " selected";
+						}
+						saida += ">";
+						saida += 
+							lista[i].tipoConta.substring(0, 30) + 
+							"</option>";
+						//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
+					}
+
+					$("#tipoContaCmb").append(saida);
+					$("#loadTipoContaCmb").css("display", "none");
+				});
+			}
+
+			$(document).ready(function () {
+		
+				var variavel = 0;
+		
+				let params = decodeURI($("#tipoContaCmb").parent().parent().attr('param'));
+				let searchParams = new URLSearchParams(params);
+		
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+
+				if (searchParams.has("lbl")){
+					$("#tipoContaLbl").html(searchParams.get("lbl"));
+				}
+
+				if (searchParams.has("cmp")){
+					$("#tipoContaCmb").attr("name", searchParams.get("cmp"));
+				}
+
+				preencheTipoContaCmb(variavel);
+			});
+		</script>
 	</body>
 </html>
-<script>
-
-	function preencheTipoContaCmb(cod){
-		var saida = "";
-
-		$.getJSON("/cgi-bin/financeiro/tipoContaLista.py", function(data) {
-			//console.log(data);
-			var lista = data.tiposContas;
-
-			for (i = 0; i < lista.length; i++) {
-				saida += "<option value='" + lista[i].codTipoConta + "'";
-				if (lista[i].codTipoConta == cod){
-					saida += " selected";
-				}
-				saida += ">";
-				saida += 
-					lista[i].tipoConta.substring(0, 30) + 
-					"</option>";
-				//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
-			}
-			
-			$("#tipoContaCmb").append(saida);
-			$("#loadTipoContaCmb").css("display", "none");
-		});
-	}
-
-	$(document).ready(function () {
-		
-		var variavel = 0;
-		
-		let params = decodeURI($("#tipoContaCmb").parent().parent().attr('param'));
-		let searchParams = new URLSearchParams(params);
-		
-		if (searchParams.has("cod")){
-			variavel = searchParams.get("cod");
-		}
-		
-		if (searchParams.has("lbl")){
-			$("#tipoContaLbl").html(searchParams.get("lbl"));
-		}
-		
-		if (searchParams.has("cmp")){
-			$("#tipoContaCmb").attr("name", searchParams.get("cmp"));
-		}
-
-		preencheTipoContaCmb(variavel);
-	});
-
-</script>
-
 
