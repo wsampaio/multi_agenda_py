@@ -3,23 +3,21 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>registro</title>
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
+		<title>tipoCampo</title>
 		<style>
 			table, td, th {
 				border:solid;
 			}
-
-			.colx {
-				display: none;
-			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row-fluid"> 
-				<a href="/html/modelos/passmots/registro.html" target="_blank">
-					<h1>Registro</h1>
+				<a href="/html/modelos/passmots/tipoCampo.html" target="_blank">
+					<h1>Tipo de Campo</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
 				<form id="registroFrm">
@@ -52,7 +50,7 @@
 						<label for="registro">registro</label>
 						<input class="form-control" id="registro" name="registro" 
 							   placeholder="registro" type="text">
-						<button id="newPass">Gerar Nova Senha</button>
+						<button class="btn" id="newPass">Gerar Novo Registro de Senha</button>
 					</div>
 					<div class="form-group" id="dtAtualizacaoDiv"> 
 						<label for="dtAtualizacao">dtAtualizacao</label>
@@ -63,15 +61,23 @@
 			</div>
 			<div class="row-fluid btn-group">
 				<button class="salvar btn btn-primary">Salvar</button> 
-				<button class="copiar btn btn-success">Copiar</button> 
 				<button class="salvar btn btn-danger">Excluir</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
-		
-		
+
+
 		<script>
 
-			var variavel = 0;
+			$("#newPass").on("click", function () {
+				//event.preventDefault();
+				var conf = confirm("Deseja realmente gerar\numa nova senha?");
+				
+				if (conf){
+					gerarSenha();
+				}
+			});
 
 			function gerarSenha(){
 				var ascII = [
@@ -95,49 +101,24 @@
 				}
 
 				$("#registro").val(str);
+
+				var dt = new Date();
+				$("#dtAtualizacao").val(toDateTimeLocal(dt));
 			};
 
-			function preencheForm() {
 
-				var url = "/cgi-bin/passmots/registro.py";
 
-				if (variavel > 0) {
-					url += "?cod=" + variavel;
-				}
 
-				$.getJSON(url, function (data) {
-					//console.log(data);
-					var obj = data.registro;
 
-					$("#codRegistro").val(obj[0].codRegistro);
-					$("#codOrigemRegistro").val(obj[0].codOrigemRegistro);
-					$("#codTipoCampo").val(obj[0].codTipoCampo);
-					$("#ordem").val(obj[0].ordem);
-			
-					$("#registro").val(obj[0].registro.replace("/%r%n/g", "\n", -1));
-					$("#dtAtualizacao").val(obj[0].dtAtualizacao);
-				})
-				.done(function( json ) {
-					carregaCombos();
-				});
-			}
 
-			function formNull(cod2) {
-				$("#codRegistro").val(0);
-				$("#codOrigemRegistro").val(cod2);
-				$("#codTipoCampo").val(0);
-				$("#ordem").val(0);
-				$("#registro").val("");
-				$("#dtAtualizacao").val("0001-01-01T00:00");
-		
-				carregaCombos();
-			}
+
 
 			$("form").submit(function (event) {
 				event.preventDefault();
 			});
 
 			function carregaCombos() {
+
 				var param = "";
 
 				param = encodeURI("cod=" + $("#codOrigemRegistro").val());
@@ -149,74 +130,36 @@
 				$("#codTipoCampoDiv").load("/html/modelos/passmots/tipoCampoCmb.html");
 			}
 
-			$("#newPass").on("click", function () {
-				//event.preventDefault();
-				var conf = confirm("Deseja realmente gerar\numa nova senha?");
-				
-				if (conf){
-					gerarSenha();
-				}
-			});
-
-
 			$(document).ready(function () {
-				$("#codRegistroDiv").css("display", "none");
 
-				$(".copiar").on("click", function(){
-					$("#codContaDiv").css("display", "block");
-					$("#codConta").val(0);
-				});
-				
-				$(".salvar").on("click", function(){
-					var txt = $(this).html();
-					var frm = $("#registroFrm");
-					var action = "/cgi-bin/passmots/salvaRegistro.py";
-					var dados = "";
-					
-					if (txt === "Salvar") {
-						dados = frm.serialize();
-					} else if (txt === "Excluir") {
-						dados = frm.serialize() + "&delete=True";
-					}
-					
-					$.post(
-						action, 
-						dados, 
-						function(data) {
-							alert("Dados salvos!");
-							//console.log(data);
-						}
-					)
-				});
-				
-				var searchParams = "";
-				
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-				
-				searchParams = new URLSearchParams(searchParams);
-				
+				var form = "#registroFrm";
+				var nmPK = "codRegistro";
+				var urlJSON = "/cgi-bin/passmots/registro.py";
+				var action = "/cgi-bin/passmots/salvaRegistro.py";
+				var searchParams = procurarURLParameters();
+				var idDados = "registro";
+				var dadosNull =
+					{
+						"codRegistro": 0,
+						"codOrigemRegistro": 0,
+						"codTipoCampo": 0,
+						"ordem": 0,
+						"registro": "",
+						"dtAtualizacao": "0001-01-01T00:00"
+					};
+
 				if (searchParams.has('cod')) {
-					variavel = searchParams.get("cod");
-					preencheForm();
+					var cod = searchParams.get("cod");
+					preencheForm(cod, form, urlJSON, idDados);
 				} else {
-					var cod2 = 0;
-					
-					if (searchParams.has('cod2')) {
-						cod2 = searchParams.get("cod2");
-					}
-					
-					formNull(cod2);
+					formNull(dadosNull, form);
 				}
 
-				
+				setBotoesDeAcao(nmPK, form, action);
 
 			});
 
 		</script>
 	</body>
 </html>
+
