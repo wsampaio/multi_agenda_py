@@ -5,32 +5,46 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>tipoCampoCmb</title>
 		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<label for="codTipoCampo">
+				<span id="tipoCampoLbl">
+					Tipo Campo
+				</span>
+			</label>
+			<select id="tipoCampoCmb" name="codTipoCampo">
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadTipoCampoCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
 
 		<script>
-
 			function preencheTipoCampoCmb(cod){
 				var saida = "";
 
 				$.getJSON("/cgi-bin/passmots/tipoCampoLista.py", function(data) {
 
 					//console.log(data);
-
 					var lista = data.tiposCampos;
+					var obj = "";
 
 					for (i = 0; i < lista.length; i++) {
 
-						saida += "<option value='" + lista[i].codTipoCampo + "'";
+						obj = lista[i];
+
+						saida += "<option value='" + obj.codTipoCampo + "'";
 					
-						if (lista[i].codTipoCampo == cod){
+						if (obj.codTipoCampo == cod){
 							saida += " selected";
 						}
 						
 						saida += ">";
 						saida += 
-							lista[i].tipoCampo.substring(0, 30) + 
+							obj.tipoCampo.substring(0, 30) + 
 							"</option>";
-
-						//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
 
 					}
 					
@@ -59,28 +73,8 @@
 				}
 				
 				preencheTipoCampoCmb(variavel);
-				
 			});
-		
 		</script>
-
-	</head>
-	<body>
-		<div class="container">
-			<label for="codTipoCampo">
-				<span id="tipoCampoLbl">
-					Tipo Campo
-				</span>
-			</label>
-			<select id="tipoCampoCmb" name="codTipoCampo">
-				<option value='0'>Selecione:</option>
-			</select>
-			<div id='loadTipoCampoCmb'>
-				<img src="/html/img/load21.gif" height="10">
-			</div>
-		</div>
 	</body>
 </html>
-
-
 
