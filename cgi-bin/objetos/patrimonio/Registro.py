@@ -22,6 +22,7 @@ dtAquisicao LocalDateTime DEFAULT ('0001-01-01T00:00'),
 preco DOUBLE DEFAULT (0), 
 garantia STRING DEFAULT (''), 
 dtDesuso LocalDateTime DEFAULT ('0001-01-01T00:00'), 
+observacoes TEXT DEFAULT (''),
 
 PRIMARY KEY(`codRegistro`), 
 FOREIGN KEY(`codItem`) 
@@ -44,6 +45,7 @@ class Registro:
 	__preco = 0.0
 	__garantia = ""
 	__dtDesuso = FormatData.de_JDate("0001-01-01T00:00")
+	__observacoes = ""
 
 
 
@@ -58,6 +60,7 @@ class Registro:
 		self.setPreco(array[4])
 		self.setGarantia(array[5])
 		self.setDtDesuso(array[6])
+		self.setObservacoes(array[7])
 
 		return self
 
@@ -124,4 +127,13 @@ class Registro:
 			self.__dtDesuso = dtDesuso
 		except ValueError:
 			self.__dtDesuso = self.getDtDesuso()
+
+	def getObservacoes(self):
+		return str(self.__observacoes)
+
+	def setObservacoes(self, observacoes):
+		try:
+			self.__observacoes = str(observacoes)
+		except ValueError:
+			self.__observacoes = self.getObservacoes()
 

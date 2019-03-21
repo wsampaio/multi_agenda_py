@@ -33,6 +33,7 @@
 						<th class="col4">preco</th>
 						<th class="col5">garantia</th>
 						<th class="col6">dtDesuso</th>
+						<th class="col7">observacoes</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -70,6 +71,8 @@
 							saida += "<td class='col4'>" + obj.preco + "</td>"
 							saida += "<td class='col5'>" + obj.garantia + "</td>"
 							saida += "<td class='col6'>" + obj.dtDesuso + "</td>"
+							saida += "<td class='col7'>" + obj.observacoes.replace(/%r%n/g, "<br>", -1) + "</td>"
+
 
 						saida += "</tr>"
 

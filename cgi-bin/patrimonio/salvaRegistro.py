@@ -62,6 +62,9 @@ if str(form) != "FieldStorage(None, None, '')":
 	if form.getvalue("dtDesuso"):
 		obj.setDtDesuso(FormatData.de_JDate(form.getvalue("dtDesuso")))
 
+	if form.getvalue("observacoes"):
+		obj.setObservacoes(str(form.getvalue("observacoes")))
+
 
 
 

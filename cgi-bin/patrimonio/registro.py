@@ -58,7 +58,8 @@ saida += """
 			"dtAquisicao": "{}",
 			"preco": {},
 			"garantia": "{}",
-			"dtDesuso": "{}"
+			"dtDesuso": "{}",
+			"observacoes": "{}"
 		{}""".format(
 			"{",
 			obj.getCodRegistro(),
@@ -68,6 +69,11 @@ saida += """
 			obj.getPreco(),
 			obj.getGarantia(),
 			obj.getDtDesuso(),
+			obj.getObservacoes()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b"),
 			"}"
 		)
 

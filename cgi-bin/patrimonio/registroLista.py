@@ -50,7 +50,8 @@ for obj in lista:
 			"dtAquisicao": "{}",
 			"preco": {},
 			"garantia": "{}",
-			"dtDesuso": "{}"
+			"dtDesuso": "{}",
+			"observacoes": "{}"
 		{}""".format(
 			"{",
 			obj.getCodRegistro(),
@@ -60,6 +61,11 @@ for obj in lista:
 			obj.getPreco(),
 			obj.getGarantia(),
 			obj.getDtDesuso(),
+			obj.getObservacoes()
+				.replace("\r", "%r")
+				.replace("\n", "%n")
+				.replace("\t", "$t")
+				.replace("\\", "$b"),
 			"}"
 		)
 
