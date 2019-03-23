@@ -152,6 +152,11 @@
 					var cod = searchParams.get("cod");
 					preencheForm(cod, form, urlJSON, idDados);
 				} else {
+
+					if (searchParams.has('cod2')) {
+						dadosNull.codOrigemRegistro = searchParams.get("cod2");
+					}
+
 					formNull(dadosNull, form);
 				}
 
