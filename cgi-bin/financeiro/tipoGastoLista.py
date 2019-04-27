@@ -25,51 +25,53 @@ cgitb.enable()
 from objetos.financeiro.TipoGasto import TipoGasto
 from objetos.financeiro.TipoGastoDAO import TipoGastoDAO
 
-tipoGasto = TipoGasto()
-tipoGastoDAO = TipoGastoDAO()
+#obj = TipoGasto()
+dao = TipoGastoDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"tiposGastos": [""")
+	"tiposGastos": ["""
 
 i = 0
-lista = tipoGastoDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forTipoGasto in lista:
+for obj in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codTipoGasto": "{}",
+			"codTipoGasto": {},
 			"tipoGasto": "{}",
 			"descricao": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forTipoGasto.getCodTipoGasto(),
-			forTipoGasto.getTipoGasto(),
-			forTipoGasto.getDescricao()
+			obj.getCodTipoGasto(),
+			obj.getTipoGasto(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

@@ -25,45 +25,47 @@ cgitb.enable()
 from objetos.financeiro.Pagador import Pagador
 from objetos.financeiro.PagadorDAO import PagadorDAO
 
-pagador = Pagador()
-pagadorDAO = PagadorDAO()
+#obj = Pagador()
+dao = PagadorDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"pagadores": [""")
+	"pagadores": ["""
 
 i = 0
-lista = pagadorDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forPagador in lista:
+for obj in lista:
 
-	print(
-"""
+	saida += """
 		{}
 			"codPagador": "{}",
 			"pagador": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forPagador.getCodPagador(),
-			forPagador.getPagador(),
+			obj.getCodPagador(),
+			obj.getPagador(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

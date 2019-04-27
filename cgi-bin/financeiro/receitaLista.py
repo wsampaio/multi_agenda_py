@@ -25,25 +25,23 @@ cgitb.enable()
 from objetos.financeiro.Receita import Receita
 from objetos.financeiro.ReceitaDAO import ReceitaDAO
 
-receita = Receita()
-receitaDAO = ReceitaDAO()
+#obj = Receita()
+dao = ReceitaDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"receitas": [""")
+	"receitas": ["""
 
 i = 0
-lista = receitaDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forReceita in lista:
+for obj in lista:
 
-	print(
-"""
+	saida += """
 		{}
 			"codReceita": "{}",
 			"codPagador": "{}",
@@ -55,39 +53,43 @@ for forReceita in lista:
 			"mesReferencia": "{}",
 			"dtCredito": "{}",
 			"obs": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forReceita.getCodReceita(),
-			forReceita.getCodPagador(),
-			forReceita.getCodFavorecido(),
-			forReceita.getDescricao()
+			obj.getCodReceita(),
+			obj.getCodPagador(),
+			obj.getCodFavorecido(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			forReceita.getPadrao(),
-			forReceita.getAcrescimos(),
-			forReceita.getValor(),
-			forReceita.getMesReferencia(),
-			forReceita.getDtCredito(),
-			forReceita.getObs()
+			obj.getPadrao(),
+			obj.getAcrescimos(),
+			obj.getValor(),
+			obj.getMesReferencia(),
+			obj.getDtCredito(),
+			obj.getObs()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

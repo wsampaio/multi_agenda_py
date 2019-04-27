@@ -25,45 +25,46 @@ cgitb.enable()
 from objetos.financeiro.CategoriaConta import CategoriaConta
 from objetos.financeiro.CategoriaContaDAO import CategoriaContaDAO
 
-categoriaConta = CategoriaConta()
-categoriaContaDAO = CategoriaContaDAO()
+#obj = CategoriaConta()
+dao = CategoriaContaDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"categoriasContas": [""")
+	"categoriasContas": ["""
 
 i = 0
-lista = categoriaContaDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forCategoriaConta in lista:
+for obj in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codCategoria": "{}",
+			"codCategoria": {},
 			"categoria": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			forCategoriaConta.getCodCategoria(),
-			forCategoriaConta.getCategoria(),
+			obj.getCodCategoria(),
+			obj.getCategoria(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)

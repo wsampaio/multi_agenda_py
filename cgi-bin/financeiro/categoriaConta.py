@@ -27,41 +27,37 @@ from objetos.financeiro.CategoriaConta import CategoriaConta
 from objetos.financeiro.CategoriaContaDAO import CategoriaContaDAO
 
 
-codCategoria = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codCategoria = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-categoriaConta = CategoriaConta()
-categoriaContaDAO = CategoriaContaDAO()
+obj = CategoriaConta()
+dao = CategoriaContaDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+saida = """
 {
-	"categoriaConta": [""")
+	"categoriaConta": ["""
 
-categoriaConta = categoriaContaDAO.select(codCategoria)
+obj = dao.select(codPk)
 
 
-
-print(
-"""
+saida += """
 		{}
-			"codCategoria": "{}",
+			"codCategoria": {},
 			"categoria": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			categoriaConta.getCodCategoria(),
-			categoriaConta.getCategoria()
+			obj.getCodCategoria(),
+			obj.getCategoria()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
@@ -69,11 +65,15 @@ print(
 				.replace("\"", "\\\""),
 			"}"
 		)
-	)
 
-
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

@@ -29,18 +29,18 @@ from objetos.financeiro.TipoConta import TipoConta
 from objetos.financeiro.TipoContaDAO import TipoContaDAO
 
 
-codTipoConta = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codTipoConta = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-tipoConta = TipoConta()
-tipoContaDAO = TipoContaDAO()
+obj = TipoConta()
+dao = TipoContaDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
@@ -50,7 +50,7 @@ saida ="""
 {
 	"tipoConta": ["""
 
-tipoConta = tipoContaDAO.select(codTipoConta)
+obj = dao.select(codPk)
 
 saida += """
 		{}
@@ -64,14 +64,16 @@ saida += """
 			"dtFinal": "{}"
 		{}""".format(
 			"{",
-			tipoConta.getCodTipoConta(),
-			tipoConta.getTipoConta(),
-			tipoConta.getCodModelo(),
-			tipoConta.getContaDeCredito(),
-			tipoConta.getTipoContaAtivo(),
-			tipoConta.getCodPagador(),
-			FormatData.para_Data_Serial(tipoConta.getDtInicio()),
-			FormatData.para_Data_Serial(tipoConta.getDtFinal()),
+			obj.getCodTipoConta(),
+			obj.getTipoConta(),
+			obj.getCodModelo(),
+			obj.getContaDeCredito(),
+			obj.getTipoContaAtivo(),
+			obj.getCodPagador(),
+			#FormatData.para_Data_Serial(tipoConta.getDtInicio()),
+			#FormatData.para_Data_Serial(tipoConta.getDtFinal()),
+			obj.getDtInicio(),
+			obj.getDtFinal(),
 			"}"
 		)
 
@@ -85,3 +87,4 @@ saida
 	.replace("\n", "")
 	.replace("\t", "")
 )
+

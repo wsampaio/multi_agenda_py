@@ -25,49 +25,51 @@ cgitb.enable()
 from objetos.financeiro.TipoContaModelo import TipoContaModelo
 from objetos.financeiro.TipoContaModeloDAO import TipoContaModeloDAO
 
-tipoContaModelo = TipoContaModelo()
-tipoContaModeloDAO = TipoContaModeloDAO()
+#obj = TipoContaModelo()
+dao = TipoContaModeloDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = """
 {
-	"tiposContasModelos": [""")
+	"tiposContasModelos": ["""
 
 i = 0
-lista = tipoContaModeloDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forTipoContaModelo in lista:
+for obj in lista:
 
-	print(
-"""
+	saida += """
 		{}
-			"codModelo": "{}",
+			"codModelo": {},
 			"descricao": "{}",
-			"codTipoGasto": "{}",
-			"codCategoria": "{}"
-		{}""".
-		format(
+			"codTipoGasto": {},
+			"codCategoria": {}
+		{}""".format(
 			"{",
-			forTipoContaModelo.getCodModelo(),
-			forTipoContaModelo.getDescricao(),
-			forTipoContaModelo.getCodTipoGasto(),
-			forTipoContaModelo.getCodCategoria(),
+			obj.getCodModelo(),
+			obj.getDescricao(),
+			obj.getCodTipoGasto(),
+			obj.getCodCategoria(),
 			"}"
 		)
-	)
 
 	if i < contaLista:
-		print(",")
+		saida += ","
 		i += 1
 	else:
 		break
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

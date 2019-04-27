@@ -26,49 +26,51 @@ cgitb.enable()
 from objetos.financeiro.TipoContaModelo import TipoContaModelo
 from objetos.financeiro.TipoContaModeloDAO import TipoContaModeloDAO
 
-codModelo = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codModelo = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-tipoContaModelo = TipoContaModelo()
-tipoContaModeloDAO = TipoContaModeloDAO()
+obj = TipoContaModelo()
+dao = TipoContaModeloDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+saida = """
 {
-	"tipoContaModelo": [""")
+	"tipoContaModelo": ["""
 
-tipoContaModelo = tipoContaModeloDAO.select(codModelo)
+obj = dao.select(codPk)
 
-print(
-"""
+saida += """
 		{}
-			"codModelo": "{}",
+			"codModelo": {},
 			"descricao": "{}",
-			"codTipoGasto": "{}",
-			"codCategoria": "{}"
-		{}""".
-		format(
+			"codTipoGasto": {},
+			"codCategoria": {}
+		{}""".format(
 			"{",
-			tipoContaModelo.getCodModelo(),
-			tipoContaModelo.getDescricao(),
-			tipoContaModelo.getCodTipoGasto(),
-			tipoContaModelo.getCodCategoria(),
+			obj.getCodModelo(),
+			obj.getDescricao(),
+			obj.getCodTipoGasto(),
+			obj.getCodCategoria(),
 			"}"
 		)
-	)
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

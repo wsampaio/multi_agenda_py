@@ -25,8 +25,8 @@ cgitb.enable()
 from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
 
-conta = Conta()
-contaDAO = ContaDAO()
+#obj = Conta()
+dao = ContaDAO()
 
 print("Content-type: application/json\n")
 
@@ -38,11 +38,11 @@ saida += """
 	"contas": ["""
 
 i = 0
-lista = contaDAO.getLista()
+lista = dao.getLista()
 
 contaLista = len(lista) -1
 
-for forConta in lista:
+for obj in lista:
 
 	saida += """
 		{}
@@ -61,27 +61,27 @@ for forConta in lista:
 			"dtPagamento": "{}"
 		{}""".format(
 			"{",
-			forConta.getCodConta(),
-			forConta.getCodTipoConta(),
-			forConta.getDescricao()
+			obj.getCodConta(),
+			obj.getCodTipoConta(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			forConta.getMesReferencia(),
-			forConta.getDtVencimento(),
-			forConta.getCodBarras()
+			obj.getMesReferencia(),
+			obj.getDtVencimento(),
+			obj.getCodBarras()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			forConta.getValor(),
-			forConta.getCodContaPagadora(),
-			forConta.getCodReceitaPagadora(),
-			forConta.getCodPagador(),
-			forConta.getContaPaga(),
-			forConta.getValorPago(),
-			forConta.getDtPagamento(),
+			obj.getValor(),
+			obj.getCodContaPagadora(),
+			obj.getCodReceitaPagadora(),
+			obj.getCodPagador(),
+			obj.getContaPaga(),
+			obj.getValorPago(),
+			obj.getDtPagamento(),
 			"}"
 		)
 

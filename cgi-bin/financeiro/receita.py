@@ -23,7 +23,6 @@ sys.path.append((dirname(realpath(__file__)) + sep + pardir))
 import cgitb
 cgitb.enable()
 
-
 from objetos.dbConn.FormatData import FormatData
 #import objetos.dbConn.FormatData as FormatData
 
@@ -31,31 +30,30 @@ from objetos.financeiro.Receita import Receita
 from objetos.financeiro.ReceitaDAO import ReceitaDAO
 
 
-codReceita = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codReceita = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-receita = Receita()
-receitaDAO = ReceitaDAO()
+obj = Receita()
+dao = ReceitaDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+
+saida = """
 {
-	"receita": [""")
+	"receita": ["""
 
-receita = receitaDAO.select(codReceita)
+obj = dao.select(codPk)
 
-print(
-"""
+saida += """
 		{}
 			"codReceita": "{}",
 			"codPagador": "{}",
@@ -67,33 +65,40 @@ print(
 			"mesReferencia": "{}",
 			"dtCredito": "{}",
 			"obs": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			receita.getCodReceita(),
-			receita.getCodPagador(),
-			receita.getCodFavorecido(),
-			receita.getDescricao()
+			obj.getCodReceita(),
+			obj.getCodPagador(),
+			obj.getCodFavorecido(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			receita.getPadrao(),
-			receita.getAcrescimos(),
-			receita.getValor(),
-			FormatData.mesRefSerial(receita.getMesReferencia()),
-			FormatData.para_Data_Serial(receita.getDtCredito()),
-			receita.getObs()
+			obj.getPadrao(),
+			obj.getAcrescimos(),
+			obj.getValor(),
+			#FormatData.mesRefSerial(obj.getMesReferencia()),
+			#FormatData.para_Data_Serial(obj.getDtCredito()),
+			obj.getMesReferencia(),
+			obj.getDtCredito(),
+			obj.getObs()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
 			"}"
 		)
-	)
 
-print(
-"""
+
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+

@@ -26,51 +26,53 @@ cgitb.enable()
 from objetos.financeiro.TipoGasto import TipoGasto
 from objetos.financeiro.TipoGastoDAO import TipoGastoDAO
 
-codTipoGasto = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codTipoGasto = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-tipoGasto = TipoGasto()
-tipoGastoDAO = TipoGastoDAO()
+obj = TipoGasto()
+dao = TipoGastoDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
-print(
-"""
+saida = """
 {
-	"tipoGasto": [""")
+	"tipoGasto": ["""
 
-tipoGasto = tipoGastoDAO.select(codTipoGasto)
+obj = dao.select(codPk)
 
-print(
-"""
+saida += """
 		{}
-			"codTipoGasto": "{}",
+			"codTipoGasto": {},
 			"tipoGasto": "{}",
 			"descricao": "{}"
-		{}""".
-		format(
+		{}""".format(
 			"{",
-			tipoGasto.getCodTipoGasto(),
-			tipoGasto.getTipoGasto(),
-			tipoGasto.getDescricao()
+			obj.getCodTipoGasto(),
+			obj.getTipoGasto(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
 			"}"
 		)
-	)
 
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+saida
+	.replace("\n", "")
+	.replace("\t", "")
+)
+
