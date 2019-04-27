@@ -30,18 +30,18 @@ from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
 
 
-codConta = 0
+codPk = 0
 
 form = cgi.FieldStorage()
 
 
 
 if form:
-	codConta = int(form.getvalue("cod"))
+	codPk = int(form.getvalue("cod"))
 
 
-conta = Conta()
-contaDAO = ContaDAO()
+obj = Conta()
+dao = ContaDAO()
 
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
@@ -53,52 +53,55 @@ saida += """
 {
 	"conta": ["""
 
-conta = contaDAO.select(codConta)
+obj = dao.select(codPk)
 
 contaPaga = False
 
-if conta.getContaPaga():
+if obj.getContaPaga():
 	contaPaga = True
 
 
 saida+= """
 		{}
-			"codConta": "{}",
-			"codTipoConta": "{}",
+			"codConta": {},
+			"codTipoConta": {},
 			"descricao": "{}",
 			"mesReferencia": "{}",
 			"dtVencimento": "{}",
 			"codBarras": "{}",
-			"valor": "{}",
-			"codContaPagadora": "{}",
-			"codReceitaPagadora": "{}",
-			"codPagador": "{}",
+			"valor": {},
+			"codContaPagadora": {},
+			"codReceitaPagadora": {},
+			"codPagador": {},
 			"contaPaga": "{}",
-			"valorPago": "{}",
+			"valorPago": {},
 			"dtPagamento": "{}"
 		{}""".format(
 			"{",
-			conta.getCodConta(),
-			conta.getCodTipoConta(),
-			conta.getDescricao()
+			obj.getCodConta(),
+			obj.getCodTipoConta(),
+			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			FormatData.mesRefSerial(conta.getMesReferencia()),
-			FormatData.para_Data_Serial(conta.getDtVencimento()),
-			conta.getCodBarras()
+			#FormatData.mesRefSerial(conta.getMesReferencia()),
+			#FormatData.para_Data_Serial(conta.getDtVencimento()),
+			obj.getMesReferencia(),
+			obj.getDtVencimento(),
+			obj.getCodBarras()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
 				.replace("\t", "$t")
 				.replace("\\", "$b"),
-			conta.getValor(),
-			conta.getCodContaPagadora(),
-			conta.getCodReceitaPagadora(),
-			conta.getCodPagador(),
+			obj.getValor(),
+			obj.getCodContaPagadora(),
+			obj.getCodReceitaPagadora(),
+			obj.getCodPagador(),
 			contaPaga,
-			conta.getValorPago(),
-			FormatData.para_Data_Serial(conta.getDtPagamento()),
+			obj.getValorPago(),
+			#FormatData.para_Data_Serial(conta.getDtPagamento()),
+			obj.getDtPagamento(),
 			"}"
 		)
 
@@ -112,3 +115,4 @@ print(
 		.replace("\n", "")
 		.replace("\t", "")
 )
+
