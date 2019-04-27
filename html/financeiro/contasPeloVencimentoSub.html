@@ -44,15 +44,29 @@
 		
 		
 		<script>
-		
-			function preencheTabelaContasPeloVencimentoSubTbl (dtRef){
+
+			function preencheTabelaContasPeloVencimentoSubTbl (dtRef, dtInicio, dtFinal){
 			
 				url = "/cgi-bin/financeiro/contasPeloVencimento.py";
-				
+				urlParam = "";
+
 				if (dtRef.length > 0) {
-					url += "?dtRef=" + dtRef;
+					urlParam += ((urlParam.length > 0) ? "&" : "?");
+					urlParam += "dtRef=" + dtRef;
 				}
-			
+
+				if (dtInicio.length > 0) {
+					urlParam += ((urlParam.length > 0) ? "&" : "?");
+					urlParam += "dtInicio=" + dtInicio;
+				}
+
+				if (dtFinal.length > 0) {
+					urlParam += ((urlParam.length > 0) ? "&" : "?");
+					urlParam += "dtFinal=" + dtFinal;
+				}
+
+				url += urlParam;
+
 				$.getJSON(url, function(data) {
 
 					//console.log(data);
@@ -172,16 +186,13 @@
 					});
 				});
 			}
-		
-		
-		
-		
-		
-		
+
 			$(document).ready(function() {
 			
-				var searchParams = "";
-				var dtRef = "";
+				let searchParams = "";
+				let dtRef = ""
+				let dtInicio = "";
+				let dtFinal = "";
 				
 				if ($("#principal").length > 0) {
 					//url = new URL($("#principal").attr("url"));
@@ -194,15 +205,17 @@
 				
 				if (searchParams.has('dtRef')) {
 					dtRef = searchParams.get("dtRef");
-				} else {
-					dtRef = 
-						d.getFullYear() + "-" + 
-						("00" + (d.getMonth() + 1)).substr(-2)
 				}
-			
-			
-			
-				preencheTabelaContasPeloVencimentoSubTbl(dtRef);
+
+				if (searchParams.has('dtInicio')) {
+					dtInicio = searchParams.get("dtInicio");
+				}
+
+				if (searchParams.has('dtFinal')) {
+					dtFinal = searchParams.get("dtFinal");
+				}
+
+				preencheTabelaContasPeloVencimentoSubTbl(dtRef, dtInicio, dtFinal);
 			});
 		</script>
 	</body>
