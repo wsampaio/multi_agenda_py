@@ -5,22 +5,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 		<title>receita</title>
 		<style>
 			table, td, th {
 				border:solid;
 			}
-
-			.colx {
-				display: none;
-			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row-fluid"> 
-				<a href="/html/modelos/financeiro/Receita.html" target="_blank">
+				<a href="/html/modelos/patrimonio/registro.html" target="_blank">
 					<h1>Receita</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
@@ -89,71 +85,23 @@
 						<textarea class="form-control" id="obs" name="obs" 
 							   placeholder="obs"></textarea>
 					</div>
-
 				</form>
 			</div>
 			<div class="row-fluid btn-group">
-				<button class="btn btn-primary">Salvar</button> 
+				<button class="salvar btn btn-primary">Salvar</button> 
+				<button class="salvar btn btn-danger">Excluir</button> 
 				<button class="copiar btn btn-success">Copiar</button> 
-				<button class="btn btn-danger">Excuir</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
 
+
 		<script>
-			
-			var variavel = 0;
-
-			
-			function preencheForm() {
-
-				var url = "/cgi-bin/financeiro/receita.py";
-
-				if (variavel > 0) {
-					url += "?cod=" + variavel;
-				}
-
-				$.getJSON(url, function (data) {
-
-					console.log(data);
-					var obj = data.receita;
-
-					$("#codReceita").val(obj[0].codReceita);
-					$("#codPagador").val(obj[0].codPagador);
-					$("#codFavorecido").val(obj[0].codFavorecido);
-					$("#descricao").val(obj[0].descricao.replace(/%r%n/g, "\n", -1));
-					$("#padrao").val(obj[0].padrao);
-					$("#acrescimos").val(obj[0].acrescimos);
-					$("#valor").val(obj[0].valor);
-					$("#mesReferencia").val(obj[0].mesReferencia);
-					$("#dtCredito").val(obj[0].dtCredito);
-					$("#obs").val(obj[0].obs.replace(/%r%n/g, "\n", -1));
-
-				})
-				.done(function( json ) {
-					carregaCombos();
-				});
-			}
-
-			function formNull() {
-				
-				$("#codReceita").val(0);
-				$("#codPagador").val(0);
-				$("#codFavorecido").val(0);
-				$("#descricao").val("");
-				$("#padrao").val(0.0);
-				$("#acrescimos").val(0.0);
-				$("#valor").val(0.0);
-				$("#mesReferencia").val("0001-01");
-				$("#dtCredito").val("0001-01-01");
-				$("#obs").val("");
-
-				carregaCombos();
-			}
 
 			$("form").submit(function (event) {
 				event.preventDefault();
 			});
-			
+
 			function carregaCombos() {
 				var param = "";
 				
@@ -175,56 +123,38 @@
 
 			$(document).ready(function () {
 
-				$("#codReceitaDiv").css("display", "none");
-				$(".copiar").on("click", function(){
-					$("#codReceitaDiv").css("display", "block");
-					$("#codReceita").val(0);
-				});
+				var form = "#receitaFrm";
+				var nmPK = "codReceita";
+				var urlJSON = "/cgi-bin/financeiro/receita.py";
+				var action = "/cgi-bin/financeiro/salvaReceita.py";
+				var searchParams = procurarURLParameters();
+				var idDados = "receita";
+				var dadosNull =
+					{
+						"codReceita": 0,
+						"codPagador": 0,
+						"codFavorecido": 0,
+						"descricao": "",
+						"padrao": 0.0,
+						"acrescimos": 0.0,
+						"valor": 0.0,
+						"mesReferencia": "0001-01",
+						"dtCredito": "0001-01-01",
+						"obs": "", 
+					};
 
-				$("button").on("click", function(){
-					var txt = $(this).html();
-					var frm = $("#receitaFrm");
-					var action = "/cgi-bin/financeiro/salvaReceita.py";
-					
-					if (txt === "Salvar") {
-						dados = frm.serialize();
-					} else if (txt === "Excuir") {
-						dados = frm.serialize() + "&delete=True";
-					}
-
-					$.post(
-						action, 
-						dados, 
-						function(data) {
-							alert("Dados salvos!");
-							//console.log(data);
-						}
-					)
-				});
-				
-				var searchParams = "";
-				
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-				
-				searchParams = new URLSearchParams(searchParams);
-				
 				if (searchParams.has('cod')) {
-					variavel = searchParams.get("cod");
-					preencheForm();
+					var cod = searchParams.get("cod");
+					preencheForm(cod, form, urlJSON, idDados);
 				} else {
-					formNull();
+					formNull(dadosNull, form);
 				}
-				
+
+				setBotoesDeAcao(nmPK, form, action);
+
 			});
-			
+
 		</script>
 	</body>
 </html>
-
-
 

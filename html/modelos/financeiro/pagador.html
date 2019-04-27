@@ -3,15 +3,13 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
-		<title>pagador</title>		
+		<script src="/html/btp/instrucoes.js"></script>
+		<title>item</title>
 		<style>
 			table, td, th {
 				border:solid;
-			}
-
-			.colx {
-				display: none;
 			}
 		</style>
 		<script src="/html/btp/jquery.js"></script>
@@ -23,7 +21,7 @@
 					<h1>Pagador</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
-				<form>
+				<form id="pagadorFrm">
 					<div class="form-group" id="codPagadorDiv"> 
 						<label for="codPagador">codPagador</label>
 						<input 
@@ -34,6 +32,7 @@
 						<small id="codPagadorHelp"
 							   class="form-text text-muted">codPagador</small>
 					</div>
+
 					<div class="form-group" id="pagadorDiv"> 
 						<label for="pagador">pagador</label>
 						<input class="form-control" id="pagador" name="pagador" 
@@ -41,103 +40,60 @@
 					</div>
 				</form>
 			</div>
-			<div class="row-fluid">
-				<button class="btn btn-primary">Salvar</button> 
-				<button class="btn btn-danger">Excuir</button> 
+			<div class="row-fluid btn-group">
+				<button class="salvar btn btn-primary">Salvar</button> 
+				<button class="salvar btn btn-danger">Excluir</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
 
+
 		<script>
-			
-			var variavel = 0;
-
-			
-			function preencheForm() {
-
-				var url = "/cgi-bin/financeiro/pagador.py";
-
-				if (variavel > 0) {
-					url += "?cod=" + variavel;
-				}
-
-				$.getJSON(url, function (data) {
-
-					//console.log(data);
-					var obj = data.pagador;
-
-					$("#codPagador").val(obj[0].codPagador);
-					$("#pagador").val(obj[0].pagador);
-
-				});
-			}
-
-			function formNull() {
-				
-				$("#codPagador").val(0);
-				$("#pagador").val("");
-
-			}
 
 			$("form").submit(function (event) {
 				event.preventDefault();
 			});
-			
+
+			function carregaCombos() {
+return 0;
+				var param = "";
+
+				param = encodeURI("cod=" + $("#codMarca").val());
+				$("#codMarcaDiv").attr('param', param);
+				$("#codMarcaDiv").load("/html/modelos/patrimonio/marcaCmb.html");
+
+				param = encodeURI("cod=" + $("#codModelo").val());
+				$("#codModeloDiv").attr('param', param);
+				$("#codModeloDiv").load("/html/modelos/patrimonio/modeloCmb.html");
+			}
+
 			$(document).ready(function () {
-			
-				formNull();
-				//$("#codCategoriaDiv").css("display", "none");
 
-				$("button").on("click", function(){
-					var txt = $(this).html();
-					var action = "/cgi-bin/financeiro/salvaPagador.py";
-					
-					if (txt === "Salvar") {
-						
-						$.post(
-							action, 
-							$(this).serialize(), 
-							function(data) {
-								alert("Dados salvos!");
-								console.log(data);
-							}
-						);
-						
-					} else if (txt === "Excuir") {
-						alert(2);
-					}
-				});
-				
-				
-				//procura na url da pagina
-				var urlParams = new URLSearchParams(window.location.search);
+				var form = "#pagadorFrm";
+				var nmPK = "codPagador";
+				var urlJSON = "/cgi-bin/financeiro/pagador.py";
+				var action = "/cgi-bin/financeiro/salvaPagador.py";
+				var searchParams = procurarURLParameters();
+				var idDados = "pagador";
+				var dadosNull =
+					{
+						"CodPagador": 0,
+						"pagador": ""
+					};
 
-				if ((urlParams.has('cod'))){
-					variavel = urlParams.get("cod");
-					preencheForm();
+				if (searchParams.has('cod')) {
+					var cod = searchParams.get("cod");
+					preencheForm(cod, form, urlJSON, idDados);
+				} else {
+					formNull(dadosNull, form);
 				}
 
-				//procura na div container
-				let params = decodeURI(
-					$("#codPagadorDiv")
-					.parent()
-					.parent()
-					.parent()
-					.parent()
-					.attr('param')
-				);
-		
-				let searchParams = new URLSearchParams(params);
-				
-				if (searchParams.has("cod")){
-					variavel = searchParams.get("cod");
-					preencheForm();
-				}
+				setBotoesDeAcao(nmPK, form, action);
 
 			});
-			
+
 		</script>
 	</body>
 </html>
-
-
 

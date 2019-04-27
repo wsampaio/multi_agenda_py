@@ -3,24 +3,21 @@
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
 		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 		<title>tipoContaModelo</title>
 		<style>
 			table, td, th {
 				border:solid;
 			}
-
-			.colx {
-				display: none;
-			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row-fluid"> 
 				<a href="/html/modelos/financeiro/tipoContaModelo.html" target="_blank">
-					<h1>Tipo de Conta (Modelo)</h1>
+					<h1>Tipo de Conta - Modelo</h1>
 				</a>
 				<h2>Vertical (basic) form</h2>
 				<form id="tipoContaModeloFrm">
@@ -34,7 +31,7 @@
 						<small id="codModeloHelp"
 							   class="form-text text-muted">codModelo</small>
 					</div>
-					
+
 					<div class="form-group" id="descricaoDiv"> 
 						<label for="descricao">descricao</label>
 						<input class="form-control" id="descricao" name="descricao" 
@@ -52,119 +49,64 @@
 						<input class="form-control" id="codCategoria" name="codCategoria" 
 							   placeholder="codCategoria" type="number">
 					</div>
-
 				</form>
 			</div>
-			<div class="row-fluid">
-				<button class="btn btn-primary">Salvar</button> 
-				<button class="btn btn-danger">Excluir</button> 
+			<div class="row-fluid btn-group">
+				<button class="salvar btn btn-primary">Salvar</button> 
+				<button class="salvar btn btn-danger">Excluir</button> 
+				<button class="copiar btn btn-success">Copiar</button> 
+				<button class="salvar btn btn-info">Voltar</button> 
 			</div>
 		</div>
+
+
+		<script>
+
+			$("form").submit(function (event) {
+				event.preventDefault();
+			});
+
+			function carregaCombos() {
+
+				var param = "";
+
+				param = encodeURI("cod=" + $("#codTipoGasto").val());
+				$("#codTipoGastoDiv").attr('param', param);
+				$("#codTipoGastoDiv").load("/html/modelos/financeiro/tipoGastoCmb.html");
+
+				param = encodeURI("cod=" + $("#codCategoria").val());
+				$("#codCategoriaDiv").attr('param', param);
+				$("#codCategoriaDiv").load("/html/modelos/financeiro/categoriaCmb.html");
+			}
+
+			$(document).ready(function () {
+
+				var form = "#tipoContaModeloFrm";
+				var nmPK = "codModelo";
+				var urlJSON = "/cgi-bin/financeiro/tipoContaModelo.py";
+				var action = "/cgi-bin/financeiro/salvaTipoContaModelo.py";
+				var searchParams = procurarURLParameters();
+				var idDados = "tipoContaModelo";
+				var dadosNull =
+					{
+						"CodModelo": 0,
+						"descricao": "",
+						"codTipoGasto": 0,
+						"codCategoria": 0
+					};
+
+				if (searchParams.has('cod')) {
+					var cod = searchParams.get("cod");
+					preencheForm(cod, form, urlJSON, idDados);
+				} else {
+					formNull(dadosNull, form);
+				}
+
+				setBotoesDeAcao(nmPK, form, action);
+
+			});
+
+		</script>
 	</body>
 </html>
 
-<script>
-
-	var variavel = 0;
-
-	function preencheForm() {
-		var url = "/cgi-bin/financeiro/tipoContaModelo.py";
-
-		if (variavel > 0) {
-			url += "?cod=" + variavel;
-		}
-
-		$.getJSON(url, function (data) {
-
-			console.log(data);
-			var obj = data.tipoContaModelo;
-
-			$("#codModelo").val(obj[0].codModelo);
-			$("#descricao").val(obj[0].descricao);
-			$("#codTipoGasto").val(obj[0].codTipoGasto);
-			$("#codCategoria").val(obj[0].codCategoria);
-		})
-		.done(function( json ) {
-			carregaCombos();
-		});
-	}
-
-	function formNull() {
-		$("#codModelo").val(0);
-		$("#descricao").val("");
-		$("#codTipoGasto").val(0);
-		$("#codCategoria").val(0);
-	}
-
-	$("form").submit(function (event) {
-		event.preventDefault();
-	});
-
-	function carregaCombos() {
-		var param = "";
-		
-		param = encodeURI("cod=" + $("#codTipoGasto").val());
-		$("#codTipoGastoDiv").attr('param', param);
-		$("#codTipoGastoDiv").load("/html/modelos/financeiro/tipoGastoCmb.html");
-
-		param = encodeURI("cod=" + $("#codCategoria").val());
-		$("#codCategoriaDiv").attr('param', param);
-		$("#codCategoriaDiv").load("/html/modelos/financeiro/categoriaContaCmb.html");
-	}
-
-	$(document).ready(function () {
-		formNull();
-		//$("#codModeloDiv").css("display", "none");
-
-		$("button").on("click", function(){
-			var txt = $(this).html();
-			var action = "/cgi-bin/financeiro/salvaTipoContaModelo.py";
-			var dados = "";
-			
-			if (txt === "Salvar") {
-				dados = $("#tipoContaModeloFrm").serialize();
-			} else if (txt === "Excluir") {
-				dados = $("#tipoContaModeloFrm").serialize() + "&delete=True";
-			}
-			
-			$.post(
-				action, 
-				dados, 
-				function(data) {
-					alert("Dados salvos!");
-					//console.log(data);
-				}
-			)
-		});
-		
-		
-		//procura na url da pagina
-		var urlParams = new URLSearchParams(window.location.search);
-
-		if ((urlParams.has('cod'))){
-			variavel = urlParams.get("cod");
-			preencheForm();
-		}
-
-		//procura na div container
-		let params = decodeURI(
-			$("#codContaDiv")
-			.parent()
-			.parent()
-			.parent()
-			.parent()
-			.attr('param')
-		);
-
-		let searchParams = new URLSearchParams(params);
-		
-		if (searchParams.has("cod")){
-			variavel = searchParams.get("cod");
-			preencheForm();
-		}
-		
-		carregaCombos();
-
-	});
-	
-</script>
