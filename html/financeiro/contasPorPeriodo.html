@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+<!--		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">-->
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
+		<title>contasPorPeriodo</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page-header jumbotron">
+			<h1>
+				Contas por período
+			</h1>
+
+			<form> 
+				<div class="form-group">
+					<label class="control-label col-lg-1" for="dtFinal">Início:</label>
+					<div class="col-lg-3">
+						<input type="date" class="form-control" id="dtInicio" placeholder="Data Inicial" name="dtInicio">
+					</div>
+					<label class="control-label col-lg-1" for="dtFinal">Final:</label>
+					<div class="col-lg-3">
+						<input type="date" class="form-control" id="dtFinal" placeholder="Data Final" name="dtFinal">
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-12 col-lg-1">
+							<button type="submit" class="btn btn-primary">Buscar</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div id="contasPeloVencimentoSub">well</div>
+
+		<script>
+			$("form").on("submit", function(){
+				event.preventDefault();
+
+				if ($("#principal").length > 0){
+
+					$("#principal").attr("url", 
+						$("#principal").attr("url").split("?")[0] +
+						"?dtInicio=" + $("#dtInicio").val() +
+						"&dtFinal=" + $("#dtFinal").val()
+					);
+
+					$("#principal").load($("#principal").attr("url"));
+				} else {
+					window.location = 
+						"?dtInicio=" + $("#dtInicio").val();
+				}
+			//	listaPeriodo();
+			});
+
+			function listaPeriodo(){
+				$("#contasPeloVencimentoSub").load(
+					"/html/financeiro/contasPeloVencimentoSub.html" +
+					"?dtInicio=" + $("#dtInicio").val() +
+					"&dtFinal=" + $("#dtFinal").val()
+				);
+			}
+
+
+			$(document).ready(function() {
+
+				let searchParams = "";
+				let d = new Date();
+
+				$("#dtInicio").val(toDate(d));
+				$("#dtFinal").val(toDate(d));
+
+				if ($("#principal").length > 0) {
+					//url = new URL($("#principal").attr("url"));
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+				
+				searchParams = new URLSearchParams(searchParams);
+				
+				if (searchParams.has('dtInicio')) {
+					$("#dtInicio").val(searchParams.get("dtInicio"));
+				}
+
+				if (searchParams.has('dtFinal')) {
+					$("#dtFinal").val(searchParams.get("dtFinal"));
+				}
+
+				listaPeriodo();
+
+			});
+
+
+
+		</script>
+	</body>
+</html>
+
