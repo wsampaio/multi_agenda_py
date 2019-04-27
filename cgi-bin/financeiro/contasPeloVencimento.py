@@ -56,10 +56,23 @@ dtRef = "" + \
 str(datetime.date.today().year) + "-" + \
 ("00" + str(datetime.date.today().month))[-2:]
 
+dtInicio = ""
+dtFinal = ""
+
+
 if form:
 	if form.getvalue("dtRef") != None:
 		dtRef = form.getvalue("dtRef")
-	
+
+	if form.getvalue("dtInicio") != None:
+		dtInicio = FormatData.de_JDate(form.getvalue("dtInicio") + "T00:00")
+	elif len(dtInicio) == 0 and form.getvalue("dtFinal") != None:
+		dtInicio = FormatData.de_JDate(form.getvalue("dtFinal") + "T00:00")
+
+	if form.getvalue("dtFinal") != None:
+		dtFinal = FormatData.de_JDate(form.getvalue("dtFinal") + "T00:00")
+	elif len(dtFinal) == 0 and form.getvalue("dtInicio") != None:
+		dtFinal = dtInicio + datetime.datetime(days=30)
 
 
 print("Content-type: application/json\n")
@@ -69,7 +82,14 @@ saida = """
 	"contas": ["""
 
 i = 0
-lista = contaDAO.listaPeloVencimento(dtRef)
+
+
+#define qual lista será acessada
+if dtInicio != "" or dtFinal != "":
+	lista = contaDAO.listaPorPeriodo(dtInicio, dtFinal)
+else:
+	lista = contaDAO.listaPeloVencimento(dtRef)
+
 
 contaLista = len(lista) -1
 
