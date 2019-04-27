@@ -72,7 +72,7 @@ if form:
 	if form.getvalue("dtFinal") != None:
 		dtFinal = FormatData.de_JDate(form.getvalue("dtFinal") + "T00:00")
 	elif len(dtFinal) == 0 and form.getvalue("dtInicio") != None:
-		dtFinal = dtInicio + datetime.datetime(days=30)
+		dtFinal = dtInicio + datetime.timedelta(days=30)
 
 
 print("Content-type: application/json\n")
