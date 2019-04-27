@@ -44,6 +44,27 @@ function toDateTimeLocal(dateTime){
 	return str;
 }
 
+function toDate(dateTime){
+	var d = new Date(dateTime);
+	var str = 
+		("0000" + d.getFullYear()).substr(-4) + "-" +
+		("0" + (d.getMonth() + 1)).substr(-2) + "-" +
+		("0" + (d.getDate())).substr(-2);
+
+	return str;
+}
+
+function toMonth(dateTime){
+	var d = new Date(dateTime);
+	var str = 
+		("0000" + d.getFullYear()).substr(-4) + "-" +
+		("0" + (d.getMonth() + 1)).substr(-2);
+
+	return str;
+}
+
+
+
 
 function formNull(dados, form) {
 	insereDoJSON(dados, form);
@@ -86,6 +107,14 @@ function insereDoJSON(dados, form){
 
 				case "datetime-local":
 					$(this).val(toDateTimeLocal(obj[$(this).attr("id")]));
+					break;
+
+				case "month":
+					$(this).val(toMonth(obj[$(this).attr("id")]));
+					break;
+
+				case "date":
+					$(this).val(toDate(obj[$(this).attr("id")]));
 					break;
 
 				default:
