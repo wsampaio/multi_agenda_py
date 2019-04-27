@@ -119,7 +119,8 @@ SELECT AVG(valor) FROM (
 			receita 
 		WHERE 
 			codPagador = {} AND
-			dtCredito < '{}' 
+			dtCredito < '{}' AND
+			valor > 0 
 		ORDER BY 
 			dtCredito DESC 
 		LIMIT 3 
