@@ -193,5 +193,34 @@ SELECT AVG(valor) FROM (
 		return super().getList(sql)
 
 
+	def listaPorPeriodo(self, dtInicio, dtFinal):
+
+		dtInicio = str(dtInicio.year) + "-" + \
+			("0" + str(dtInicio.month))[-2:] + "-" + \
+			("0" + str(dtInicio.day))[-2:]
+
+		dtFinal = str(dtFinal.year) + "-" + \
+			("0" + str(dtFinal.month))[-2:] + "-" + \
+			("0" + str(dtFinal.day))[-2:]
+
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					contas
+				WHERE 
+					strftime('%Y-%m-%d',dtVencimento) >= '{}' AND 
+					strftime('%Y-%m-%d',dtVencimento) <= '{}'
+				ORDER BY
+					dtVencimento,
+					codConta
+			;
+		""".format(
+			dtInicio,
+			dtFinal
+		)
+
+		return super().getList(sql)
 
 
