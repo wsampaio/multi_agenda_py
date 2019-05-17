@@ -3,15 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
-    <script>
-        function redirect() {
-            window.window.location.replace('html/index.html');
-        }
-    </script>
-
 </head>
 <body onload="javascript:;">
-    <button onclick="javascript:redirect();">redirect</button>
+	<img id="img0" class="img" src="/html/img/click_here.png">
+	<img id="img1" class="img" src="/html/img/click_here.png">
+	<img id="img2" class="img" src="/html/img/click_here.png">
+	<img id="img3" class="img" src="/html/img/click_here.png">
+	<img id="img4" class="img" src="/html/img/click_here.png">
+
+	<script>
+
+		var imgClass = document.getElementsByClassName("img");
+		var numCliques = 0;
+
+		var clique = function() {
+			img = document.getElementById("img" + (numCliques + 1));
+
+			this.style.display = "none";
+			img.style.display = "block";
+			numCliques++;
+
+		};
+
+		for (var i = 0; i < imgClass.length; i++) {
+			if(i<4){
+				imgClass[i].addEventListener('click', clique, false);
+			}
+
+			img = document.getElementById("img" + i);
+			img.style.position = "absolute";
+			img.style.height = "250px";
+
+			var t = Math.floor(Math.random() * window.innerHeight);
+			if (t + 250 > window.innerHeight){
+				t = window.innerHeight - 250;
+			}
+
+			var l = Math.floor(Math.random() * window.innerWidth);
+			if (l + 250 > window.innerWidth){
+				l = window.innerWidth - 160;
+			}
+
+			img.style.top = t + "px";
+			img.style.left = l + "px";
+			img.style.display = "none";
+		}
+
+		img0 = document.getElementById("img0");
+		img4 = document.getElementById("img4");
+
+		img0.style.display = "block";
+		img4.addEventListener("click", function(){
+			alert("TÁ BOM, TÁ BOM!!!\nCHEGA DE CLIQUES!!!");
+			window.location = "/html/index.html";
+		});
+
+	</script>
 </body>
 </html>
