@@ -33,6 +33,11 @@ function preencheForm(cod, form, urlJSON, idDados) {
 }
 
 function toDateTimeLocal(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do campo datetime-local
+	**/
+
 	var d = new Date(dateTime);
 	var str = 
 		("0000" + d.getFullYear()).substr(-4) + "-" +
@@ -45,6 +50,11 @@ function toDateTimeLocal(dateTime){
 }
 
 function toDate(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do campo date
+	**/
+
 	var d = new Date(dateTime);
 	var str = 
 		("0000" + d.getFullYear()).substr(-4) + "-" +
@@ -55,6 +65,11 @@ function toDate(dateTime){
 }
 
 function toMonth(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do campo month
+	**/
+
 	var d = new Date(dateTime);
 	var str = 
 		("0000" + d.getFullYear()).substr(-4) + "-" +
@@ -62,6 +77,61 @@ function toMonth(dateTime){
 
 	return str;
 }
+
+function toTime(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do campo time
+	**/
+
+	var d = new Date(dateTime);
+	var str = 
+		("0" + (d.getHours())).substr(-2) + ":" +
+		("0" + (d.getMinutes())).substr(-2);
+
+	return str;
+}
+
+function preencheDataHoje(campo){
+	/*
+	 * funcao que reconhece o tipo de campo 
+	 * de data e preenche com a data de hoje
+	**/
+	
+	let d = new Date();
+
+	switch (campo.val().length){
+		case 5:
+			campo.val(toTime(d));
+			break;
+		case 10:
+		case 7:
+			campo.val(toMonth(d));
+			break;
+		case 10:
+			campo.val(toDate(d));
+			break;
+		case 16:
+			campo.val(toDateTimeLocal(d));
+			break;
+		default:
+			campo.val("");
+			break;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
