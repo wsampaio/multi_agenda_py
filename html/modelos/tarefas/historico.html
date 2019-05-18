@@ -4,6 +4,7 @@
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">
+		<script src="/html/btp/instrucoes.js"></script>
 		<script src="/html/btp/jquery.js"></script>
 		<title>historico</title>
 		<style>
@@ -79,8 +80,6 @@
 				.done(function( json ) {
 					carregaCombos();
 				});
-				
-				//
 			}
 
 			function formNull() {
@@ -88,6 +87,9 @@
 				$("#codTarefa").val(0);
 				$("#data").val("0001-01-01T00:00");
 				$("#obs").val("");
+
+				preencheDataHoje($("#data"));
+
 			}
 
 			$("form").submit(function (event) {
