@@ -25,8 +25,26 @@ cgitb.enable()
 from objetos.financeiro.TipoContaModelo import TipoContaModelo
 from objetos.financeiro.TipoContaModeloDAO import TipoContaModeloDAO
 
+from objetos.financeiro.TipoGasto import TipoGasto
+from objetos.financeiro.TipoGastoDAO import TipoGastoDAO
+
+from objetos.financeiro.CategoriaConta import CategoriaConta
+from objetos.financeiro.CategoriaContaDAO import CategoriaContaDAO
+
+
+
+
+
+
 #obj = TipoContaModelo()
 dao = TipoContaModeloDAO()
+
+tipoGasto = TipoGasto()
+tipoGastoDAO = TipoGastoDAO()
+
+categoriaConta = CategoriaConta()
+categoriaContaDAO = CategoriaContaDAO()
+
 
 print("Content-type: application/json\n")
 
@@ -41,18 +59,25 @@ contaLista = len(lista) -1
 
 for obj in lista:
 
+	tipoGasto = tipoGastoDAO.select(obj.getCodTipoGasto())
+	categoriaConta = categoriaContaDAO.select(obj.getCodCategoria())
+
 	saida += """
 		{}
 			"codModelo": {},
 			"descricao": "{}",
 			"codTipoGasto": {},
-			"codCategoria": {}
+			"codCategoria": {},
+			"tipoGasto": "{}",
+			"categoria": "{}"
 		{}""".format(
 			"{",
 			obj.getCodModelo(),
 			obj.getDescricao(),
 			obj.getCodTipoGasto(),
 			obj.getCodCategoria(),
+			tipoGasto.getTipoGasto(),
+			categoriaConta.getCategoria(),
 			"}"
 		)
 
