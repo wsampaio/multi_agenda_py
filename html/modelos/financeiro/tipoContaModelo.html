@@ -76,7 +76,9 @@
 
 				param = encodeURI("cod=" + $("#codCategoria").val());
 				$("#codCategoriaDiv").attr('param', param);
-				$("#codCategoriaDiv").load("/html/modelos/financeiro/categoriaCmb.html");
+				$("#codCategoriaDiv").load(
+					"/html/modelos/financeiro/categoriaContaCmb.html"
+				);
 			}
 
 			$(document).ready(function () {
