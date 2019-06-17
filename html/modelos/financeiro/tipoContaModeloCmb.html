@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>tipoContaModeloCmb</title>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="form-group">
+			<label for="codModelo">
+				<span id="tipoContaModeloLbl">
+					Modelo de tipo de conta
+				</span>
+			</label>
+			<select class="form-control" 
+				id="tipoContaModeloCmb" 
+				name="codModelo"
+			>
+				<option value='0'>Selecione:</option>
+			</select>
+			<div id='loadTipoContaModeloCmb'>
+				<img src="/html/img/load21.gif" height="10">
+			</div>
+		</div>
+
+
+		<script>
+
+			function preencheTipoContaModeloCmb(cod){
+				var saida = "";
+
+				$.getJSON(
+					"/cgi-bin/financeiro/tipoContaModeloCmb.py", 
+					function(data) {
+						//console.log(data);
+						var lista = data.tiposContasModelos;
+
+						for (i = 0; i < lista.length; i++) {
+							obj = lista[i];
+
+							saida += "<option value='" + obj.codModelo + "'";
+							if (obj.codModelo == cod){
+								saida += " selected";
+							}
+							saida += ">";
+
+							saida += 
+								obj.lbl.substring(0, 30) + 
+								"</option>";
+						}
+
+						$("#tipoContaModeloCmb").append(saida);
+						$("#loadTipoContaModeloCmb").css("display", "none");
+					}
+				);
+			}
+
+			$(document).ready(function () {
+		
+				var variavel = 0;
+		
+				let params = decodeURI(
+					$("#tipoContaModeloCmb").parent().parent().attr('param')
+				);
+				let searchParams = new URLSearchParams(params);
+		
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+
+				if (searchParams.has("lbl")){
+					$("#tipoContaModeloLbl").html(searchParams.get("lbl"));
+				}
+
+				if (searchParams.has("cmp")){
+					$("#tipoContaModeloCmb").attr(
+						"name", searchParams.get("cmp")
+					);
+				}
+
+				preencheTipoContaModeloCmb(variavel);
+			});
+		</script>
+	</body>
+</html>
+

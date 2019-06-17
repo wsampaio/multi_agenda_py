@@ -87,3 +87,32 @@ class TipoContaModeloDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+	def listaCmb(self):
+		sql = \
+			"""
+
+			SELECT 
+					tiposContasModelos.* 
+				FROM 
+					tiposContasModelos 
+						LEFT JOIN tiposGastos 
+							USING (codTipoGasto) 
+						LEFT JOIN categoriasContas 
+							USING (codCategoria) 
+				ORDER BY 
+						REPLACE(
+							REPLACE(
+								tiposContasModelos.descricao, 
+							'Á', 'A'), 
+						'Ô', 'O'),
+					tiposContasModelos.descricao, 
+					categoria, 
+					tipoGasto
+			;
+		"""
+		return super().getList(sql)
+
+
+
+
