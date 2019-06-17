@@ -87,3 +87,17 @@ class CategoriaContaDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+	def listaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					categoriasContas
+				ORDER BY
+					categoria
+			;
+		"""
+		return super().getList(sql)
+

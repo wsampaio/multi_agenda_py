@@ -7,78 +7,81 @@
 		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
-		<div class="container">
+		<div class="form-group">
 			<label for="codCategoria">
 				<span id="categoriaContaLbl">
 					Categoria da conta
 				</span>
 			</label>
-			<select id="categoriaContaCmb" name="codCategoria">
+			<select class="form-control" 
+				id="categoriaContaCmb" 
+				name="codCategoria"
+			>
 				<option value='0'>Selecione:</option>
 			</select>
 			<div id='loadCategoriaContaCmb'>
 				<img src="/html/img/load21.gif" height="10">
 			</div>
 		</div>
+
+
+		<script>
+
+			function preencheCategoriaContaCmb(cod){
+				var saida = "";
+
+				$.getJSON(
+					"/cgi-bin/financeiro/categoriaContaCmb.py", 
+					function(data) {
+						//console.log(data);
+						var lista = data.categoriasContas;
+
+						for (i = 0; i < lista.length; i++) {
+							obj = lista[i];
+
+							saida += "<option value='" + obj.codCategoria + "'";
+							if (obj.codCategoria == cod){
+								saida += " selected";
+							}
+							saida += ">";
+
+							saida += 
+								obj.lbl.substring(0, 30) + 
+								"</option>";
+						}
+
+						$("#categoriaContaCmb").append(saida);
+						$("#loadCategoriaContaCmb").css("display", "none");
+					}
+				);
+			}
+
+			$(document).ready(function () {
+		
+				var variavel = 0;
+		
+				let params = decodeURI(
+					$("#categoriaContaCmb").parent().parent().attr('param')
+				);
+				let searchParams = new URLSearchParams(params);
+		
+				if (searchParams.has("cod")){
+					variavel = searchParams.get("cod");
+				}
+
+				if (searchParams.has("lbl")){
+					$("#categoriaContaLbl").html(searchParams.get("lbl"));
+				}
+
+				if (searchParams.has("cmp")){
+					$("#categoriaContaCmb").attr(
+						"name", searchParams.get("cmp")
+					);
+				}
+
+				preencheCategoriaContaCmb(variavel);
+			});
+		</script>
 	</body>
 </html>
-
-
-<script>
-
-	function preencheCategoriaContaCmb(cod){
-		var saida = "";
-
-		$.getJSON("/cgi-bin/financeiro/categoriaContaLista.py", function(data) {
-
-			//console.log(data);
-
-			var lista = data.categoriasContas;
-
-			for (i = 0; i < lista.length; i++) {
-
-				saida += "<option value='" + lista[i].codCategoria + "'";
-			
-				if (lista[i].codCategoria == cod){
-					saida += " selected";
-				}
-				
-				saida += ">";
-				saida += 
-					lista[i].categoria.substring(0, 30) + 
-					"</option>";
-
-				//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
-
-			}
-			
-			$("#categoriaContaCmb").append(saida);
-			$("#loadCategoriaContaCmb").css("display", "none");
-		});
-	}
-	
-	$(document).ready(function () {
-		
-		var variavel = 0;
-		
-		let params = decodeURI($("#categoriaContaCmb").parent().parent().attr('param'));
-		let searchParams = new URLSearchParams(params);
-		
-		if (searchParams.has("cod")){
-			variavel = searchParams.get("cod");
-		}
-		
-		if (searchParams.has("lbl")){
-			$("#categoriaContaLbl").html(searchParams.get("lbl"));
-		}
-		
-		if (searchParams.has("cmp")){
-			$("#categoriaContaCmb").attr("name", searchParams.get("cmp"));
-		}
-		
-		preencheCategoriaContaCmb(variavel);
-		
-	});
-
-</script>
 
