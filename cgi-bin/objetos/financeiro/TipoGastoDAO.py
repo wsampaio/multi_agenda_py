@@ -87,3 +87,17 @@ class TipoGastoDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+	def listaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tiposGastos
+				ORDER BY
+					tipoGasto
+			;
+		"""
+		return super().getList(sql)
+
