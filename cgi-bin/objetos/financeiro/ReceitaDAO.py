@@ -15,6 +15,8 @@
 
 import objetos.financeiro.Receita as Receita
 import objetos.dbConn.CRUD as CRUD
+import datetime
+
 
 class ReceitaDAO(CRUD.CRUD):
 	__sqlInsert = ""
@@ -108,7 +110,7 @@ SELECT
 		return super().getList(sql)
 
 
-	def mediaTresUltimas(self, codPagador, dtRef):
+	def mediaTresUltimasPorPagador(self, codPagador, dtRef):
 		sql = \
 			"""
 
@@ -129,6 +131,89 @@ SELECT AVG(valor) FROM (
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
 
+	def somaMesPelaDataPagamento(self, dtRef):
+		dtInicio = datetime.datetime.strptime(
+			dtRef + "-01", "%Y-%m-%d"
+		) - datetime.timedelta(days=1)
+
+		mes = int(dtRef[5:]) + 1
+		ano = int(dtRef[:4])
+
+		if mes > 12:
+			mes = 1
+			ano = ano + 1
+
+		dtFinal = datetime.datetime.strptime(
+			str(ano) + "-" + ("0" + str(mes))[-2:] + "-01", 
+			"%Y-%m-%d"
+		)
+
+		sql = \
+			"""
+				SELECT
+						SUM(valor) 
+					FROM
+						receita
+					WHERE
+						dtCredito > '{}T00:00' AND dtCredito < '{}T00:00' 
+					GROUP BY 
+						strftime('%Y-%m', dtCredito)
+				; 
+		""".format(
+			dtInicio.strftime("%Y-%m-%d"), 
+			dtFinal.strftime("%Y-%m-%d")
+		)
+
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
+	def mediaTresUltimosMesesPelaDataCredito(self, dtRef):
+		mes = int(dtRef[5:]) - 3
+		ano = int(dtRef[:4])
+
+		if mes < 1:
+			mes += 12
+			ano -= 1
+
+		dtInicio = datetime.datetime.strptime(
+			str(ano) + "-" + ("0" + str(mes))[-2:] + "-01", 
+			"%Y-%m-%d"
+		) - datetime.timedelta(days=1)
+
+		mes = int(dtRef[5:])
+		ano = int(dtRef[:4])
+
+		dtFinal = datetime.datetime.strptime(
+			str(ano) + "-" + ("0" + str(mes))[-2:] + "-01", 
+			"%Y-%m-%d"
+		)
+
+		sql = \
+			"""
+				SELECT 
+						AVG(valor) 
+					FROM (
+						SELECT
+								SUM(valor) AS valor, 
+								strftime('%Y-%m', dtCredito)  
+							FROM
+								receita
+							WHERE
+--								dtCredito > '{}T00:00' AND 
+								dtCredito < '{}T00:00' AND 
+								valor > 0
+							GROUP BY 
+								strftime('%Y-%m', dtCredito) 
+							ORDER BY 
+								dtCredito DESC 
+							LIMIT 3
+					)
+				; 
+		""".format(
+			dtInicio.strftime("%Y-%m-%d"), 
+			dtFinal.strftime("%Y-%m-%d")
+		)
+
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
 
 
 

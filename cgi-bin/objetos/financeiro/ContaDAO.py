@@ -15,6 +15,7 @@
 
 import objetos.financeiro.Conta as Conta
 import objetos.dbConn.CRUD as CRUD
+import datetime
 
 class ContaDAO(CRUD.CRUD):
 	__sqlInsert = ""
@@ -124,7 +125,7 @@ SELECT
 		""".format(codReceitaPagadora)
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
-		
+
 
 
 	def somaPagasPelaReceita(self, codReceitaPagadora):
@@ -222,5 +223,86 @@ SELECT AVG(valor) FROM (
 		)
 
 		return super().getList(sql)
+
+	def somaPagasNoMesPelaDataCreditoDaReceita(self, dtRef):
+		sql = \
+			"""
+				SELECT 
+						SUM(valorPago)
+					FROM 
+						contas
+							LEFT JOIN receita
+								ON contas.codReceitaPagadora = 
+								receita.codReceita
+					WHERE 
+						STRFTIME('%Y-%m', dtCredito) = '{}' AND 
+						contaPaga = 1
+				;
+			""".format(dtRef)
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
+
+	def somaPrevisaoDoMesPelaDataCreditoDaReceita(self, dtRef):
+
+		mes = int(dtRef[5:]) - 3
+		ano = int(dtRef[:4])
+
+		if mes < 1:
+			mes += 12
+			ano -= 1
+
+		dtInicio = datetime.datetime.strptime(
+			str(ano) + "-" + ("0" + str(mes))[-2:] + "-01", 
+			"%Y-%m-%d"
+		) - datetime.timedelta(days=1)
+
+		mes = int(dtRef[5:])
+		ano = int(dtRef[:4])
+
+		dtFinal = datetime.datetime.strptime(
+			str(ano) + "-" + ("0" + str(mes))[-2:] + "-01", 
+			"%Y-%m-%d"
+		)
+
+		sql = \
+			"""
+--				SELECT 
+--						AVG(valor) 
+--					FROM (
+						SELECT
+									SUM(
+										CASE 
+											WHEN contaPaga = 1 
+												THEN valorPago 
+												ELSE contas.valor 
+										END
+									) 
+								AS valor
+							FROM
+								contas
+									LEFT JOIN receita
+										ON contas.codReceitaPagadora = 
+										receita.codReceita
+							WHERE
+								STRFTIME('%Y-%m', dtCredito) = '{}'
+--								dtCredito > '{}T00:00' AND 
+--								dtCredito < '{}T00:00'
+							GROUP BY 
+								strftime('%Y-%m', dtCredito) 
+							ORDER BY 
+								dtCredito DESC 
+--							LIMIT 3
+--					)
+				;
+		""".format(
+			dtRef,
+			dtInicio.strftime("%Y-%m-%d"), 
+			dtFinal.strftime("%Y-%m-%d")
+		)
+
+#		print(sql)
+
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
 
 
