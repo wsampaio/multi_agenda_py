@@ -108,7 +108,7 @@ for forReceita in lista:
 			dtCreditoMin,
 			pagador.getPagador(),
 			"{0:.2f}".format(forReceita.getValor()),
-			receitaDAO.mediaTresUltimas(
+			receitaDAO.mediaTresUltimasPorPagador(
 				forReceita.getCodPagador(),
 				dtRef
 			),
