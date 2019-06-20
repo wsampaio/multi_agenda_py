@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>contasPeloPagador</title>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+		<script src="/html/btp/jquery.js"></script>
+	</head>
+	<body>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>&nbsp</th>
+							<th>Conta</th>
+							<th>Dt Venc - Pgto</th>
+							<th>Valor</th>
+						</tr>
+					</thead>
+					<tbody id="contasPeloPagadorTbl"></tbody>
+				</table>
+			</div>
+		</div>
+		
+		
+		<script>
+
+
+
+
+
+			function preencheContasPelaReceitaTbl (codReceita){
+
+				cod = codReceita;
+				url = "/cgi-bin/financeiro/contasPeloPagador.py";
+				url += "?codReceita=" + cod;
+
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.contas;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+						var codConta = lista[i].codConta;
+						var data = "";
+						var valor = 0.0;
+
+						if (lista[i].contaPaga == "True") {
+							saida += "<tr class='success'>"
+						} else {
+							saida += "<tr>"
+						}
+						
+							saida += 
+									"<td class='col0'>" +
+										"<input " +
+											"class='chkContaLista" + cod + "' " + 
+											"id='chkConta" + codConta + "' " + 
+											"type='checkbox' " +
+											"checked"
+
+							if (lista[i].contaPaga == "True") {
+								//saida += " disabled";
+							}
+
+							saida += 
+										">" +
+										"<input " +
+											"type='hidden' " +
+											"id='codRP" + codConta + "' " +
+											"value='" + cod + "'>" +
+									"</td>";
+							saida += "<td class='col1'>"
+								saida += "<a class='conta' target='_blank' href='/html/modelos/financeiro/conta.html?cod=" + 
+									lista[i].codConta + 
+									"' onclick='abreForm(" + 
+									lista[i].codConta + 
+									");'>";
+									saida += lista[i].tipoConta;
+								saida += "</a>"
+							saida += "</td>"
+							
+							if (lista[i].contaPaga == "True") {
+								data = lista[i].vencimento + " - " +
+									lista[i].dtPagamento;
+								valor = lista[i].valorPago;
+							} else {
+								data = lista[i].vencimento;
+								valor = lista[i].valor;
+							}
+							
+							saida += "<td class='col2'>" + 
+								data + 
+								"</td>";
+							saida += "<td class='col3' id='valorConta" + codConta + "'>" + valor + "</td>"
+							
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("#contasPeloPagadorTbl" + cod).append(saida);
+				})
+				.success(function(){
+
+					$(".chkContaLista" + cod).on("change", function(){
+						event.stopPropagation();
+						var codConta = $(this).attr("id").substr(8);
+						var codReceita = $("#codRP" + codConta).val();
+						var chkBox = $("#" + $(this).attr("id"));
+
+						if ($("#ttlDebt" + codReceita).length > 0) {
+							var vlrConta = parseFloat($("#valorConta" + codConta).html());
+							var ttlDebt = parseFloat($("#ttlDebt" + codReceita).html());
+							var sldGeral = parseFloat($("#sldGeral" + codReceita).html());
+
+							if ($(this).is(':checked')) {
+								//soma
+								ttlDebt = ttlDebt + vlrConta;
+								sldGeral = sldGeral - vlrConta;
+							} else {
+								//subtrai
+								ttlDebt = ttlDebt - vlrConta;
+								sldGeral = sldGeral + vlrConta;
+							}
+
+							$("#ttlDebt" + codReceita).html(ttlDebt.toFixed(2));
+							$("#sldGeral" + codReceita).html(sldGeral.toFixed(2));
+						}
+					});
+				});
+			}
+
+
+
+
+
+
+			function preencheContasPeloPagadorTbl (codContaPagadora){
+
+				cod = codContaPagadora;
+				url = "/cgi-bin/financeiro/contasPeloPagador.py";
+				url += "?codContaPagadora=" + cod;
+
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.contas;
+
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+						var codConta = lista[i].codConta;
+						var data = "";
+						var valor = 0.0;
+
+						if (lista[i].contaPaga == "True") {
+							saida += "<tr class='success'>"
+						} else {
+							saida += "<tr>"
+						}
+
+
+							saida += 
+									"<td class='col0'>" +
+										"&nbsp;" +
+									"</td>";
+
+							saida += "<td class='col1'>"
+								saida += "<a class='conta' target='_blank' href='/html/modelos/financeiro/conta.html?cod=" + 
+									lista[i].codConta + 
+									"' onclick='abreForm(" + 
+									lista[i].codConta + 
+									");'>";
+									saida += lista[i].tipoConta;
+								saida += "</a>"
+							saida += "</td>"
+							
+							if (lista[i].contaPaga == "True") {
+								data = lista[i].vencimento + " - " +
+									lista[i].dtPagamento;
+								valor = lista[i].valorPago;
+							} else {
+								data = lista[i].vencimento;
+								valor = lista[i].valor;
+							}
+							
+							saida += "<td class='col2'>" + 
+								data + 
+								"</td>";
+							saida += "<td class='col3' id='valorConta" + codConta + "'>" + valor + "</td>"
+							
+						saida += "</tr>"
+
+					}
+
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("#contasPeloPagadorTbl" + cod).append(saida);
+				})
+				.fail(function(){
+					alert()
+				})
+				.success(function(){
+
+					$(".chkContaLista" + cod).on("change", function(){
+						event.stopPropagation();
+						var codConta = $(this).attr("id").substr(8);
+						var codReceita = $("#codRP" + codConta).val();
+						var chkBox = $("#" + $(this).attr("id"));
+
+						if ($("#ttlDebt" + codReceita).length > 0) {
+							var vlrConta = parseFloat($("#valorConta" + codConta).html());
+							var ttlDebt = parseFloat($("#ttlDebt" + codReceita).html());
+							var sldGeral = parseFloat($("#sldGeral" + codReceita).html());
+
+							if ($(this).is(':checked')) {
+								//soma
+								ttlDebt = ttlDebt + vlrConta;
+								sldGeral = sldGeral - vlrConta;
+							} else {
+								//subtrai
+								ttlDebt = ttlDebt - vlrConta;
+								sldGeral = sldGeral + vlrConta;
+							}
+
+							$("#ttlDebt" + codReceita).html(ttlDebt.toFixed(2));
+							$("#sldGeral" + codReceita).html(sldGeral.toFixed(2));
+						}
+					});
+				});
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			$(document).ready(function() {
+			
+				let searchParams = "";
+				let cod = 0;
+				let codReceita = 0;
+				let codContaPagadora = 0;
+
+
+				if ($("#principal").length > 0) {
+					searchParams = $("#principal").attr("url").split("?")[1];
+				} else {
+					searchParams = window.location.search;
+				}
+
+
+				var panelPagador = $("#contasPeloPagadorTbl")
+					.parent().parent()
+					.parent()
+					.parent()
+				;
+
+				if (panelPagador.attr("cod") != undefined){
+					cod =  panelPagador.attr("cod");
+				}
+
+				searchParams = new URLSearchParams(searchParams);
+
+				if (searchParams.has('codReceita')) {
+					cod = searchParams.get("cod");
+				}
+
+				if (searchParams.has('codReceita')) {
+					cod = searchParams.get("codReceita");
+					$("#contasPeloPagadorTbl").attr("id", "contasPeloPagadorTbl" + cod);
+					preencheContasPelaReceitaTbl(cod);
+				} else if (searchParams.has('codConta')) {
+					//cod = searchParams.get("codConta");
+					$("#contasPeloPagadorTbl").attr("id", "contasPeloPagadorTbl" + cod);
+					preencheContasPeloPagadorTbl(cod);
+				}
+
+if (cod > 0){
+					$("#contasPeloPagadorTbl").attr("id", "contasPeloPagadorTbl" + cod);
+					preencheContasPeloPagadorTbl(cod);
+
+}
+
+
+
+
+			});
+		</script>
+	</body>
+</html>

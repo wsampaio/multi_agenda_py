@@ -108,6 +108,23 @@ class ContaDAO(CRUD.CRUD):
 		
 		return super().getList(sql)
 
+	def listaPelaContaPagadora(self, codContaPagadora):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					contas
+				WHERE 
+					codContaPagadora = {} 
+				ORDER BY
+					dtVencimento,
+					codConta
+			;
+		""".format(codContaPagadora)
+		
+		return super().getList(sql)
+
 
 	def somaPelaReceitaPagadora(self, codReceitaPagadora):
 		sql = \
