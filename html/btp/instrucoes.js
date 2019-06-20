@@ -42,7 +42,8 @@ function preencheForm(codPk, form, urlJSON, idDados) {
 function toDateTimeLocal(dateTime){
 	/*
 	 * funcao que formata uma data e devolve 
-	 * uma string no formato do campo datetime-local
+	 * uma string no formato yyyy-mm-ddTHH:MM
+	 * campo datetime-local em HTML
 	**/
 
 	var d = new Date(dateTime);
@@ -59,7 +60,8 @@ function toDateTimeLocal(dateTime){
 function toDate(dateTime){
 	/*
 	 * funcao que formata uma data e devolve 
-	 * uma string no formato do campo date
+	 * uma string no formato yyyy-mm-dd
+	 * campo date em HTML
 	**/
 
 	var d = new Date(dateTime);
@@ -74,7 +76,8 @@ function toDate(dateTime){
 function toMonth(dateTime){
 	/*
 	 * funcao que formata uma data e devolve 
-	 * uma string no formato do campo month
+	 * uma string no formato do yyyy-mm
+	 * campo month em HTML
 	**/
 
 	var d = new Date(dateTime);
@@ -88,7 +91,8 @@ function toMonth(dateTime){
 function toTime(dateTime){
 	/*
 	 * funcao que formata uma data e devolve 
-	 * uma string no formato do campo time
+	 * uma string no formato HH:MM
+	 * campo time em HTML
 	**/
 
 	var d = new Date(dateTime);
@@ -111,7 +115,6 @@ function preencheDataHoje(campo){
 		case 5:
 			campo.val(toTime(d));
 			break;
-		case 10:
 		case 7:
 			campo.val(toMonth(d));
 			break;
@@ -126,6 +129,45 @@ function preencheDataHoje(campo){
 			break;
 	}
 }
+
+function calcMes (oper, dtRef) {
+	/*
+	 * retorna uma data do dia 1 de dtRef
+	 * com um mes a mais ou a menos
+	**/
+
+	let d = new Date(dtRef + "-01T00:00");
+
+	// CUIDADO!!! - getMonth() devolve o mes de 0 a 11!!
+	let m = d.getMonth();
+	let y = d.getFullYear();
+
+	if (oper == "menos") {
+		if (m < 1) {
+			d.setMonth(11);
+			d.setFullYear(y - 1);
+		} else {
+			d.setMonth(--m);
+		}
+	}
+
+	if (oper == "mais") {
+		if (m > 10) {
+			d.setMonth(0);
+			d.setFullYear(y + 1);
+		} else {
+			d.setMonth(m + 1);
+		}
+	}
+
+	return d;
+}
+
+
+
+
+
+
 
 function carregaBtp(){
 	/*
