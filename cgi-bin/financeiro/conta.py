@@ -29,6 +29,9 @@ from objetos.dbConn.FormatData import FormatData
 from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
 
+from objetos.financeiro.TipoConta import TipoConta
+from objetos.financeiro.TipoContaDAO import TipoContaDAO
+
 
 codPk = 0
 
@@ -43,6 +46,10 @@ if form:
 obj = Conta()
 dao = ContaDAO()
 
+tipoConta = TipoConta()
+tipoContaDAO = TipoContaDAO()
+
+
 print("Content-type: application/json\n")
 #print("Content-type: text/html\n")
 
@@ -54,11 +61,17 @@ saida += """
 	"conta": ["""
 
 obj = dao.select(codPk)
+tipoConta = tipoContaDAO.select(obj.getCodTipoConta())
+
 
 contaPaga = False
+contaDeCredito = False
 
 if obj.getContaPaga():
 	contaPaga = True
+
+if tipoConta.getContaDeCredito():
+	contaDeCredito = True
 
 
 saida+= """
@@ -75,7 +88,8 @@ saida+= """
 			"codPagador": {},
 			"contaPaga": "{}",
 			"valorPago": {},
-			"dtPagamento": "{}"
+			"dtPagamento": "{}",
+			"contaDeCredito": "{}"
 		{}""".format(
 			"{",
 			obj.getCodConta(),
@@ -102,6 +116,7 @@ saida+= """
 			obj.getValorPago(),
 			#FormatData.para_Data_Serial(conta.getDtPagamento()),
 			obj.getDtPagamento(),
+			contaDeCredito,
 			"}"
 		)
 
