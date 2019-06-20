@@ -274,6 +274,7 @@ function procurarURLParameters(){
 		//url = new URL($("#principal").attr("url"));
 		searchParams = $("#principal").attr("url").split("?")[1];
 	} else {
+		carregaBtp();
 		searchParams = window.location.search;
 	}
 
