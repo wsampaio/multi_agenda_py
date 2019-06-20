@@ -106,9 +106,6 @@ for forConta in lista:
 		recPagadora = "" + \
 			FormatData.mesRef(receita.getMesReferencia()) + " - " + \
 			pagador.getPagador()
-		
-	
-	
 
 	saida += """
 		{}
@@ -119,7 +116,8 @@ for forConta in lista:
 			"dtPagamento": "{}",
 			"valor": "{}",
 			"valorPago": "{}",
-			"receitaPagadora": "{}"
+			"receitaPagadora": "{}",
+			"codContaPagadora": "{}"
 		{}""".format(
 			"{",
 			forConta.getCodConta(),
@@ -130,6 +128,7 @@ for forConta in lista:
 			forConta.getValor(),
 			forConta.getValorPago(),
 			recPagadora,
+			forConta.getCodContaPagadora(),
 			"}"
 		)
 	#)

@@ -80,13 +80,13 @@
 						obj = lista[i];
 
 						if (obj.contaPaga == "True") {
-							saida += "<tr class='success'>"
+							saida += "<tr class='success'>";
+						} else if (obj.codContaPagadora > 0) {
+							saida += "<tr class='success'>";
 						} else {
-							saida += "<tr>"
+							saida += "<tr>";
 						}
-						
 
-						
 							saida += 
 									"<td class='col0'>" +
 										"<input " +
