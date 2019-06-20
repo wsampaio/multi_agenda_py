@@ -15,10 +15,10 @@
 */
 
 
-function preencheForm(cod, form, urlJSON, idDados) {
+function preencheForm(codPk, form, urlJSON, idDados) {
 
-	if (cod > 0) {
-		urlJSON += "?cod=" + cod;
+	if (codPk > 0) {
+		urlJSON += "?cod=" + codPk;
 	}
 
 	$.getJSON(urlJSON, function (data) {
@@ -33,6 +33,7 @@ function preencheForm(cod, form, urlJSON, idDados) {
 		carregaCombos();
 
 		if (typeof verificaForm === "function"){
+			//define o padrao de exibicao de cada formulario
 			verificaForm();
 		}
 	});
@@ -127,7 +128,9 @@ function preencheDataHoje(campo){
 }
 
 function carregaBtp(){
-	//insere arquivo stylesheet dinamicamente
+	/*
+	 * insere arquivo stylesheet dinamicamente
+	**/
 
 	var head  = document.getElementsByTagName('head')[0];
 	var link  = document.createElement('link');
@@ -143,11 +146,19 @@ function carregaBtp(){
 
 
 function formNull(dados, form) {
+	/*
+	 * pega dados definidos como null e
+	 * carrega no form
+	**/
+	
 	insereDoJSON(dados, form);
 	carregaCombos();
 }
 
 function insereDoJSON(dados, form){
+	/*
+	 * pega dados e carrega no form
+	**/
 
 	var obj = dados;
 
@@ -205,6 +216,9 @@ function insereDoJSON(dados, form){
 }
 
 function setBotoesDeAcao(PK, form, action) {
+	/*
+	 * Define acoes dos botoes padrao dos formularios
+	**/
 
 	$("#" + PK + "Div").css("display", "none");
 
@@ -294,38 +308,5 @@ function fecharJanela(){
 
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
