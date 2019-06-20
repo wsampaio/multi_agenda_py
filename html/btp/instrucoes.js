@@ -103,6 +103,49 @@ function toTime(dateTime){
 	return str;
 }
 
+function toDataiSimplesFormatada(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do dd/mm
+	**/
+
+	var d = new Date(dateTime);
+	var str = 
+		("0" + (d.getDate())).substr(-2) + "/"  +
+		("0" + (d.getMonth() + 1)).substr(-2)i;
+
+	return str;
+}
+
+function toDataFormatada(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do dd/mm/yyyy
+	**/
+
+	var d = new Date(dateTime);
+	var str = 
+		("0" + (d.getDate())).substr(-2) + "/"  +
+		("0" + (d.getMonth() + 1)).substr(-2) + "/" +
+		("0000" + d.getFullYear()).substr(-4);
+
+	return str;
+}
+
+function toMesRefFormatado(dateTime){
+	/*
+	 * funcao que formata uma data e devolve 
+	 * uma string no formato do mm/yyyy
+	**/
+
+	var d = new Date(dateTime);
+	var str = 
+		("0" + (d.getMonth() + 1)).substr(-2) + "/" +
+		("0000" + d.getFullYear()).substr(-4);
+
+	return str;
+}
+
 function preencheDataHoje(campo){
 	/*
 	 * funcao que reconhece o tipo de campo 
@@ -130,13 +173,13 @@ function preencheDataHoje(campo){
 	}
 }
 
-function calcMes (oper, dtRef) {
+function calcMes (oper, dateTime) {
 	/*
-	 * retorna uma data do dia 1 de dtRef
+	 * retorna uma data do dia 1 de dateTime
 	 * com um mes a mais ou a menos
 	**/
 
-	let d = new Date(dtRef + "-01T00:00");
+	let d = new Date(toMonth(dtRef) + "-01T00:00");
 
 	// CUIDADO!!! - getMonth() devolve o mes de 0 a 11!!
 	let m = d.getMonth();
