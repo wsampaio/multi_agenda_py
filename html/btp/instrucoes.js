@@ -126,20 +126,20 @@ function preencheDataHoje(campo){
 	}
 }
 
+function carregaBtp(){
+	//insere arquivo stylesheet dinamicamente
 
+	var head  = document.getElementsByTagName('head')[0];
+	var link  = document.createElement('link');
 
+	link.id   = "carregaBtp";
+	link.rel  = "stylesheet";
+	link.type = "text/css";
+	link.href = "/html/btp/bootstrap.min.css";
+	link.media = "all";
+	head.appendChild(link);
 
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 function formNull(dados, form) {
