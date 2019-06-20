@@ -25,11 +25,17 @@ function preencheForm(cod, form, urlJSON, idDados) {
 		//console.log(data);
 		insereDoJSON(data[idDados][0], form);
 	})
+	.fail(function( jqxhr, textStatus, error ) {
+		var err = textStatus + ", " + error;
+		console.log( "Request Failed: " + err );
+	})
 	.done(function( json ) {
 		carregaCombos();
+
+		if (typeof verificaForm === "function"){
+			verificaForm();
+		}
 	});
-	
-	//
 }
 
 function toDateTimeLocal(dateTime){
@@ -147,52 +153,55 @@ function insereDoJSON(dados, form){
 
 	//each pega uma array com todos elementos da
 	//classe .form-control e passa por 'cada' elemento
-	$.each($(form + " .form-control, " + form + " .form-check-input"), function(index, element) {
+	$.each(
+		$(form + " .form-control, " + form + " .form-check-input"), 
+		function(index, element) {
 
-		if($(this).prop("tagName") == "TEXTAREA"){
-			$(this).val(obj[$(this).attr("id")].replace(/%r%n/g, "\n", -1));
-		} else {
+			if($(this).prop("tagName") == "TEXTAREA"){
+				$(this).val(obj[$(this).attr("id")].replace(/%r%n/g, "\n", -1));
+			} else {
 
-			switch ($(this).attr("type")){
+				switch ($(this).attr("type")){
 
-				case "number":
-					$(this).val(obj[$(this).attr("id")]);
-					break;
+					case "number":
+						$(this).val(obj[$(this).attr("id")]);
+						break;
 
-				case "checkbox":
-					if (obj[$(this).attr("id")] == "True"){
-						$(this).attr("checked", "checked")
-					} else {
-						$(this).prop("checked")
-					}
+					case "checkbox":
+						if (obj[$(this).attr("id")] == "True"){
+							$(this).attr("checked", "checked")
+						} else {
+							$(this).prop("checked")
+						}
 
-					break;
+						break;
 
-				case "text":
-					$(this).val(obj[$(this).attr("id")]);
-					break;
+					case "text":
+						$(this).val(obj[$(this).attr("id")]);
+						break;
 
-				case "":
-					break;
+					case "":
+						break;
 
-				case "datetime-local":
-					$(this).val(toDateTimeLocal(obj[$(this).attr("id")]));
-					break;
+					case "datetime-local":
+						$(this).val(toDateTimeLocal(obj[$(this).attr("id")]));
+						break;
 
-				case "month":
-					$(this).val(toMonth(obj[$(this).attr("id")]));
-					break;
+					case "month":
+						$(this).val(toMonth(obj[$(this).attr("id")]));
+						break;
 
-				case "date":
-					$(this).val(toDate(obj[$(this).attr("id")]));
-					break;
+					case "date":
+						$(this).val(toDate(obj[$(this).attr("id")]));
+						break;
 
-				default:
-					alert($(this).attr("type"));
-					$(this).val(obj[$(this).attr("id")]);
+					default:
+						alert($(this).attr("type"));
+						$(this).val(obj[$(this).attr("id")]);
+				}
 			}
 		}
-	});
+	);
 }
 
 function setBotoesDeAcao(PK, form, action) {
