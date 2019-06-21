@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
-<!--		<link rel="stylesheet" href="/html/btp/bootstrap.min.css">-->
 		<script src="/html/btp/jquery.js"></script>
 		<script src="/html/btp/instrucoes.js"></script>
 		<title>contasPorPeriodo</title>
@@ -30,24 +29,34 @@
 
 			<form> 
 				<div class="form-group">
-					<label class="control-label col-lg-1" for="dtFinal">Início:</label>
+					<label class="control-label col-lg-1" for="dtFinal">
+						Início:
+					</label>
 					<div class="col-lg-3">
-						<input type="date" class="form-control" id="dtInicio" placeholder="Data Inicial" name="dtInicio">
+						<input type="date" class="form-control" id="dtInicio" 
+							placeholder="Data Inicial" name="dtInicio"
+						>
 					</div>
-					<label class="control-label col-lg-1" for="dtFinal">Final:</label>
+					<label class="control-label col-lg-1" for="dtFinal">
+						Final:
+					</label>
 					<div class="col-lg-3">
-						<input type="date" class="form-control" id="dtFinal" placeholder="Data Final" name="dtFinal">
+						<input type="date" class="form-control" id="dtFinal" 
+							placeholder="Data Final" name="dtFinal"
+						>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-12 col-lg-1">
-							<button type="submit" class="btn btn-primary">Buscar</button>
+							<button type="submit" class="btn btn-primary">
+								Buscar
+							</button>
 						</div>
 					</div>
 				</div>
 			</form>
 		</div>
 
-		<div id="contasPeloVencimentoSub">well</div>
+		<div id="contasPeloVencimentoSub"></div>
 
 		<script>
 			$("form").on("submit", function(){
@@ -61,12 +70,12 @@
 						"&dtFinal=" + $("#dtFinal").val()
 					);
 
-					$("#principal").load($("#principal").attr("url"));
+					listaPeriodo();
 				} else {
 					window.location = 
-						"?dtInicio=" + $("#dtInicio").val();
+						"?dtInicio=" + $("#dtInicio").val() +
+						"&dtFinal=" + $("#dtFinal").val();
 				}
-			//	listaPeriodo();
 			});
 
 			function listaPeriodo(){
@@ -77,24 +86,14 @@
 				);
 			}
 
-
 			$(document).ready(function() {
 
-				let searchParams = "";
 				let d = new Date();
+				let searchParams = procurarURLParameters();
 
 				$("#dtInicio").val(toDate(d));
 				$("#dtFinal").val(toDate(d));
 
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-				
-				searchParams = new URLSearchParams(searchParams);
-				
 				if (searchParams.has('dtInicio')) {
 					$("#dtInicio").val(searchParams.get("dtInicio"));
 				}
@@ -106,9 +105,6 @@
 				listaPeriodo();
 
 			});
-
-
-
 		</script>
 	</body>
 </html>

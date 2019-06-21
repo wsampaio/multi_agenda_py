@@ -4,10 +4,16 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
 		<title>contasPeloVencimentoSub</title>
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 
 		<style>
 			table, td, th {
 				
+			}
+
+			#detalhesReceita {
+				margin-top: 20px;
 			}
 
 			.col {
@@ -18,7 +24,6 @@
 				text-align: center;
 			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div id="listaReceitas"></div>
@@ -30,38 +35,40 @@
 				var lista = [];
 				url = "/cgi-bin/financeiro/receitasDoPeriodo.py";
 				
-				if (dtRef.length > 0) {
-					url += "?dtRef=" + dtRef;
+				if (dtRef != "") {
+					url += "?dtRef=" + toMonth(dtRef);
 				}
 
 				$.getJSON(url, function(data) {
 
-					console.log(data);
+					//console.log(data);
 					lista = data.receitasDoPeriodo;
 					var saida = "";
 
 					for (i = 0; i < lista.length; i++) {
 
-						var codReceita = lista[i].codReceita;
+						let obj = lista[i];
+
+						var codReceita = obj.codReceita;
 
 						var referencia = 
-							lista[i].pagador + " - Ref: " +
-							lista[i].mesRef + " em: " +
-							lista[i].dtCreditoMin
+							obj.pagador + " - Ref: " +
+							obj.mesRef + " em: " +
+							obj.dtCreditoMin
 						;
 
-						var ttlContas = lista[i].valorTtlContas.toFixed(2);
-						var ttlPagas = lista[i].valorTtlContasPagas;
+						var ttlContas = obj.valorTtlContas.toFixed(2);
+						var ttlPagas = obj.valorTtlContasPagas;
 						var valorReceita = 0.0;
 
 						if (lista[i].valorReceita > 0){
-							valorReceita = lista[i].valorReceita.toFixed(2);
+							valorReceita = obj.valorReceita.toFixed(2);
 						} else {
-							valorReceita = lista[i].mediaReceita.toFixed(2);
+							valorReceita = obj.mediaReceita.toFixed(2);
 						}
 
 						var sldGeral = (valorReceita - ttlContas).toFixed(2);
-						var sldBanco = (lista[i].valorReceita - ttlPagas).toFixed(2);
+						var sldBanco = (obj.valorReceita - ttlPagas).toFixed(2);
 
 
 						saida =
@@ -69,36 +76,44 @@
 								"<div class='panel-heading'>" +
 									"<h4>Receita</h4>" +
 									"<a class='receita' target='_blanc' " +
-										"href='/html/modelos/financeiro/receita.html?cod=" +
-											lista[i].codReceita + "'>" +
+										"href='/html/modelos/financeiro/" +
+											"receita.html?cod=" +
+												obj.codReceita + "'>" +
 										referencia +
 									"</a>" +
 									"<br>" +
 									"total receita: " + valorReceita + "";
 
-						if (lista[i].valorReceita == 0) {
+						if (obj.valorReceita == 0) {
 							saida += " (previsão)";
 						}
 
 						saida += "<br>";
 
 						saida +=
-									"<div class='btn-group' id='btnReceita'>" +
-										"<a " +
-											"class='mais btn btn-success btn-sm' " +
-											"href='#' " +
-											"id='detalhes?" + codReceita + "' " +
-											">detalhes</a>" +
-									"</div>" +
-									"<div class='dtlReceita' id='detalhesReceita" + codReceita + "'>" +
-										"<br>" +
-										"total debitos: <span id='ttlDebt" + codReceita + "'>" + ttlContas + "</span><br>" +
-										"total Saldo geral: <span id='sldGeral" + codReceita + "'>" + sldGeral + "</span><br>" +
-										"total Saldo no banco: " + sldBanco + "<br>" +
-									"</div>" +
-								"</div>" +
-								"<div class='panel-body' id='panelReceita" + codReceita + "'></div>" +
-							"</div>" 
+							"<div class='btn-group' id='btnReceita'>" +
+								"<a " +
+									"class='mais btn btn-success btn-sm' " +
+									"href='#' " +
+									"id='detalhes?" + codReceita + "' " +
+									">detalhes</a>" +
+							"</div>" +
+							"<div class='dtlReceita' id='detalhesReceita" + 
+								codReceita + "'>" +
+								"total debitos: " + 
+									"<span id='ttlDebt" + codReceita + "'>" + 
+										ttlContas + 
+									"</span><br>" +
+								"total Saldo geral: " + 
+									"<span id='sldGeral" + codReceita + "'>" + 
+										sldGeral + 
+									"</span><br>" +
+								"total Saldo no banco: " + sldBanco + "<br>" +
+							"</div>" +
+						"</div>" +
+						"<div class='panel-body' id='panelReceita" + 
+							codReceita + "'></div>" +
+						"</div>" 
 
 						saida = saida.replace("%r", "<br>");
 						saida = saida.replace("%n", "<br>");
@@ -121,48 +136,46 @@
 						var id = $(this).attr("id").split("?")[0];
 
 						if (id == "detalhes") {
-							if ($("#detalhesReceita" + cod).css("display") == 'none'){
-								$("#detalhesReceita" + cod).css("display", 'block')
-								$("#panelReceita" + cod).css("display", 'block')
+							if (
+								$("#detalhesReceita" + cod).css("display") 
+								== 'none'
+							){
+								$("#detalhesReceita" + cod).css(
+									"display", 'block'
+								);
+
+								$("#panelReceita" + cod).css(
+									"display", 'block'
+								);
+
+								$("#panelReceita" + cod).attr(
+									"param", 
+									"?codReceita=" + cod
+								);
+
 								$("#panelReceita" + cod).load(
-									"/html/financeiro/contasPelaReceita.html?cod=" + cod
+									"/html/financeiro/contasPeloPagador.html" + 
+									"?codReceita=" + cod
 								);
 							} else {
-								$("#detalhesReceita" + cod).css("display", 'none')
-								$("#panelReceita" + cod).css("display", 'none')
+								$("#detalhesReceita" + cod).css(
+									"display", 'none'
+								);
+								$("#panelReceita" + cod).css("display", 'none');
 							}
 						}
 					});
 				});
-
-
-
-
 			}
-		
-		
+
 			$(document).ready(function() {
-			
-				var searchParams = "";
-				var dtRef = "";
-				
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-				
-				searchParams = new URLSearchParams(searchParams);
-				
+				let searchParams = procurarURLParameters();
+				var dtRef = new Date();
+
 				if (searchParams.has('dtRef')) {
-					dtRef = searchParams.get("dtRef");
-				} else {
-					dtRef = 
-						d.getFullYear() + "-" + 
-						("00" + (d.getMonth() + 1)).substr(-2)
+					dtRef = new Date(searchParams.get("dtRef") + "-01T00:00");
 				}
-			
+
 				preencheListaReceitas(dtRef);
 			});
 		</script>

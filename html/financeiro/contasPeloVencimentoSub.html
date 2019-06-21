@@ -4,6 +4,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width">
 		<title>contasPeloVencimentoSub</title>
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 
 		<style>
 			table, td, th {
@@ -18,7 +20,6 @@
 				text-align: center;
 			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div class="panel panel-default">
@@ -45,24 +46,26 @@
 		
 		<script>
 
-			function preencheTabelaContasPeloVencimentoSubTbl (dtRef, dtInicio, dtFinal){
+			function preencheTabelaContasPeloVencimentoSubTbl (
+				dtRef, dtInicio, dtFinal
+			){
 			
 				url = "/cgi-bin/financeiro/contasPeloVencimento.py";
 				urlParam = "";
 
-				if (dtRef.length > 0) {
+				if (dtRef != "") {
 					urlParam += ((urlParam.length > 0) ? "&" : "?");
-					urlParam += "dtRef=" + dtRef;
+					urlParam += "dtRef=" + toMonth(dtRef);
 				}
 
-				if (dtInicio.length > 0) {
+				if (dtInicio != "") {
 					urlParam += ((urlParam.length > 0) ? "&" : "?");
-					urlParam += "dtInicio=" + dtInicio;
+					urlParam += "dtInicio=" + toDate(dtInicio);
 				}
 
-				if (dtFinal.length > 0) {
+				if (dtFinal != "") {
 					urlParam += ((urlParam.length > 0) ? "&" : "?");
-					urlParam += "dtFinal=" + dtFinal;
+					urlParam += "dtFinal=" + toDate(dtFinal);
 				}
 
 				url += urlParam;
@@ -88,27 +91,24 @@
 						}
 
 							saida += 
-									"<td class='col0'>" +
-										"<input " +
-											"class='chkContaLista' " + 
-											"id='chkConta" + obj.codConta + "' " + 
-											"type='checkbox' " +
-											"checked"
+								"<td class='col0'>" +
+									"<input " +
+										"class='chkContaLista' " + 
+										"id='chkConta" + 
+											obj.codConta + "' " + 
+										"type='checkbox' " +
+										"checked"
 
 							if (obj.contaPaga == "True") {
 								//saida += " disabled";
 							}
 
-							saida += 
-										">" +
-									"</td>";
-
-
-
+							saida += "></td>";
 
 							saida += "<td class='col1'>";
-								saida += "<a class='conta' target='_blank' href='/html/modelos/financeiro/conta.html?cod=" + 
-									obj.codConta + 
+								saida += "<a class='conta' target='_blank' " + 
+									"href='/html/modelos/financeiro/" + 
+										"conta.html?cod=" + obj.codConta + 
 									"' onclick='abreForm(" + 
 									obj.codConta + 
 									");'>";
@@ -124,17 +124,18 @@
 
 							saida += "</td>"
 
-
 							if (lista[i].contaPaga == "True") {
 								saida += "<td class='col3'>" +
-										"<span id='valorConta" + obj.codConta + "'>" + 
+										"<span id='valorConta" + obj.codConta + 
+										"'>" + 
 											obj.valorPago + 
 										"</span>" +
 									"</td>";
 								total += parseFloat(obj.valorPago);
 							} else {
 								saida += "<td class='col3'>" +
-										"<span id='valorConta" + obj.codConta + "'>" + 
+										"<span id='valorConta" + obj.codConta + 
+										"'>" + 
 											obj.valor + 
 										"</span>" +
 									"</td>";
@@ -142,12 +143,14 @@
 							}
 							
 							
-							saida += "<td class='col3'>" + obj.receitaPagadora.replace(/%r%n/g, "<br>", -1) + "</td>"
+							saida += "<td class='col3'>" + 
+								obj.receitaPagadora.replace(
+									"/%r%n/g", "<br>", -1
+								) + "</td>"
 							
 						saida += "</tr>"
 
 					}
-
 
 					saida = saida.replace("%r", "<br>");
 					saida = saida.replace("%n", "<br>");
@@ -159,19 +162,20 @@
 					saida = 
 						"<tr>" +
 							"<th colspan='3'>Total</th>" +
-							"<td colspan='2'><span id='totalSpan'>" + total.toFixed(2) + "</span></td>" +
+							"<td colspan='2'><span id='totalSpan'>" + 
+								total.toFixed(2) + 
+							"</span></td>" +
 						"</tr>";
 					$("#contasPeloVencimentoSubFoot").html(saida);
-
-
-
 				})
 				.success(function(){
 
 					$(".chkContaLista").on("change", function(){
 						event.stopPropagation();
 						var codConta = $(this).attr("id").substr(8);
-						var vlrConta = parseFloat($("#valorConta" + codConta).html());
+						var vlrConta = parseFloat(
+							$("#valorConta" + codConta).html()
+						);
 						var total = parseFloat($("#totalSpan").html());
 
 						if ($(this).is(':checked')) {
@@ -188,34 +192,31 @@
 			}
 
 			$(document).ready(function() {
-			
-				let searchParams = "";
+
 				let dtRef = ""
 				let dtInicio = "";
 				let dtFinal = "";
-				
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-				
-				searchParams = new URLSearchParams(searchParams);
-				
+				let searchParams = procurarURLParameters();
+
 				if (searchParams.has('dtRef')) {
-					dtRef = searchParams.get("dtRef");
+					dtRef = new Date(searchParams.get("dtRef") + "-01T00:00");
 				}
 
 				if (searchParams.has('dtInicio')) {
-					dtInicio = searchParams.get("dtInicio");
+					dtInicio = new Date(
+						searchParams.get("dtInicio") + "T00:00"
+					);
 				}
 
 				if (searchParams.has('dtFinal')) {
-					dtFinal = searchParams.get("dtFinal");
+					dtFinal = new Date(
+						searchParams.get("dtFinal") + "T00:00"
+					);
 				}
 
-				preencheTabelaContasPeloVencimentoSubTbl(dtRef, dtInicio, dtFinal);
+				preencheTabelaContasPeloVencimentoSubTbl(
+					dtRef, dtInicio, dtFinal
+				);
 			});
 		</script>
 	</body>
