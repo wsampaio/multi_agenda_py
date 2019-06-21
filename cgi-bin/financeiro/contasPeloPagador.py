@@ -53,7 +53,7 @@ pagadorDAO = PagadorDAO()
 form = cgi.FieldStorage()
 
 codReceita = 0
-codContaOPadadora = 0
+codContaPagadora = 0
 
 dtRef = "" + \
 str(datetime.date.today().year) + "-" + \
