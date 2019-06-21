@@ -233,11 +233,14 @@
 				if ($("#contasPagasDiv").css("display") === "block") {
 					$("#contasPagasDiv").css("display", "none");
 				} else {
+
 					$("#contasPagasDiv").css("display", "block");
-					$("#contasPagasDiv").attr("cod", $("#codConta").val());
+					$("#contasPagasDiv").attr(
+						"param", "codContaPagadora=" + $("#codConta").val()
+					);
 					$("#contasPagasDiv").load(
 						"/html/financeiro/contasPeloPagador.html" +
-						"?codConta=" + $("#codConta").val()
+						"?codContaPagadora=" + $("#codConta").val()
 					);
 				}
 			});
