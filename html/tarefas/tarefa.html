@@ -4,14 +4,14 @@
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 		<script src="/html/btp/jquery.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!--<link rel="stylesheet" href="/html/btp/bootstrap.min.css">-->
 		<title>tarefa</title>
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
 		<style>
 			table, td, th {
 				
 			}
 		</style>
-		<script src="/html/btp/jquery.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -368,16 +368,7 @@
 				$("#subTarefas").css("display", "none");
 				$("#historico").css("display", "none");
 
-				var searchParams = "";
-
-				if ($("#principal").length > 0) {
-					//url = new URL($("#principal").attr("url"));
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-
-				searchParams = new URLSearchParams(searchParams);
+				let searchParams = procurarURLParameters();
 
 				if (searchParams.has('cod')) {
 					var cod = searchParams.get("cod");
