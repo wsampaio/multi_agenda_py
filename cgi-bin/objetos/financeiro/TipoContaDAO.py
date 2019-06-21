@@ -101,3 +101,16 @@ class TipoContaDAO(CRUD.CRUD):
 		
 		return super().getList(sql)
 
+	def listaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tiposContas
+				ORDER BY
+					tipoConta
+			;
+		"""
+		return super().getList(sql)
+

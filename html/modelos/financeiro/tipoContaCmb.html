@@ -27,20 +27,22 @@
 			function preencheTipoContaCmb(cod){
 				var saida = "";
 
-				$.getJSON("/cgi-bin/financeiro/tipoContaLista.py", function(data) {
+				$.getJSON("/cgi-bin/financeiro/tipoContaCmb.py", function(data) {
 					//console.log(data);
 					var lista = data.tiposContas;
 
 					for (i = 0; i < lista.length; i++) {
-						saida += "<option value='" + lista[i].codTipoConta + "'";
-						if (lista[i].codTipoConta == cod){
+
+						obj = lista[i];
+
+						saida += "<option value='" + obj.codTipoConta + "'";
+						if (obj.codTipoConta == cod){
 							saida += " selected";
 						}
 						saida += ">";
 						saida += 
-							lista[i].tipoConta.substring(0, 30) + 
+							obj.lbl.substring(0, 30) + 
 							"</option>";
-						//saida += "<td class='col1'>" + tarefas[i].codTarefaPai + "</td>"
 					}
 
 					$("#tipoContaCmb").append(saida);
