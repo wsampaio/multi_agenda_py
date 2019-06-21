@@ -103,7 +103,7 @@ function toTime(dateTime){
 	return str;
 }
 
-function toDataiSimplesFormatada(dateTime){
+function toDataSimplesFormatada(dateTime){
 	/*
 	 * funcao que formata uma data e devolve 
 	 * uma string no formato do dd/mm
@@ -112,7 +112,7 @@ function toDataiSimplesFormatada(dateTime){
 	var d = new Date(dateTime);
 	var str = 
 		("0" + (d.getDate())).substr(-2) + "/"  +
-		("0" + (d.getMonth() + 1)).substr(-2)i;
+		("0" + (d.getMonth() + 1)).substr(-2);
 
 	return str;
 }
@@ -179,7 +179,7 @@ function calcMes (oper, dateTime) {
 	 * com um mes a mais ou a menos
 	**/
 
-	let d = new Date(toMonth(dtRef) + "-01T00:00");
+	let d = new Date(toMonth(dateTime) + "-01T00:00");
 
 	// CUIDADO!!! - getMonth() devolve o mes de 0 a 11!!
 	let m = d.getMonth();
