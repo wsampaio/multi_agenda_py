@@ -29,7 +29,7 @@
 	function preenchePagadorCmb(cod){
 		var saida = "";
 
-		$.getJSON("/cgi-bin/financeiro/pagadorLista.py", function(data) {
+		$.getJSON("/cgi-bin/financeiro/pagadorCmb.py", function(data) {
 			var lista = data.pagadores;
 
 			for (i = 0; i < lista.length; i++) {

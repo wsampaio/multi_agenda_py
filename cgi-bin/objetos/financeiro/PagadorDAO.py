@@ -87,3 +87,18 @@ class PagadorDAO(CRUD.CRUD):
 			;
 		"""
 		return super().getList(sql)
+
+
+	def listaCmb(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					pagadores
+				ORDER BY
+					pagador
+			;
+		"""
+		return super().getList(sql)
+
