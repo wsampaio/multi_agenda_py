@@ -5,13 +5,20 @@
     <title>Title</title>
 </head>
 <body onload="javascript:;">
-	<img id="img0" class="img" src="/html/img/click_here.png">
-	<img id="img1" class="img" src="/html/img/click_here.png">
-	<img id="img2" class="img" src="/html/img/click_here.png">
-	<img id="img3" class="img" src="/html/img/click_here.png">
-	<img id="img4" class="img" src="/html/img/click_here.png">
+	<img id="img0" class="img" src="/html/img/404.jpg">
+	<img id="img1" class="img" src="/html/img/404.jpg">
+	<img id="img2" class="img" src="/html/img/404.jpg">
+	<img id="img3" class="img" src="/html/img/404.jpg">
+	<img id="img4" class="img" src="/html/img/404.jpg">
 
 	<script>
+
+		var escolheImagem = Math.round(Math.random());
+
+		var mensagens = [
+			"TÁ BOM, TÁ BOM!!!\nCHEGA DE CLIQUES!!!", 
+			"PLOCT!"
+		];
 
 		var imgClass = document.getElementsByClassName("img");
 		var numCliques = 0;
@@ -26,6 +33,9 @@
 		};
 
 		for (var i = 0; i < imgClass.length; i++) {
+
+			imgClass[i].src = "/html/img/click_here" + escolheImagem + ".png";
+
 			if(i<4){
 				imgClass[i].addEventListener('click', clique, false);
 			}
@@ -54,7 +64,7 @@
 
 		img0.style.display = "block";
 		img4.addEventListener("click", function(){
-			alert("TÁ BOM, TÁ BOM!!!\nCHEGA DE CLIQUES!!!");
+			alert(mensagens[escolheImagem]);
 			window.location = "/html/index.html";
 		});
 
