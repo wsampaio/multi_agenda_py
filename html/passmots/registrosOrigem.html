@@ -23,14 +23,26 @@
 					<tr>
 						<th>Campo</th>
 						<th>Registro</th>
+						<th>&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
+			<button id="voltarBtn" class="btn btn-primary">Voltar</button>
 		</div>
 
 		<script>
+
+			$("#voltarBtn").on("click", function(){
+				if ($("#principal").length > 0){
+					$("#principal").attr("url", 
+						$("#principal").attr("urlPrev"));
+					$("#principal").load($("#principal").attr("url"));
+				}
+			});
+
+
 			$(document).ready(function(){
 
 				var searchParams = "";
@@ -69,13 +81,26 @@
 							"<a href='/html/modelos/passmots/registro.html?cod=" +
 							obj.codRegistro +
 							"' target='_blank'>" +
+							"<span " +
+								"id='reg" + obj.codRegistro + "span'>" +
 								obj.ordem + " - " + obj.tipoCampo +
-							"</a></td><td>" +
+							"</span></a></td><td>" +
 							obj.registro +
+							"</td><td>" +
+							"<button class='glyphicon glyphicon-copy copy' " +
+								"id='reg" +
+									obj.codRegistro +
+							"btn'><span></span></button>" +
 							"</td></tr>";
 					}
 			
 					$("tbody").append(saida);
+				}).done(function(){
+					$(".copy").on("click", function(){
+						event.stopPropagation();
+						//alert( $(this).attr("id") );
+						alert("vamos copiar!\nmas não agora!");
+					});
 				})
 			});
 
