@@ -24,7 +24,8 @@
 					<div class="form-group" id="codRegistroDiv"> 
 						<label for="codRegistro">codRegistro</label>
 						<input 
-							class="form-control" id="codRegistro" name="codRegistro" 
+							class="form-control" id="codRegistro" 
+							name="codRegistro" 
 							aria-describedby="codRegistroHelp"
 							placeholder="codRegistro" type="number"> 
 						<br>
@@ -33,29 +34,45 @@
 					</div>
 					<div class="form-group" id="codOrigemRegistroDiv"> 
 						<label for="codOrigemRegistro">codOrigemRegistro</label>
-						<input class="form-control" id="codOrigemRegistro" name="codOrigemRegistro" 
-							   placeholder="codOrigemRegistro" type="number">
+						<input class="form-control" id="codOrigemRegistro" 
+							name="codOrigemRegistro" 
+							placeholder="codOrigemRegistro" type="number">
 					</div>
 					<div class="form-group" id="codTipoCampoDiv"> 
 						<label for="codTipoCampo">codTipoCampo</label>
-						<input class="form-control" id="codTipoCampo" name="codTipoCampo" 
-							   placeholder="codTipoCampo" type="number">
+						<input class="form-control" id="codTipoCampo" 
+							name="codTipoCampo" 
+							placeholder="codTipoCampo" type="number">
 					</div>
 					<div class="form-group" id="ordemDiv"> 
 						<label for="ordem">ordem</label>
 						<input class="form-control" id="ordem" name="ordem" 
 							   placeholder="ordem" type="number">
 					</div>
+
 					<div class="form-group" id="registroDiv"> 
 						<label for="registro">registro</label>
-						<input class="form-control" id="registro" name="registro" 
-							   placeholder="registro" type="text">
-						<button class="btn" id="newPass">Gerar Novo Registro de Senha</button>
+						<input class="form-control" id="registro" 
+							name="registro" 
+							placeholder="registro" type="text"
+						>
+						<div class="input-group" id="registroPasswdDiv"> 
+							<input class="form-control" id="registroPasswd" 
+								name="" 
+								placeholder="registro" type="text"
+							>
+							<span class="input-group-btn">
+								<button class="btn" id="newPass">
+									Gerar Senha
+								</button>
+							</span>
+						</div>
 					</div>
 					<div class="form-group" id="dtAtualizacaoDiv"> 
 						<label for="dtAtualizacao">dtAtualizacao</label>
-						<input class="form-control" id="dtAtualizacao" name="dtAtualizacao" 
-							   placeholder="dtAtualizacao" type="datetime-local">
+						<input class="form-control" id="dtAtualizacao" 
+							name="dtAtualizacao" 
+							placeholder="dtAtualizacao" type="datetime-local">
 					</div>
 				</form>
 			</div>
@@ -69,6 +86,29 @@
 
 
 		<script>
+
+/* TODO - ao REaparecer o input desconfigura o width */
+//			$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "none");
+
+			function showPasswd(registro){
+				let arr = [43, 34, 2, 39];
+				let encontrou = (
+					arr.indexOf(parseInt( registro )) > -1
+				);
+
+				if (encontrou){
+//					$("#registro").css("display", "none");
+					$("#registro").attr("name", "");
+//					$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "block");
+					$("#registroPasswdDiv").attr("name", "registro");
+				} else {
+//					$("#registro").css("display", "block");
+					$("#registro").attr("name", "registro");
+//					$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "none");
+					$("#registroPasswdDiv").attr("name", "");
+				}
+			}
+
 
 			$("#newPass").on("click", function () {
 				//event.preventDefault();
@@ -100,7 +140,7 @@
 					i++;
 				}
 
-				$("#registro").val(str);
+				$("#registroPasswd").val(str);
 
 				var dt = new Date();
 				$("#dtAtualizacao").val(toDateTimeLocal(dt));
@@ -123,11 +163,24 @@
 
 				param = encodeURI("cod=" + $("#codOrigemRegistro").val());
 				$("#codOrigemRegistroDiv").attr('param', param);
-				$("#codOrigemRegistroDiv").load("/html/modelos/passmots/origemRegistroCmb.html");
+				$("#codOrigemRegistroDiv").load(
+					"/html/modelos/passmots/origemRegistroCmb.html"
+				);
+
+				
+				showPasswd($("#codTipoCampo").val());
+				$("#registroPasswd").val($("#registro").val());
 
 				param = encodeURI("cod=" + $("#codTipoCampo").val());
 				$("#codTipoCampoDiv").attr('param', param);
-				$("#codTipoCampoDiv").load("/html/modelos/passmots/tipoCampoCmb.html");
+				$("#codTipoCampoDiv").load(
+					"/html/modelos/passmots/tipoCampoCmb.html",
+					function( response, status, xhr ) {
+						$("#tipoCampoCmb").on("change", function(){
+							showPasswd($("#tipoCampoCmb").val());
+						});
+					}
+				);
 			}
 
 			$(document).ready(function () {
