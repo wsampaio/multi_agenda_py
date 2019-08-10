@@ -14,7 +14,6 @@
 #
 */
 
-
 function preencheForm(codPk, form, urlJSON, idDados) {
 
 	if (codPk > 0) {
@@ -206,12 +205,6 @@ function calcMes (oper, dateTime) {
 	return d;
 }
 
-
-
-
-
-
-
 function carregaBtp(){
 	/*
 	 * insere arquivo stylesheet dinamicamente
@@ -228,7 +221,6 @@ function carregaBtp(){
 	head.appendChild(link);
 
 }
-
 
 function formNull(dados, form) {
 	/*
@@ -367,7 +359,6 @@ function procurarURLParameters(){
 
 }
 
-
 function fecharJanela(){
 	//fecha janela ou volta a tela antiga
 
@@ -383,11 +374,20 @@ function fecharJanela(){
 
 		//verifica se a janela pai contem a
 		//div pricipal da homepage para recarregar
-		if (window.opener.$("#principal").length > 0){
-			var principal = window.opener.$("#principal");
-			principal.load(principal.attr("url"));
-		} else {
-			window.opener.document.location.reload()
+
+		try {
+			if (window.opener.$("#principal").length > 0){
+				var principal = window.opener.$("#principal");
+				principal.load(principal.attr("url"));
+			} else {
+				window.opener.document.location.reload()
+			}
+		} catch(e) {
+			/* 
+			 * TODO - depois de descobrir o erro do sumico do 
+			 * window.opener, trocar o alert() por console.log()
+			*/
+			alert(e)
 		}
 
 		self.close();
