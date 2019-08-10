@@ -45,6 +45,10 @@ if str(form) != "FieldStorage(None, None, '')":
 	if form.getvalue("tipoCampo"):
 		obj.setTipoCampo(str(form.getvalue("tipoCampo")))
 
+	if form.getvalue("campoDeSenha"):
+		obj.setCampoDeSenha(True)
+	else:
+		obj.setCampoDeSenha(False)
 
 
 	if codTipoCampo > 0:

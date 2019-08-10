@@ -14,9 +14,12 @@
 
 
 """
-CREATE TABLE [TIPOS_CAMPOS] ( 
-[COD_TIPO_CAMPO] INTEGER, 
-[CAMPO] TEXT);
+CREATE TABLE `tiposCampos` (
+	`codTipoCampo`	INTEGER,
+	`tipoCampo`	TEXT DEFAULT "",
+	`campoDeSenha`	BOOLEAN DEFAULT 0,
+	PRIMARY KEY(`codTipoCampo`)
+);
 """
 
 
@@ -25,6 +28,7 @@ class TipoCampo:
 
 	__codTipoCampo = 0
 	__tipoCampo = ""
+	__campoDeSenha = False
 
 	def __init__(self):
 		pass
@@ -32,6 +36,7 @@ class TipoCampo:
 	def povoarObj(self, array):
 		self.setCodTipoCampo(array[0])
 		self.setTipoCampo(array[1])
+		self.setCampoDeSenha(array[2])
 		return self
 
 	def getCodTipoCampo(self):
@@ -48,5 +53,14 @@ class TipoCampo:
 
 	def setTipoCampo(self, tipoCampo):
 		self.__tipoCampo = str(tipoCampo)
+
+	def getCampoDeSenha(self):
+		return bool(self.__campoDeSenha)
+
+	def setCampoDeSenha(self, campoDeSenha):
+		try:
+			self.__campoDeSenha = bool(campoDeSenha)
+		except ValueError:
+			self.__campoDeSenha = self.getCampoDeSenha()
 
 

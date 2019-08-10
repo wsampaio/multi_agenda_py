@@ -24,7 +24,8 @@
 					<div class="form-group" id="codTipoCampoDiv"> 
 						<label for="codTipoCampo">codTipoCampo</label>
 						<input 
-							class="form-control" id="codTipoCampo" name="codTipoCampo" 
+							class="form-control" id="codTipoCampo" 
+							name="codTipoCampo" 
 							aria-describedby="codTipoCampoHelp"
 							placeholder="codTipoCampo" type="number"> 
 						<br>
@@ -34,9 +35,18 @@
 
 					<div class="form-group" id="tipoCampoDiv"> 
 						<label for="tipoCampo">Tipo de Campo</label>
-						<input class="form-control" id="tipoCampo" name="tipoCampo" 
-							   placeholder="Tipo de Campo" type="text">
+						<input class="form-control" id="tipoCampo" 
+							name="tipoCampo" 
+							placeholder="Tipo de Campo" type="text">
 					</div>
+					<div class="form-check" id="campoDeSenhaDiv">
+						<input class="form-check-input" type="checkbox" 
+							value="true" id="campoDeSenha" name="campoDeSenha">
+						<label class="form-check-label" for="campoDeSenha">
+							CampoDeSenha
+						</label>
+					</div>
+
 				</form>
 			</div>
 			<div class="row-fluid btn-group">
@@ -64,11 +74,15 @@ return 0;
 					""
 				);
 				$("#codTarefaPaiDiv").attr('param', param);
-				$("#codTarefaPaiDiv").load("/html/modelos/tarefas/tarefaCmb.html");
+				$("#codTarefaPaiDiv").load(
+					"/html/modelos/tarefas/tarefaCmb.html"
+				);
 
 				param = encodeURI("cod=" + $("#codPrioridade").val());
 				$("#codPrioridadeDiv").attr('param', param);
-				$("#codPrioridadeDiv").load("/html/modelos/tarefas/prioridadeCmb.html");
+				$("#codPrioridadeDiv").load(
+					"/html/modelos/tarefas/prioridadeCmb.html"
+				);
 			}
 
 			$(document).ready(function () {

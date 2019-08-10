@@ -26,48 +26,48 @@ cgitb.enable()
 from objetos.passmots.TipoCampo import TipoCampo
 from objetos.passmots.TipoCampoDAO import TipoCampoDAO
 
-
 codTipoCampo = 0
 
 form = cgi.FieldStorage()
 
-
-
 if form:
 	codTipoCampo = int(form.getvalue("cod"))
-
 
 tipoCampo = TipoCampo()
 tipoCampoDAO = TipoCampoDAO()
 
 print("Content-type: application/json\n")
 
-print(
-"""
+saida = ""
+
+saida += """
 {
-	"tipoCampo": [""")
+	"tipoCampo": ["""
+
 
 tipoCampo = tipoCampoDAO.select(codTipoCampo)
 
-
-
-print(
-"""
+saida += """
 		{}
 			"codTipoCampo": "{}",
-			"tipoCampo": "{}"
-		{}""".
-		format(
+			"tipoCampo": "{}",
+			"campoDeSenha": "{}"
+		{}""".format(
 			"{",
 			tipoCampo.getCodTipoCampo(),
 			tipoCampo.getTipoCampo(),
+			tipoCampo.getCampoDeSenha(),
 			"}"
 		)
-	)
 
-
-print(
-"""
+saida += """
 	]
 }
-""")
+"""
+
+print(
+	saida
+		.replace("\n", "")
+		.replace("\t", "")
+)
+

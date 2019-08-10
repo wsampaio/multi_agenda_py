@@ -30,6 +30,7 @@
 						<tr>
 							<th class="col0">codTipoCampo</th>
 							<th class="col1">tipoCampo</th>
+							<th class="col2">campoDeSenha</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,21 +53,31 @@
 
 						obj = lista[i];
 
-						saida += "<tr>"
-							saida += "<td class='col0'>"
-								saida += "<a class='tipoCampo btn' href='/html/modelos/passmots/tipoCampo.html?cod=" + 
-									obj.codTipoCampo + 
-									"' onclick='abreForm(" + 
-									obj.codTipoCampo + 
-									");'>";
-									saida += obj.codTipoCampo;
-								saida += "</a>"
-							saida += "</td>"
-							saida += "<td class='col1'>" + obj.tipoCampo.replace(/%r%n/g, "<br>", -1) + "</td>"
-						saida += "</tr>"
+						saida += 
+							"<tr>" +
+								"<td class='col0'>" +
+									"<a " +
+										"class='tipoCampo btn' " +
+										"href='/html/modelos/passmots/" +
+											"tipoCampo.html?cod=" + 
+											obj.codTipoCampo + "' " +
+										"onclick='abreForm(" + 
+											obj.codTipoCampo + 
+										");'" +
+									">" +
+										obj.codTipoCampo +
+									"</a>" +
+								"</td>" +
+								"<td class='col1'>" + 
+									obj.tipoCampo
+										.replace(/%r%n/g, "<br>", -1) +
+								"</td>" +
+								"<td>" +
+									obj.campoDeSenha +
+								"</td>" +
+							"</tr>";
 
 					}
-
 
 					saida = saida.replace("%r", "<br>");
 					saida = saida.replace("%n", "<br>");

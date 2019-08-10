@@ -47,11 +47,13 @@ for forTipoCampo in lista:
 	saida += """
 		{}
 			"codTipoCampo": {},
-			"tipoCampo": "{}"
+			"tipoCampo": "{}",
+			"campoDeSenha": "{}"
 		{}""".format(
 			"{",
 			forTipoCampo.getCodTipoCampo(),
 			forTipoCampo.getTipoCampo(),
+			forTipoCampo.getCampoDeSenha(),
 			"}"
 		)
 
