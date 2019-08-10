@@ -84,11 +84,7 @@
 			</div>
 		</div>
 
-
 		<script>
-
-/* TODO - ao REaparecer o input desconfigura o width */
-//			$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "none");
 
 			function showPasswd(registro){
 				let arr = [43, 34, 2, 39];
@@ -97,14 +93,17 @@
 				);
 
 				if (encontrou){
-//					$("#registro").css("display", "none");
+					$("#registro").css("display", "none");
 					$("#registro").attr("name", "");
-//					$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "block");
+					$("#registroPasswdDiv").css("display", "table");
+					$("#dtAtualizacaoDiv").css("display", "block");
 					$("#registroPasswd").attr("name", "registro");
 				} else {
-//					$("#registro").css("display", "block");
+					$("#registro").css("display", "block");
 					$("#registro").attr("name", "registro");
-//					$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "none");
+					$("#registroPasswdDiv, #dtAtualizacaoDiv").css(
+						"display", "none"
+					);
 					$("#registroPasswdDiv").attr("name", "");
 				}
 			}
@@ -116,6 +115,11 @@
 				if (conf){
 					gerarSenha();
 				}
+
+				alert(
+					"Antes de salvar, verifique se\n" +
+					"o provedor aceita a nova senha gerada"
+				);
 			});
 
 			function gerarSenha(){
@@ -191,6 +195,10 @@
 						"registro": "",
 						"dtAtualizacao": "0001-01-01T00:00"
 					};
+
+				$("#registroPasswdDiv, #dtAtualizacaoDiv").css(
+					"display", "none"
+				);
 
 				if (searchParams.has('cod')) {
 					var cod = searchParams.get("cod");
