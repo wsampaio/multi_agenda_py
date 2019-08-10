@@ -100,7 +100,7 @@
 //					$("#registro").css("display", "none");
 					$("#registro").attr("name", "");
 //					$("#registroPasswdDiv, #dtAtualizacaoDiv").css("display", "block");
-					$("#registroPasswdDiv").attr("name", "registro");
+					$("#registroPasswd").attr("name", "registro");
 				} else {
 //					$("#registro").css("display", "block");
 					$("#registro").attr("name", "registro");
@@ -108,7 +108,6 @@
 					$("#registroPasswdDiv").attr("name", "");
 				}
 			}
-
 
 			$("#newPass").on("click", function () {
 				//event.preventDefault();
@@ -146,13 +145,6 @@
 				$("#dtAtualizacao").val(toDateTimeLocal(dt));
 			};
 
-
-
-
-
-
-
-
 			$("form").submit(function (event) {
 				event.preventDefault();
 			});
@@ -167,7 +159,6 @@
 					"/html/modelos/passmots/origemRegistroCmb.html"
 				);
 
-				
 				showPasswd($("#codTipoCampo").val());
 				$("#registroPasswd").val($("#registro").val());
 
