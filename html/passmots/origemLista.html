@@ -13,7 +13,9 @@
 		<title>Lista de Origens</title>
 	</head>
 	<body>
-		<a href="/html/modelos/passmots/origemRegistro.html" target="_blank">(novo)</a>
+		<a href="/html/modelos/passmots/origemRegistro.html" target="_blank">
+			(novo)
+		</a>
 		<br><br>
 		<div class="container">
 			<table>
@@ -40,7 +42,8 @@
 						"<a " +
 							"class='listaOrigemBtn' " +
 							"target='_blank' " +
-							"href='/html/passmots/registrosOrigem.html?cod=" + lista[i].codOrigemRegistro +
+							"href='/html/passmots/registrosOrigem.html?cod=" +
+								lista[i].codOrigemRegistro +
 						"'>" +
 							lista[i].origemRegistro +
 						"</a></td></tr>";
@@ -50,16 +53,17 @@
 			}).done(function(){
 				$(".listaOrigemBtn").on('click', function(event){
 					event.preventDefault();
-					url = $(this).attr("href");
 
-					if ($("#principal").length > 0) {
-						$("#principal").attr("urlPrev", 
+					var url = $(this).attr("href");
+
+					if ($("#principal").length > 0){
+						$("#principal").attr("nextUrl",
 							$("#principal").attr("url")
 						);
+
 						$("#principal").attr("url", url);
 						$("#principal").load(url);
 					} else {
-						//$("#principal").load(url);
 						window.open(url);
 					}
 				});
