@@ -57,14 +57,24 @@
 							placeholder="registro" type="text"
 						>
 						<div class="input-group" id="registroPasswdDiv"> 
-							<input class="form-control" id="registroPasswd" 
+							<input class="glyphicon form-control" 
+								id="registroPasswd" 
 								name="" 
 								placeholder="registro" type="text"
 							>
 							<span class="input-group-btn">
-								<button class="btn" id="newPass">
+								<button class="btn btn-default glyphicon" 
+									id="newPass"
+								>
 									Gerar Senha
 								</button>
+								<button 
+									class="
+										btn btn-primary 
+										glyphicon glyphicon-eye-open
+									" 
+									id="viewPass"
+								></button>
 							</span>
 						</div>
 					</div>
@@ -114,13 +124,37 @@
 				
 				if (conf){
 					gerarSenha();
-				}
 
-				alert(
-					"Antes de salvar, verifique se\n" +
-					"o provedor aceita a nova senha gerada"
-				);
+					alert(
+						"Antes de salvar, verifique se\n" +
+						"o provedor aceita a nova senha gerada"
+					);
+				}
 			});
+
+			function mostrarSenha(){
+
+				if($("#registroPasswd").attr("type") == "text") {
+
+					$("#registroPasswd").attr("type", "password");
+					$("#newPass").css("display", "none");
+
+					$("#viewPass")
+						.removeClass("glyphicon-eye-close")
+						.addClass("glyphicon-eye-open")
+
+				} else {
+
+					$("#registroPasswd").attr("type", "text");
+					$("#newPass").css("display", "inline-block");
+
+					$("#viewPass")
+						.removeClass("glyphicon-eye-open")
+						.addClass("glyphicon-eye-close")
+				}
+			}
+
+			$("#viewPass").on("click", mostrarSenha);
 
 			function gerarSenha(){
 				var ascII = [
@@ -199,6 +233,8 @@
 				$("#registroPasswdDiv, #dtAtualizacaoDiv").css(
 					"display", "none"
 				);
+
+				mostrarSenha();
 
 				if (searchParams.has('cod')) {
 					var cod = searchParams.get("cod");

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width">
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
+		<title>Detalhes</title>
 		<style>
 			tr, td, table {
 				border: solid;
 				border-width: thin;
 			}
+			.tdBtn {
+				text-align: right;
+			}
 		</style>
-		<title>Detalhes</title>
 	</head>
 	<body>
 		<div class="container">
@@ -18,18 +22,23 @@
 			<hr>
 			<a class="" target="_blank" id="novoRegistro" href="">(novo)</a>
 			<br><br>
-			<table>
-				<thead>
-					<tr>
-						<th>Campo</th>
-						<th>Registro</th>
-						<th>&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-			<button id="voltarBtn" class="btn btn-primary">Voltar</button>
+			<div class="row-fluid">
+				<div class="table-responsive"> 
+					<table>
+						<thead>
+							<tr>
+								<th>Campo</th>
+								<th>Registro</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row-fluid btn-group">
+				<button class="salvar btn btn-info">Voltar</button> 
+			</div>
 		</div>
 
 		<script>
@@ -39,22 +48,17 @@
 					$("#principal").attr("url", 
 						$("#principal").attr("urlPrev"));
 					$("#principal").load($("#principal").attr("url"));
+				} else {
+					self.close();
 				}
 			});
-
 
 			$(document).ready(function(){
 
 				var searchParams = "";
 				var url = "/cgi-bin/passmots/registrosOrigem.py";
 
-				if ($("#principal").length > 0) {
-					searchParams = $("#principal").attr("url").split("?")[1];
-				} else {
-					searchParams = window.location.search;
-				}
-
-				searchParams = new URLSearchParams(searchParams);
+				searchParams = procurarURLParameters();
 
 				if (searchParams.has('cod')) {
 					url += "?cod=" + searchParams.get('cod');
@@ -70,52 +74,132 @@
 					$("#titulo").html(data.origemRegistro);
 					$("#novoRegistro").attr(
 						"href", 
-						"/html/modelos/passmots/registro.html?cod2=" + data.codOrigemRegistro
+						"/html/modelos/passmots/registro.html?cod2=" + 
+							data.codOrigemRegistro
 					);
 
 					for (i = 0; i < lista.length; i++) {
 
 						obj = lista[i];
 
-						saida += "<tr><td>" +
-							"<a href='/html/modelos/passmots/registro.html?cod=" +
-							obj.codRegistro +
-							"' target='_blank'>" +
-							"<span " +
-								"id='reg" + obj.codRegistro + "span'>" +
-								obj.ordem + " - " + obj.tipoCampo +
-							"</span></a></td><td>" +
-							obj.registro +
-							"</td><td>" +
-							"<button class='glyphicon glyphicon-copy copy' " +
-								"id='reg" +
-									obj.codRegistro +
-							"btn'><span></span></button>" +
+						saida += 
+"<tr>" +
+	"<td>" +
+		"<a href='/html/modelos/passmots/" +
+			"registro.html?cod=" +
+				obj.codRegistro + "' " +
+			"target='_blank'" +
+		">" +
+			"<span " +
+				"id='reg" + obj.codRegistro + "span'" +
+			">" +
+				obj.ordem + " - " + obj.tipoCampo +
+			"</span></a></td>" +
+	"<td>"
+						if (obj.campoDeSenha == "True"){
+							saida +=
+		"<span " +
+			"id='etcRegistro" +
+				obj.codRegistro +
+			"' " +
+			"class='view' " +
+		">(visualizar)</span>" +
+		"<span " +
+			"id='registro" +
+				obj.codRegistro +
+			"' " +
+			"style='display: none;' " +
+		">" +
+			obj.registro + 
+		"</span>" +
+	"</td>";
+						} else {
+							saida +=
+		"<span " +
+			"id='registro" +
+				obj.codRegistro +
+			"' " +
+		">" +
+			obj.registro + 
+		"</span>" +
+	"</td>";
+						}
+
+						saida +=
+	"<td class='tdBtn'>";
+
+						if (obj.campoDeSenha == "True"){
+							saida +=
+								"<button " +
+									"class='glyphicon " +
+										" " +
+										" btn btn-danger glyphicon-eye-open view' " +
+									"id='viewBtn" +
+										obj.codRegistro +
+							"'>";
+						}
+
+						saida +=
+		"<button class=' btn btn-success glyphicon glyphicon-copy copy' " +
+			"id='copyBtn" +
+				obj.codRegistro +
+			"'" +
+		">";
+
+						saida += "<span></span></button>" +
 							"</td></tr>";
 					}
-			
+
 					$("tbody").append(saida);
+
 				}).done(function(){
 					$(".copy").on("click", function(){
 						event.stopPropagation();
 						//alert( $(this).attr("id") );
 						alert("vamos copiar!\nmas não agora!");
 					});
+
+					$(".view").on("click", function(){
+						event.stopPropagation();
+						//alert( $(this).attr("id") );
+
+						let codReg = $(this).attr("id");
+						codReg = codReg.substring(7, codReg.length);
+
+						if (
+							$("#registro" + codReg).css("display") != "inline"
+						){
+							$("#registro" + codReg).css("display", "inline");
+							$("#etcRegistro" + codReg).css(
+								"display", "none"
+							);
+
+							$("#viewBtn" + codReg).removeClass(
+								"glyphicon-eye-open"
+							);
+							$("#viewBtn" + codReg).addClass(
+								"glyphicon-eye-close"
+							);
+
+						} else {
+							$("#registro" + codReg).css("display", "none");
+							$("#etcRegistro" + codReg).css(
+								"display", "inline"
+							);
+
+							$("#viewBtn" + codReg).removeClass(
+								"glyphicon-eye-close"
+							);
+							$("#viewBtn" + codReg).addClass(
+								"glyphicon-eye-open"
+							);
+						}
+					});
 				})
+
+				setBotoesDeAcao("", "", "");
+
 			});
-
-
-
-// Assuming "?post=1234&action=edit"
-
-//var urlParams = new URLSearchParams(window.location.search);
-
-//console.log(urlParams.has('post')); // true
-//console.log(urlParams.get('action')); // "edit"
-//console.log(urlParams.getAll('action')); // ["edit"]
-//console.log(urlParams.toString()); // "?post=1234&action=edit"
-//console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
-
 		</script>
 	</body>
 </html>
