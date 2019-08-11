@@ -71,10 +71,7 @@ saida += """
 	"origemRegistro": \"""" + origemRegistro.getOrigemRegistro() + """\",
 	"registros": ["""
 
-
-
 tipoCampo = tipoCampoDAO.select(2)
-
 
 
 i = 0
@@ -87,13 +84,17 @@ for forRegistro in lista:
 
 	saida += """
 		{}
+			"codTipoCampo": "{}",
 			"tipoCampo": "{}",
+			"campoDeSenha": "{}",
 			"codRegistro": {},
 			"registro": "{}",
 			"ordem": {}
 		{}""".format(
 			"{",
+			forRegistro.getCodTipoCampo(),
 			tipoCampo.getTipoCampo(),
+			tipoCampo.getCampoDeSenha(),
 			forRegistro.getCodRegistro(),
 			forRegistro.getRegistro(),
 			forRegistro.getOrdem(),
