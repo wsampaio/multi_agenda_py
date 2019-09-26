@@ -114,6 +114,37 @@ def removeArquivo(nomeArquivoZip):
 
 
 def fileInfo(nomeArquivoZip):
+
+	# procura arquivo de controle da versao em uso
+	if "DB-multi_agenda" in os.listdir("../"):
+		if "controleVersao" in os.listdir("../DB-multi_agenda"):
+
+			dados = []
+
+			# abre arquivo e pega dados de controle de versao
+			arquivo = open('../DB-multi_agenda/controleVersao', 'r')
+			for linha in arquivo:
+				dados.append(linha.replace("\n", ""))
+
+			arquivo.close()
+
+			dt = datetime.datetime.strptime(dados[1], "%Y-%m-%d %H:%M:%S")
+
+
+			print("Dados do Controle de Versão:\n")
+
+			print(
+				"Nome do arquivo de Backup: " + 
+				dados[0]
+			)
+
+			print(
+				"Data de compactação: " + 
+				dt.strftime("%d/%m/%Y às %H:%M")
+			)
+
+			print("\n\n")
+
 	file_name = "example.zip"
 	# abre o arquivo zip em modo READ
 	with ZipFile(diretorioTMP + "/" + nomeArquivoZip, 'r') as zip:
