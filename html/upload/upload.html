@@ -1,0 +1,100 @@
+<!--
+# Este arquivo é parte do programa multi_agenda
+#
+# Esta obra está licenciada com uma 
+# Licença Creative Commons Atribuição 4.0 Internacional.
+# (CC BY 4.0 Internacional)
+#  
+# Para ver uma cópia da licença, visite
+# https://creativecommons.org/licenses/by/4.0/legalcode
+# 
+# WELLINGTON SAMPAIO - wsampaio@yahoo.com
+# https://www.linkedin.com/in/wellsampaio/
+#
+-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
+		<title>upload</title>
+		<style>
+			tr, td, table {
+				border: solid;
+				border-width: thin;
+			}
+
+			.tdBtn {
+				text-align: right;
+			}
+		</style>
+	</head>
+	<body>
+		<form 
+			enctype = "multipart/form-data" 
+			action = "/cgi-bin/upload/upload.py" target="_blank" 
+			method = "post"
+		>
+			<p>File: <input type = "file" name = "filename" /></p>
+			<p><input type = "submit" value = "Upload" /></p>
+		</form>
+		<table>
+			<thead>
+				<tr>
+					<td>arquivo</td>
+				<tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<br><br>
+		<a href="/cgi-bin/upload/listaTmp.py" target="_blank">listaTmp</a><br>
+		<a href="/cgi-bin/upload/compress.py" target="_blank">compress</a><br>
+		<script>
+
+			$(document).ready(function(){
+
+				var searchParams = "";
+				var url = "/cgi-bin/upload/listaTmp.py";
+
+				searchParams = procurarURLParameters();
+
+				if (searchParams.has('cod')) {
+					url += "?cod=" + searchParams.get('cod');
+				}
+
+
+				var saida = "";
+
+				$.getJSON(url, function (data) {
+
+					var lista = data.arquivos;
+
+					for (let i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+						saida += 
+							"<tr><td>" + 
+								"<a " + 
+									"href='/tmp/" + obj.nomeArquivo + "' " + 
+								">" + 
+									obj.nomeArquivo + 
+								"</a>" + 
+							"</td></tr>";
+					}
+
+				}).done(function(){
+					$("tbody").html(saida);
+				}).fail(function(error){
+					alert(error)
+				});
+
+			});
+		</script>
+	</body>
+</html>
+
+
+
