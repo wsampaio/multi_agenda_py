@@ -44,15 +44,21 @@
 		<table>
 			<thead>
 				<tr>
-					<td>arquivo</td>
+					<td colspan="2">arquivo</td>
 				<tr>
 			</thead>
 			<tbody></tbody>
 		</table>
 		<br><br>
 		<a href="/cgi-bin/upload/listaTmp.py" target="_blank">listaTmp</a><br>
-		<a href="/cgi-bin/upload/compress.py" target="_blank">compress</a><br>
+		<button id="comprimir">comprimir</button><br>
 		<script>
+
+			$("#comprimir").on("click", function(){
+				window.open("/cgi-bin/upload/compress.py?act=com");
+				location.reload;
+			});
+
 
 			$(document).ready(function(){
 
@@ -71,8 +77,16 @@
 				$.getJSON(url, function (data) {
 
 					var lista = data.arquivos;
+					lista = data.arquivos;
 
+					// procura e pega dados da versao atual
 					for (let i = 0; i < lista.length; i++) {
+						if (lista[i].tipo == "versaoAtual"){
+							versaoAtual = lista[i].nomeArquivo;
+						}
+					}
+
+					for (let i = 1; i < lista.length; i++) {
 
 						obj = lista[i];
 						saida += 
@@ -81,12 +95,53 @@
 									"href='/tmp/" + obj.nomeArquivo + "' " + 
 								">" + 
 									obj.nomeArquivo + 
-								"</a>" + 
+								"</a>";
+
+						if (obj.nomeArquivo == versaoAtual){
+							saida += "<br><im>versao atual</im>"
+						}
+
+
+						saida +=
+								"</td><td>"+
+								"<button id='" + obj.nomeArquivo + "' " + 
+									"class='info'>info</button>" +
+								"<button id='" + obj.nomeArquivo + "' " + 
+									"class='descompactar'>Descom</button>" +
+								"<button id='" + obj.nomeArquivo + "' " + 
+									"class='delete'>Apagar</button>" +
+								"" + 
+								"" + 
 							"</td></tr>";
 					}
 
 				}).done(function(){
 					$("tbody").html(saida);
+
+					$(".delete").on("click", function(){
+						event.stopPropagation();
+						window.open(
+							"/cgi-bin/upload/compress.py?act=del&file=" +
+							$(this).attr("id")
+						);
+					});
+
+					$(".info").on("click", function(){
+						event.stopPropagation();
+						window.open(
+							"/cgi-bin/upload/compress.py?act=info&file=" +
+							$(this).attr("id")
+						);
+					});
+
+					$(".descompactar").on("click", function(){
+						event.stopPropagation();
+						window.open(
+							"/cgi-bin/upload/compress.py?act=dec&file=" +
+							$(this).attr("id")
+						);
+					});
+
 				}).fail(function(error){
 					alert(error)
 				});
