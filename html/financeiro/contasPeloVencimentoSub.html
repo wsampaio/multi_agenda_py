@@ -90,63 +90,59 @@
 							saida += "<tr>";
 						}
 
-							saida += 
-								"<td class='col0'>" +
-									"<input " +
-										"class='chkContaLista' " + 
-										"id='chkConta" + 
-											obj.codConta + "' " + 
-										"type='checkbox' " +
-										"checked"
+						saida += 
+							"<td class='col0'>" +
+								"<input " +
+									"class='chkContaLista' " + 
+									"id='chkConta" + 
+										obj.codConta + "' " + 
+									"type='checkbox' " +
+									"checked"
 
-							if (obj.contaPaga == "True") {
-								//saida += " disabled";
-							}
+						if (obj.contaPaga == "True") {
+							//saida += " disabled";
+						}
 
-							saida += "></td>";
+						saida += "></td>";
 
-							saida += "<td class='col1'>";
-								saida += "<a class='conta' target='_blank' " + 
-									"href='/html/modelos/financeiro/" + 
-										"conta.html?cod=" + obj.codConta + 
-									"' onclick='abreForm(" + 
+						saida += "<td class='col1'>";
+						saida += "<a class='conta' target='_blank' " + 
+							"href='/html/financeiro/" + 
+								"conta.html?cod=" + obj.codConta + 
+								"' onclick='abreForm(" + 
 									obj.codConta + 
-									");'>";
-									saida += obj.tipoConta;
-								saida += "</a>";
+								");'>";
+								saida += obj.tipoConta;
+							saida += "</a>";
 							saida += "</td>";
-							
-							saida += "<td class='col2'>" + obj.vencimento;
 
 							if (obj.contaPaga == "True") {
-								saida +=  " - " + obj.dtPagamento;
-							}
-
-							saida += "</td>"
-
-							if (lista[i].contaPaga == "True") {
-								saida += "<td class='col3'>" +
-										"<span id='valorConta" + obj.codConta + 
-										"'>" + 
-											obj.valorPago + 
-										"</span>" +
-									"</td>";
-								total += parseFloat(obj.valorPago);
+								if (obj.vencimento == obj.dtPagamento) {
+									data = "<strong>" + 
+										obj.vencimento + 
+									"</strong>";
+								} else {
+									data = obj.vencimento + " - " +	obj.dtPagamento;
+								}
+								valor = parseFloat(obj.valorPago);
 							} else {
-								saida += "<td class='col3'>" +
-										"<span id='valorConta" + obj.codConta + 
-										"'>" + 
-											obj.valor + 
-										"</span>" +
-									"</td>";
-								total += parseFloat(obj.valor);
+								data = obj.vencimento;
+								valor = parseFloat(obj.valor);
 							}
-							
-							
-							saida += "<td class='col3'>" + 
-								obj.receitaPagadora.replace(
-									"/%r%n/g", "<br>", -1
-								) + "</td>"
+
+							total += valor;
+
+						saida += "<td class='col2'>" + 
+								data + 
+							"</td>" +
+							"<td class='col3' id='valorConta" + obj.codConta + "'>" + 
+								valor.toFixed(2) + 
+							"</td>"
+
+						saida += "<td class='col4'>" + 
+							obj.receitaPagadora.replace(
+								"/%r%n/g", "<br>", -1
+							) + "</td>"
 							
 						saida += "</tr>"
 
@@ -157,7 +153,6 @@
 
 					$("#contasPeloVencimentoSubTbl").append(saida);
 
-					//total = 99.0;
 					saida = "";
 					saida = 
 						"<tr>" +
