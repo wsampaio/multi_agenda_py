@@ -343,16 +343,38 @@ function setBotoesDeAcao(PK, form, action) {
 	});
 }
 
-function procurarURLParameters(){
+function procurarURLParameters(alvo){
 
 	var searchParams = "";
 
-	if ($("#principal").length > 0) {
-		//url = new URL($("#principal").attr("url"));
-		searchParams = $("#principal").attr("url").split("?")[1];
+	// verifica se foi enviado algum objeto alvo
+	if(alvo != null){
+
+		var url = "";
+		let parEl = alvo.parents();
+
+		for(let i = 0; i < parEl.length; i++){
+
+			// percorre todos elementos-pai até achar
+			// a url que carregou a pagina atual
+			if ($("#" + parEl[i].id).attr("url") != undefined){
+				url += $("#" + parEl[i].id).attr("url");
+				break;
+			}
+		}
+
+		if(url.length > 0){
+			searchParams = url.split("?")[1];
+		}
 	} else {
-		carregaBtp();
-		searchParams = window.location.search;
+		// verifica de existe a div principal
+		// e pega os dados de url
+		if ($("#principal").length > 0) {
+			searchParams = $("#principal").attr("url").split("?")[1];
+		} else {
+			carregaBtp();
+			searchParams = window.location.search;
+		}
 	}
 
 	return new URLSearchParams(searchParams);
