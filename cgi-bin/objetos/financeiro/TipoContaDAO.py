@@ -59,7 +59,6 @@ class TipoContaDAO(CRUD.CRUD):
 # ==================================== CRUD ====================================
 # ==============================================================================
 
-
 	def getLista(self):
 		sql = \
 			"""
@@ -73,7 +72,20 @@ class TipoContaDAO(CRUD.CRUD):
 		"""
 		return super().getList(sql)
 
-
+	def listaPrincipais(self):
+		sql = \
+			"""
+			SELECT
+					*
+				FROM
+					tiposContas
+				WHERE
+                                        tipoContaAtivo = 1
+				ORDER BY
+					TipoConta
+			;
+		"""
+		return super().getList(sql)
 
 	def naoListadasNoPeriodo(self, dtRef):
 		sql = \
@@ -100,6 +112,33 @@ class TipoContaDAO(CRUD.CRUD):
 		""".format(dtRef)
 		
 		return super().getList(sql)
+
+
+	def contaOcorrenciasPelaReferencia(self, codTipoConta, dtRef, tipoRef):
+
+		if tipoRef == "pgto":
+			tipoRef = "receita.mesReferencia"
+		#elif tipoRef = "venc":
+		else:
+			tipoRef = "contas.dtVencimento"
+
+		sql = \
+    		"""
+SELECT COUNT(codConta) FROM contas LEFT JOIN receita ON contas.codReceitaPagadora = receita.codReceita 
+
+WHERE strftime("%Y-%m", {}) = '{}' AND codTipoConta = {};
+
+
+
+
+
+		""".format(tipoRef, dtRef, codTipoConta)
+
+		return "{0:.0f}".format(super().getValue(sql, 0.0))
+
+
+
+
 
 	def listaCmb(self):
 		sql = \

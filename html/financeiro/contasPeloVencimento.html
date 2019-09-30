@@ -41,7 +41,7 @@
 		</div>
 
 		<div id="contasPeloVencimentoSub"></div>
-		<div id="naoListadasNoPeriodo"></div>
+		<div id="tipoContaPrincipais"></div>
 
 		<script>
 
@@ -86,10 +86,12 @@
 					"/html/financeiro/contasPeloVencimentoSub.html?" + 
 					"dtRef=" + toMonth(dtRef)
 				);
-				$("#naoListadasNoPeriodo").load(
-					"/html/financeiro/naoListadasNoPeriodo.html?" +
-					"dtRef=" + toMonth(dtRef)
-				);
+
+				$("#tipoContaPrincipais").attr("url", 
+					"/html/financeiro/tipoContaPrincipais.html?" +
+					"tipoRef=venc&dtRef=" + toMonth(dtRef));
+				$("#tipoContaPrincipais").load($("#tipoContaPrincipais").attr("url"));
+
 			});
 		</script>
 	</body>

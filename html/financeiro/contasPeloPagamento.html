@@ -41,7 +41,7 @@
 		</div>
 
 		<div id="listaPagamentosPeriodo"></div>
-		<div id="naoListadasNoPeriodo"></div>
+		<div id="tipoContaPrincipais"></div>
 
 		<script>
 
@@ -87,10 +87,12 @@
 					"dtRef=" + toMonth(dtRef)
 				);
 
-				$("#naoListadasNoPeriodo").load(
-					"/html/financeiro/naoListadasNoPeriodo.html?" +
-					"dtRef=" + toMonth(dtRef)
-				);
+
+				$("#tipoContaPrincipais").attr("url", 
+					"/html/financeiro/tipoContaPrincipais.html?" +
+					"tipoRef=pgto&dtRef=" + toMonth(dtRef));
+				$("#tipoContaPrincipais").load($("#tipoContaPrincipais").attr("url"));
+
 			});
 		</script>
 	</body>

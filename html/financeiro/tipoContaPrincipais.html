@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>tipoContaPrincipais</title>
+		<script src="/html/btp/jquery.js"></script>
+		<script src="/html/btp/instrucoes.js"></script>
+
+		<style>
+			table, td, th {
+				
+			}
+
+			.alignDireita {
+						text-align:right;
+			}
+
+			.col {
+				display: none;
+			}
+			
+			.jumbotron {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2>tipoContaPrincipais</h2>
+			</div>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Conta</th>
+							<th class="alignDireita">Valor médio</th>
+						</tr>
+					</thead>
+					<tbody id="tipoContaPrincipaisTbl"></tbody>
+				</table>
+			</div>
+		</div>
+
+		<script>
+
+			function preencheTabelaTipoContaPrincipaisTbl (dtRef, tipoRef){
+
+				url = "/cgi-bin/financeiro/tipoContaPrincipais.py";
+
+				let params = "";
+
+				if (dtRef != "") {
+					if (params.length > 0) {
+						params += "&";
+					}
+					params += "dtRef=" + toMonth(dtRef);
+				}
+
+				if (tipoRef != "") {
+					if (params.length > 0) {
+						params += "&";
+					}
+					params += "tipoRef=" + tipoRef;
+				}
+
+				if (params.length > 0) {
+					url += "?" + params;
+				}
+
+				$.getJSON(url, function(data) {
+
+					//console.log(data);
+					var lista = data.contas;
+					var saida = "";
+
+					for (i = 0; i < lista.length; i++) {
+
+						obj = lista[i];
+
+						if (obj.contaPaga == "True") {
+							saida += "<tr class='success'>"
+						} else {
+							saida += "<tr>"
+						}
+
+						saida += "<td class='col0'>" +
+							"<a class='conta' target='_blank' " + 
+								"href='/html/financeiro/conta.html?" + 
+								"cod2=" + obj.codTipoConta +
+								"&dtRef=" + toMonth(dtRef) +
+								"&v=" + obj.valorMedio +
+								"' onclick='abreForm(" + 
+									obj.codConta + 
+								");'" + 
+							">" +
+								 obj.tipoConta +
+								 " (" + obj.numOcorrencias + ")" +
+							"</a>" +
+							"</td><td class='alignDireita'>" +
+								 obj.valorMedio.toFixed(2) +
+						"</td>";
+
+						saida += "</tr>";
+					}
+
+					saida = saida.replace("%r", "<br>");
+					saida = saida.replace("%n", "<br>");
+
+					$("#tipoContaPrincipaisTbl").append(saida);
+				});
+			}
+
+			$(document).ready(function() {
+
+				let dtRef = "";
+				let tipoRef = ""; // pgto ou venc
+				let searchParams = procurarURLParameters($("#tipoContaPrincipaisTbl"));
+
+				if (searchParams.has('dtRef')) {
+					dtRef = new Date(searchParams.get("dtRef") + "-01T00:00");
+				}
+
+				if (searchParams.has('tipoRef')) {
+					tipoRef = searchParams.get("tipoRef");
+				}
+
+				preencheTabelaTipoContaPrincipaisTbl(dtRef, tipoRef);
+			});
+		</script>
+	</body>
+</html>
+

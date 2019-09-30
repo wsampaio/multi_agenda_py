@@ -90,7 +90,6 @@ class ContaDAO(CRUD.CRUD):
 		
 		return super().getList(sql)
 
-
 	def listaPelaReceita(self, codReceita):
 		sql = \
 			"""
@@ -125,7 +124,6 @@ class ContaDAO(CRUD.CRUD):
 		
 		return super().getList(sql)
 
-
 	def somaPelaReceitaPagadora(self, codReceitaPagadora):
 		sql = \
 			"""
@@ -142,8 +140,6 @@ SELECT
 		""".format(codReceitaPagadora)
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
-
-
 
 	def somaPagasPelaReceita(self, codReceitaPagadora):
 		sql = \
@@ -162,7 +158,6 @@ SELECT
 		""".format(codReceitaPagadora)
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
-
 
 	def mediaTresUltimas(self, codTipoConta, dtRef):
 		sql = \
@@ -191,6 +186,31 @@ SELECT AVG(valor) FROM (
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
 
+	def mediaTresUltimosMeses(self, codTipoConta, dtRef):
+		sql = \
+			"""
+
+SELECT AVG(valor) FROM (SELECT AVG(valor) AS valor, dtRef FROM (SELECT CASE WHEN contaPaga = 0 THEN valor ELSE valorPago END AS valor, strftime("%Y-%m", dtVencimento) AS dtRef FROM contas 
+
+
+WHERE 
+codTipoConta = {}
+AND
+strftime("%Y-%m", dtVencimento) <= '{}'
+
+
+)GROUP BY dtRef ORDER BY dtRef DESC LIMIT 3) ;
+
+
+
+
+
+
+
+		""".format(codTipoConta, dtRef)
+		
+		return "{0:.2f}".format(super().getValue(sql, 0.0))
+
 	def listaContasDeCredito(self):
 		sql = \
 			"""
@@ -209,7 +229,6 @@ SELECT AVG(valor) FROM (
 		"""
 		
 		return super().getList(sql)
-
 
 	def listaPorPeriodo(self, dtInicio, dtFinal):
 
@@ -258,7 +277,6 @@ SELECT AVG(valor) FROM (
 			""".format(dtRef)
 		
 		return "{0:.2f}".format(super().getValue(sql, 0.0))
-
 
 	def somaPrevisaoDoMesPelaDataCreditoDaReceita(self, dtRef):
 
