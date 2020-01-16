@@ -154,6 +154,20 @@ class CRUD():
 		else:
 			return value[0]
 
+	def normalizaNome(str):
+		str = ""
+		tmp = ""
+
+		for i in len(str):
+			if str[i] == "_":
+				i = i + 1
+				tmp += str[i]
+			else:
+				tmp += str[i]
+
+		return tmp
+
+
 	def getList(self, sql):
 		# Devolve uma array com objetos
 
