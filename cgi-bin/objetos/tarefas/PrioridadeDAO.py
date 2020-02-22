@@ -24,7 +24,7 @@ class PrioridadeDAO(CRUD.CRUD):
 
 		schema = "tarefas"
 		tabela = "prioridades"
-		pk = "codPrioridade"
+		pk = "cod_prioridade"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -60,7 +60,7 @@ class PrioridadeDAO(CRUD.CRUD):
 				FROM
 					prioridades
 				ORDER BY
-					codPrioridade
+					cod_prioridade
 			;
 		"""
 		return super().getList(sql)

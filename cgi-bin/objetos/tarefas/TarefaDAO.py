@@ -25,7 +25,7 @@ class TarefaDAO(CRUD.CRUD):
 
 		schema = "tarefas"
 		tabela = "tarefas"
-		pk = "codTarefa"
+		pk = "cod_tarefa"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -105,7 +105,7 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				ORDER BY
-					codTarefa
+					cod_tarefa
 			;
 		"""
 		return super().getList(sql)
@@ -135,10 +135,10 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					terminado = 0 AND
-					codTarefaPai < 1
+					terminado = 'false' AND
+					cod_tarefa_pai < 1
 				ORDER BY
-					codPrioridade,
+					cod_prioridade,
 					prazo DESC,
 					inicio
 			;
@@ -169,7 +169,7 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					codTarefaPai = """ + str(codTarefa) + """
+					cod_tarefa_pai = """ + str(codTarefa) + """
 				ORDER BY
 					terminado,
 					inicio,
@@ -188,7 +188,7 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					codTarefaPai = """ + str(codTarefa) + """
+					cod_tarefa_pai = """ + str(codTarefa) + """
 				ORDER BY
 					ordem
 			;
@@ -204,9 +204,9 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					codTarefaPai < 1
+					cod_tarefa_pai < 1
 				ORDER BY
-					codTarefa DESC
+					cod_tarefa DESC
 			;
 			"""
 
@@ -230,7 +230,7 @@ class TarefaDAO(CRUD.CRUD):
 				FROM
 					tarefas
 				WHERE
-					codTarefaPai < 1 AND
+					cod_tarefa_pai < 1 AND
 					({})
 				ORDER BY
 					inicio DESC
@@ -243,11 +243,11 @@ class TarefaDAO(CRUD.CRUD):
 		sql = \
 			"""
 	SELECT
-			count(codTarefa) as ttl
+			count(cod_tarefa) as ttl
 		FROM
 			tarefas
 		WHERE
-			codTarefaPai = {}
+			cod_tarefa_pai = {}
 ;
  
 		""".format(codTarefaPai)
@@ -258,12 +258,12 @@ class TarefaDAO(CRUD.CRUD):
 		sql = \
 			"""
 	SELECT
-			count(codTarefa) as ttl
+			count(cod_tarefa) as ttl
 		FROM
 			tarefas
 		WHERE
-			codTarefaPai = {}
-		AND terminado = 1
+			cod_tarefa_pai = {}
+		AND terminado = 'true'
 ;
  
 		""".format(codTarefaPai)
@@ -274,7 +274,7 @@ class TarefaDAO(CRUD.CRUD):
 		sql = \
 			"""
 SELECT
-		codTarefa
+		cod_tarefa
 	FROM (
 		SELECT
 			*,
@@ -288,8 +288,8 @@ SELECT
 			FROM
 				tarefas
 			WHERE
-				codTarefaPai = {} AND
-				terminado = 0
+				cod_tarefa_pai = {} AND
+				terminado = 'false'
 			ORDER BY
 				foo,
 				inicio,

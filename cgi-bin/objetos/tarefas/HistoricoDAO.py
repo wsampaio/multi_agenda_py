@@ -24,7 +24,7 @@ class HistoricoDAO(CRUD.CRUD):
 
 		schema = "tarefas"
 		tabela = "historicos"
-		pk = "codHistorico"
+		pk = "cod_historico"
 
 		super().__init__(schema, tabela, pk)
 		self.__sqlInsert = super().strINSERT()
@@ -69,7 +69,7 @@ class HistoricoDAO(CRUD.CRUD):
 				FROM
 					historicos
 				ORDER BY
-					codHistorico
+					cod_historico
 			;
 		"""
 		return super().getList(sql)
@@ -81,7 +81,7 @@ class HistoricoDAO(CRUD.CRUD):
 					*
 				FROM
 					historicos
-				WHERE codTarefa = {}
+				WHERE cod_tarefa = {}
 				ORDER BY
 					data
 			;
