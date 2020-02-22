@@ -26,6 +26,8 @@ class Tarefa:
 	__terminado = False
 	__ordem = 0
 	__codPrioridade = 0
+	__codSprint = 0
+	__codLista = 0
 
 	def __init__(self):
 		pass
@@ -125,4 +127,38 @@ class Tarefa:
 			self.__codPrioridade = int(codPrioridade)
 		except ValueError:
 			self.__codPrioridade = self.getCodPrioridade()
+
+	def getCodSprint(self):
+		return self.__codSprint
+
+	def setCodSprint(self, codSprint):
+		try:
+			self.__codSprint = int(codSprint)
+		except ValueError:
+			self.__codSprint = self.getCodSprint()
+
+	def getCodLista(self):
+		return self.__codLista
+
+	def setCodLista(self, codLista):
+		try:
+			self.__codLista = int(codLista)
+		except ValueError:
+			self.__codLista = self.getCodLista()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
