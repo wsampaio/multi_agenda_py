@@ -49,50 +49,6 @@ class TarefaDAO(CRUD.CRUD):
 	def update(self, tarefa):
 		self.setStatement(tarefa, self.__sqlUpdate)
 
-	def setStatement2(self, obj):
-		getPk = getattr(obj,
-				"get" +
-				self.__pk[:1].upper() +
-				self.__pk[1:]
-		)
-		return getPk()
-
-	def setStatement1(self, obj, sql):
-
-		getPk = getattr(obj,
-				"get" +
-				self.__pk[:1].upper() +
-				self.__pk[1:]
-		)
-
-		setPk = getattr(obj,
-				"set" +
-				self.__pk[:1].upper() +
-				self.__pk[1:]
-		)
-
-		if getPk() == 0:
-			setPk(self.__conn.autoNumeracao())
-
-		if tarefa.getTERMINADO() == True:
-			TERMINADO = -1
-		else:
-			TERMINADO = 0
-
-
-
-		context = \
-			str(tarefa.getCOD_TAREFA_PAI()),\
-			str(tarefa.getTAREFA()),\
-			FormatData.para_JDate(tarefa.getINICIO()),\
-			FormatData.para_JDate(tarefa.getFIM()),\
-			FormatData.para_JDate(tarefa.getPRAZO()),\
-			TERMINADO,\
-			str(tarefa.getCOD_PRIORIDADE()),\
-			str(tarefa.getCOD_TAREFA())
-
-		self.__cursor.execute(sql, context)
-
 # ==================================== CRUD ====================================
 # ==============================================================================
 
