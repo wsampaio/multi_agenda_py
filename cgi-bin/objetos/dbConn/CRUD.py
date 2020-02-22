@@ -154,14 +154,20 @@ class CRUD():
 		else:
 			return value[0]
 
-	def normalizaNome(str):
-		str = ""
+	def normalizaNome(self, str):
 		tmp = ""
+		pular = False
 
-		for i in len(str):
+		#for i in len(str):
+		for i in range(len(str)):
+			if pular:
+				pular = False
+				continue
+
 			if str[i] == "_":
 				i = i + 1
-				tmp += str[i]
+				tmp += str[i].upper()
+				pular = True
 			else:
 				tmp += str[i]
 
@@ -207,13 +213,13 @@ class CRUD():
 		getPk = getattr(obj,
 				"get" +
 				self.__pk[:1].upper() +
-				self.__pk[1:]
+				self.normalizaNome(self.__pk)[1:]
 		)
 
 		setPk = getattr(obj,
 				"set" +
 				self.__pk[:1].upper() +
-				self.__pk[1:]
+				self.normalizaNome(self.__pk)[1:]
 		)
 
 		
@@ -236,7 +242,7 @@ class CRUD():
 			getMethod = getattr(obj,
 					"get" +
 					nomeCampo[:1].upper() +
-					nomeCampo[1:]
+					self.normalizaNome(nomeCampo)[1:]
 			)
 			
 			
@@ -250,9 +256,9 @@ class CRUD():
 				)
 			elif self.tipoCampos[i] == "BOOLEAN":
 				if getMethod():
-					context.append(1)
+					context.append('true')
 				else:
-					context.append(0)
+					context.append('false')
 			else:
 				context.append(getMethod())
 
