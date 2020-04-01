@@ -63,7 +63,7 @@ class Conta:
 		self.setCodContaPagadora(array[7])
 		self.setCodReceitaPagadora(array[8])
 		self.setCodPagador(array[9])
-		self.setContaPaga(bool(array[10]))
+		self.setContaPaga(True) if array[10] == "true" else ""
 		self.setValorPago(array[11])
 		self.setDtPagamento(FormatData.de_JDate(array[12]))
 
