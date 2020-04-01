@@ -128,7 +128,7 @@ class ContaDAO(CRUD.CRUD):
 		sql = \
 			"""
 SELECT 
-			SUM(CASE WHEN contaPaga = 1 THEN valorPago ELSE valor END) 
+			SUM(CASE WHEN contaPaga = 'true' THEN valorPago ELSE valor END) 
 		AS vlrTotal 
 	FROM 
 		contas 
@@ -145,13 +145,13 @@ SELECT
 		sql = \
 			"""
 SELECT 
-			SUM(CASE WHEN contaPaga = 1 THEN valorPago ELSE valor END) 
+			SUM(CASE WHEN contaPaga = 'true' THEN valorPago ELSE valor END) 
 		AS vlrTotal 
 	FROM 
 		contas 
 	WHERE 
 		codReceitaPagadora = {} AND
-		contaPaga = 1
+		contaPaga = 'true'
 	GROUP BY 
 		codReceitaPagadora
 ;
@@ -167,7 +167,7 @@ SELECT AVG(valor) FROM (
     SELECT 
  			codConta, 
 				CASE
-				WHEN contaPaga = 1 THEN
+				WHEN contaPaga = 'true' THEN
 					valorPago
 				ELSE
 					valor
@@ -190,7 +190,14 @@ SELECT AVG(valor) FROM (
 		sql = \
 			"""
 
-SELECT AVG(valor) FROM (SELECT AVG(valor) AS valor, dtRef FROM (SELECT CASE WHEN contaPaga = 0 THEN valor ELSE valorPago END AS valor, strftime("%Y-%m", dtVencimento) AS dtRef FROM contas 
+SELECT AVG(valor) 
+FROM (
+
+SELECT AVG(valor) AS valor, dtRef 
+FROM (
+
+SELECT CASE WHEN contaPaga = 'false' THEN valor ELSE valorPago END AS valor, strftime("%Y-%m", dtVencimento) AS dtRef 
+FROM contas 
 
 
 WHERE 
