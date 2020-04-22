@@ -29,6 +29,7 @@
 					<tr>
 						<th class="col0">codConta</th>
 						<th class="col1">codTipoConta</th>
+						<th class="col">TipoConta</th>
 						<th class="col2">descricao</th>
 						<th class="col3">mesReferencia</th>
 						<th class="col4">dtVencimento</th>
@@ -70,7 +71,8 @@
 								saida += "</a>"
 							saida += "</td>"
 
-							saida += "<td class='col1'>" + lista[i].codTipoConta + "</td>"
+							saida += "<td class='col1'>" + lista[i].tipoConta.codTipoConta + "</td>"
+							saida += "<td class='col'>" + lista[i].tipoConta.tipoConta + "</td>"
 							saida += "<td class='col2'>" + lista[i].descricao.replace(/%r%n/g, "<br>", -1) + "</td>"
 							saida += "<td class='col3'>" + lista[i].mesReferencia + "</td>"
 							saida += "<td class='col4'>" + lista[i].dtVencimento + "</td>"
@@ -92,6 +94,9 @@
 					saida = saida.replace("%n", "<br>");
 
 					$("tbody").append(saida);
+				})
+				.fail(function(){
+					console.log("ERRO");
 				})
 				.success(function(){
 					$(".conta").on("click", function(){

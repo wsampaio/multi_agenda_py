@@ -25,8 +25,14 @@ cgitb.enable()
 from objetos.financeiro.Conta import Conta
 from objetos.financeiro.ContaDAO import ContaDAO
 
+from objetos.financeiro.TipoConta import TipoConta
+from objetos.financeiro.TipoContaDAO import TipoContaDAO
+
 #obj = Conta()
 dao = ContaDAO()
+
+tipoConta = TipoConta()
+tipoContaDAO = TipoContaDAO()
 
 print("Content-type: application/json\n")
 
@@ -44,10 +50,15 @@ contaLista = len(lista) -1
 
 for obj in lista:
 
+	tipoConta = tipoContaDAO.select(obj.getCodTipoConta())
+
 	saida += """
 		{}
 			"codConta": {},
-			"codTipoConta": {},
+			"tipoConta": {}
+				"codTipoConta": {},
+				"tipoConta": "{}"
+			{},
 			"descricao": "{}",
 			"mesReferencia": "{}",
 			"dtVencimento": "{}",
@@ -62,7 +73,10 @@ for obj in lista:
 		{}""".format(
 			"{",
 			obj.getCodConta(),
-			obj.getCodTipoConta(),
+			"{",
+			tipoConta.getCodTipoConta(),
+			tipoConta.getTipoConta(),
+			"}",
 			obj.getDescricao()
 				.replace("\r", "%r")
 				.replace("\n", "%n")
